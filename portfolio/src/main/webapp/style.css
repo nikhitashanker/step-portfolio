@@ -7,3 +7,8 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.button {
+    border: none;
+    text-align: center;
+}
