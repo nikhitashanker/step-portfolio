@@ -1,9 +1,31 @@
 #content {
-  margin-left: auto;
+  margin-left: 35em;
   margin-right: auto;
-  width: 650px;
+  width: 50rem;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#ramdom-container {
+  margin-top: 1.25rem;
+}
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 30rem;
+    background-color: gray;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    padding: 1rem;
+    text-decoration: none;
+}
+
+.sidebar a.active {
+    background-color: coral;
+    color: white;
 }
