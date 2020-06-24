@@ -46,6 +46,6 @@
 
 .tab-content {
     border: 2rem;
-    display: block;
+    display: none;
     padding: 0.5rem 1rem;
 }
