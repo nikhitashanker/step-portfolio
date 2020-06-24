@@ -49,3 +49,18 @@ function expandContent(){
       content.style.display = "block";
   }
 }
+
+/*
+  * Show project content that corresponds to selected tab.
+*/
+function showContentForTab(event, selectedProjectName) {
+
+    const tabContent = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabContent.length; i++) {
+        if (tabContent.id === selectedProjectName) {
+            tabcontent[i].style.display = "block";
+        } else {
+            tabcontent[i].style.display = "none";
+        }
+    }
+}
