@@ -54,13 +54,14 @@ function expandContent(){
   * Show project content that corresponds to selected tab.
 */
 function showContentForTab(event, selectedProjectName) {
-
     const tabContent = document.getElementsByClassName("tab-content");
+    console.log(selectedProjectName);
     for (let i = 0; i < tabContent.length; i++) {
+        console.log(tabContent.id);
         if (tabContent.id === selectedProjectName) {
-            tabcontent[i].style.display = "block";
+            tabContent[i].style.display = "block";
         } else {
-            tabcontent[i].style.display = "none";
+            tabContent[i].style.display = "none";
         }
     }
 }
