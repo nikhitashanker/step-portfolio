@@ -13,12 +13,12 @@
 // limitations under the License.
 
 window.onload = function addEventListenerForClick() {
-    const expandableContentButtons = document.getElementsByClassName("expandable");
+  const expandableContentButtons = document.getElementsByClassName("expandable");
 
-    // Add an event listener for click to each button.
-    for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
-        expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
-    }
+  // Add an event listener for click to each button.
+  for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
+    expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
+  }
 }
 
 /**
@@ -54,14 +54,14 @@ function toggleContentVisibility(){
   * Show project content that corresponds to selected tab.
 */
 function showContentForTab(selectedProjectName) {
-    const tabContent = document.getElementsByClassName("tab-content");
+  const tabContent = document.getElementsByClassName("tab-content");
     
-    // Make the only the tab content with id the same as the selected project name visible.
-    for (let i = 0; i < tabContent.length; i++) {
-        if (tabContent[i].id === selectedProjectName) {
-            tabContent[i].style.display = "inline-block";
-        } else {
-            tabContent[i].style.display = "none";
-        }
+  // Make the only the tab content with id the same as the selected project name visible.
+  for (let i = 0; i < tabContent.length; i++) {
+    if (tabContent[i].id === selectedProjectName) {
+        tabContent[i].style.display = "inline-block";
+    } else {
+        tabContent[i].style.display = "none";
     }
+  }
 }
