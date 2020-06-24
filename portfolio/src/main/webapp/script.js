@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-window.onload = function addOnClickListeners() {
-    var expandableContentButtons = document.getElementsByClassName("expandable");
+window.onload = function addEventListenerForClick() {
+    const expandableContentButtons = document.getElementsByClassName("expandable");
+
+    // Add an event listener for click to each button.
     for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
-        expandableContentButtons[buttonNumber].addEventListener("click", expandContent);
+        expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
     }
 }
 
@@ -34,16 +36,14 @@ function addRandomFact() {
   randomFactContainer.innerText = fact;
 }
 
-
 /*
   * Expands content when content title button is clicked.
 */
-function expandContent(){
-  var content = this.nextElementSibling;
-  this.classList.toggle("active");
+function toggleContentVisibility(){
+  const content = this.nextElementSibling;
 
   // Toggle the visibility of the content.
-  if (content.style.display == "block") {
+  if (content.style.display === "block") {
       content.style.display = "none";
   } else {
       content.style.display = "block";
@@ -53,11 +53,11 @@ function expandContent(){
 /*
   * Show project content that corresponds to selected tab.
 */
-function showContentForTab(event, selectedProjectName) {
+function showContentForTab(selectedProjectName) {
     const tabContent = document.getElementsByClassName("tab-content");
-    console.log(selectedProjectName);
+    
+    // Make the only the tab content with id the same as the selected project name visible.
     for (let i = 0; i < tabContent.length; i++) {
-        console.log(tabContent[i]);
         if (tabContent[i].id === selectedProjectName) {
             tabContent[i].style.display = "inline-block";
         } else {
