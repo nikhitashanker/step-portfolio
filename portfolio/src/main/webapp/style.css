@@ -19,14 +19,14 @@
 .expandable-content {
   background-color: lightgray;
   color: black;
-  padding: 0rem 1rem;
-  overflow: hidden;
   display: none;
+  overflow: hidden;
+  padding: 0rem 1rem;
 }
 
 .expandable:after {
-  content: '+';
   color: black;
+  content: '+';
   float: right;
   font-size: 1rem;
   margin-left: 0.5rem;
