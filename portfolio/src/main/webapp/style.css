@@ -10,9 +10,9 @@
 
 .expandable {
   background-color: coral;
+  font-size: 1rem;
   text-align: left;
   width: 100%;
-  font-size: 1rem;
   padding: 1rem;
 }
 
@@ -25,27 +25,27 @@
 }
 
 .expandable:after {
-    content: '+';
-    font-size: 1rem;
-    color: black;
-    float: right;
-    margin-left: 0.5rem;
+  content: '+';
+  color: black;
+  float: right;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .expandable.active:after {
-    content: "-";
+  content: "-";
 }
 
 .select-tab {
-    border: 0.1rem solid gainsboro;
-    background-color: aliceblue;
-    color: black;
-    float: left;
-    padding: 1rem 1rem;
+  border: 0.1rem solid gainsboro;
+  background-color: aliceblue;
+  color: black;
+  float: left;
+  padding: 1rem 1rem;
 } 
 
 .tab-content {
-    border: 2rem;
-    display: none;
-    padding: 0.5rem 1rem;
+  border: 2rem;
+  display: none;
+  padding: 0.5rem 1rem;
 }
