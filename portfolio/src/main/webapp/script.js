@@ -57,9 +57,9 @@ function showContentForTab(event, selectedProjectName) {
     const tabContent = document.getElementsByClassName("tab-content");
     console.log(selectedProjectName);
     for (let i = 0; i < tabContent.length; i++) {
-        console.log(tabContent.id);
-        if (tabContent.id === selectedProjectName) {
-            tabContent[i].style.display = "block";
+        console.log(tabContent[i]);
+        if (tabContent[i].id === selectedProjectName) {
+            tabContent[i].style.display = "inline-block";
         } else {
             tabContent[i].style.display = "none";
         }

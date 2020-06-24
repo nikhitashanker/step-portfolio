@@ -35,3 +35,17 @@
 .expandable.active:after {
     content: "-";
 }
+
+.select-tab {
+    border: 0.1rem solid gainsboro;
+    background-color: aliceblue;
+    color: black;
+    float: left;
+    padding: 1rem 1rem;
+} 
+
+.tab-content {
+    border: 2rem;
+    display: block;
+    padding: 0.5rem 1rem;
+}
