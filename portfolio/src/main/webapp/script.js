@@ -40,6 +40,7 @@ function addRandomFact() {
 */
 function expandContent(){
   var content = this.nextElementSibling;
+  this.classList.toggle("active");
 
   // Toggle the visibility of the content.
   if (content.style.display == "block") {
