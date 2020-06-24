@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+window.onload = function addOnClickListeners() {
+    var expandableContentButtons = document.getElementsByClassName("expandable");
+    for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
+        expandableContentButtons[buttonNumber].addEventListener("click", expandContent);
+    }
+}
+
 /**
  * Adds a random greeting to the page.
  */
@@ -25,4 +32,19 @@ function addRandomFact() {
   // Add it to the page.
   const randomFactContainer = document.getElementById('random-fact-container');
   randomFactContainer.innerText = fact;
+}
+
+
+/*
+  * Expands content when content title button is clicked.
+*/
+function expandContent(){
+  var content = this.nextElementSibling;
+
+  // Toggle the visibility of the content.
+  if (content.style.display == "block") {
+      content.style.display = "none";
+  } else {
+      content.style.display = "block";
+  }
 }

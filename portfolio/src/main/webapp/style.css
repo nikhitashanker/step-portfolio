@@ -7,3 +7,19 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.expandable {
+  background-color: coral;
+  text-align: left;
+  width: 100%;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.expandable-content {
+  background-color: lightgray;
+  color: black;
+  padding: 0rem 1rem;
+  overflow: hidden;
+  display: none;
+}
