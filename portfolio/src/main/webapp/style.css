@@ -23,3 +23,15 @@
   overflow: hidden;
   display: none;
 }
+
+.expandable:after {
+    content: '+';
+    font-size: 1rem;
+    color: black;
+    float: right;
+    margin-left: 0.5rem;
+}
+
+.expandable.active:after {
+    content: "-";
+}
