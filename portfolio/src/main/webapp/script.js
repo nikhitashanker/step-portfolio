@@ -34,11 +34,13 @@ function addRandomFact() {
  * it is changed to being shown like all other components of the page.
  */
 function changeNavbarStickiness() {
-    const navbar = document.getElementById("navbar");
-    const navbarThickness = navbar.offsetTop;
-    if (window.pageYOffset >= navbarThickness) {
-        navbar.classList.add("sticky");
-    } else {
-        navbar.classList.remove("sticky");
-    }
+  const navbar = document.getElementById("navbar");
+  const navbarThickness = navbar.offsetTop;
+
+  // Change navbar CSS classlist based on whether navbar is in view or out of view
+  if (window.pageYOffset >= navbarThickness) {
+    navbar.classList.add("sticky");
+  } else {
+    navbar.classList.remove("sticky");
+  }
 }
