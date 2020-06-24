@@ -8,30 +8,30 @@
 }
 
 #navbar {
-    background-color: black;
-    overflow: hidden;
+  background-color: black;
+overflow: hidden;
 }
 
 #navbar a {
-    color: gray;
-    display: block;
-    float: left;
-    padding: 0.8rem;
-    text-align: center;
-    text-decoration: none;
+  color: gray;
+  display: block;
+  float: left;
+  padding: 0.8rem;
+  text-align: center;
+  text-decoration: none;
 }
 
 #navbar a.active {
-    background-color: coral;
-    color: white;
+  background-color: coral;
+  color: white;
 }
 
 .sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .sticky + .content {
-    padding-top: 5rem;
+  padding-top: 5rem;
 }
