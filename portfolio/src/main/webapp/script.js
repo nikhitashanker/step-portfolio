@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-window.onload = function addEventListenerForClick() {
+window.onload = function onLoad() {
   const expandableContentButtons = document.getElementsByClassName("expandable");
 
   // Add an event listener for click to each button.
   for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
     expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
   }
+
+  const tabContent = document.getElementsByClassName("tab-content");
+ 
+  //Make the first tab shown.
+  showContentForTab(tabContent[0].id);
 }
 
 window.onscroll = changeNavbarStickiness;
