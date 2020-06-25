@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+window.onscroll = changeNavbarStickiness;
+
 /**
  * Adds a random greeting to the page.
  */
@@ -25,4 +27,20 @@ function addRandomFact() {
   // Add it to the page.
   const randomFactContainer = document.getElementById('random-fact-container');
   randomFactContainer.innerText = fact;
+}
+
+/**
+ * Makes navigation bar become fixed at top when it is about to go out of view. When it is in view, 
+ * it is changed to being shown like all other components of the page.
+ */
+function changeNavbarStickiness() {
+  const navbar = document.getElementById("navbar");
+  const navbarThickness = navbar.offsetTop;
+
+  // Change navbar CSS classlist based on whether navbar is in view or out of view
+  if (window.pageYOffset >= navbarThickness) {
+    navbar.classList.add("sticky");
+  } else {
+    navbar.classList.remove("sticky");
+  }
 }
