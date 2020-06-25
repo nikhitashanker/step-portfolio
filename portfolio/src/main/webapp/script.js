@@ -14,7 +14,7 @@
 
 window.onload = function onLoad() {
   addListenersToButtons();
-  makeFirstTabVisible();
+  showFirstTabContent();
 }
 
 function addListenersToButtons() {
@@ -26,7 +26,7 @@ function addListenersToButtons() {
   }
 }
 
-function makeFirstTabVisible(){
+function showFirstTabContent(){
   const tabContent = document.getElementsByClassName("tab-content");
  
   //Make the first tab shown.
