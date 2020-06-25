@@ -7,6 +7,48 @@
   margin-top: 1.25rem;
 }
 
+.expandable {
+  background-color: coral;
+  font-size: 1rem;
+  text-align: left;
+  width: 100%;
+  padding: 1rem;
+}
+
+.expandable-content {
+  background-color: lightgray;
+  color: black;
+  display: none;
+  overflow: hidden;
+  padding: 0rem 1rem;
+}
+
+.expandable:after {
+  color: black;
+  content: '+';
+  float: right;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+.expandable.active:after {
+  content: "-";
+}
+
+.select-tab {
+  border: 0.1rem solid gainsboro;
+  background-color: aliceblue;
+  color: black;
+  float: left;
+  padding: 1rem 1rem;
+} 
+
+.tab-content {
+  border: 2rem;
+  display: none;
+  padding: 0.5rem 1rem;
+}
+
 #navbar {
   background-color: black;
   overflow: hidden;

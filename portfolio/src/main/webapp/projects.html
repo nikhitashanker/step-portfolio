@@ -14,15 +14,27 @@
     </div>
     <div id="content">
       <h1>My Projects</h1>
-      <h3>Here are the projects that I am currently working on:</h3>
-      <p>I am currently the technical lead and a developer for the Society of Women Engineers development team at UCLA. We are building a member <a href=https://github.com/swe-ucla/Event-Portal>portal</a> that will allow users to track the events they have attended and register for Evening With Industry, a yearly event.</p>
-      <h3>Here are the projects I have worked on in the past:</h3>
-      <h4>5 Minutes A Day</h4>
-      <p>5 Minutes A Day is an Android mobile application that gives users daily 5-minute de-stressing activities in categories including art, exercise, and mindfulness.</p>
-      <center><img src="images/5MinutesADay.png" alt="5 Minutes A Day" width="250" height="400"></center>
-      <h4>UC Brainstorm</h4>
-      <p>UC Brainstorm is a web application that helps users brainstorm answers to the UC Application's short answer questions.</p>
-      <center><img src="images/UCBrainstorm.png" alt="UC Brainstorm" width="500" height="250"></center>
+      <button class="select-tab" onclick="showContentForTab('swe-dev-portal')">SWE Dev Portal</button>
+      <button class="select-tab" onclick="showContentForTab('five-minutes-a-day')">5 Minutes A Day</button>
+      <button class="select-tab" onclick="showContentForTab('uc-brainstorm')">UC Brainstorm</button>
+      <div id="swe-dev-portal" class="tab-content">
+        <h4>SWE Dev Portal</h4>
+        <p>I am currently the technical lead and a developer for the Society of Women Engineers development team at
+            UCLA. We are building a member <a href=https://github.com/swe-ucla/Event-Portal>portal</a> that will allow 
+            users to track the events they have attended and register for Evening With Industry, a yearly event.</p>
+      </div>
+      <div id="five-minutes-a-day" class="tab-content">
+        <h4>5 Minutes A Day</h4>
+        <p>5 Minutes A Day is an Android mobile application that gives users daily 5-minute de-stressing activities 
+            in categories including art, exercise, and mindfulness.</p>
+        <center><img src="images/5MinutesADay.png" alt="5 Minutes A Day" width="250" height="400"></center>
+      </div>
+      <div id="uc-brainstorm" class="tab-content">
+        <h4>UC Brainstorm</h4>
+        <p>UC Brainstorm is a web application that helps users brainstorm answers to the UC Application's short answer 
+            questions.</p>
+        <center><img src="images/UCBrainstorm.png" alt="UC Brainstorm" width="500" height="250"></center>
+      </div>
     </div>
   </body>
 </html>
