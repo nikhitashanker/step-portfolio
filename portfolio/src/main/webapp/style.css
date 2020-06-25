@@ -1,11 +1,12 @@
 #content {
   margin: 5rem auto auto auto;
-  width: 100rem;
+  padding-bottom: 1rem;
+  width: 80%;
 }
 
 .random-fact {
-    padding: 5rem 5rem;
-    margin: 10rem 10rem;
+  padding: 5rem 5rem;
+  margin: 10rem 10rem;
 }
 
 #ramdom-fact-container {
@@ -98,5 +99,5 @@
 }
 
 #uc-brainstorm {
-    background-color: pink;
+  background-color: pink;
 }

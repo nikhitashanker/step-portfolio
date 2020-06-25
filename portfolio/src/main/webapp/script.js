@@ -34,7 +34,7 @@ window.onscroll = changeNavbarStickiness;
 function addRandomFact() {
   const randomFacts =
       ['I like to peel cuties in a way that keeps the peel in one piece.', 
-          'I know how to speak Kannada.', 'When I was younger, I wanted to be an astronaut.', 
+          'I really like kiwis.', 'When I was younger, I wanted to be an astronaut.', 
               'My favorite movie is Despicable Me 2.'];
 
   // Pick a random fact.
@@ -57,6 +57,9 @@ function toggleContentVisibility(){
   } else {
     content.style.display = "block";
   }
+
+  // Toggle whether plus or minus is shown on the button.
+  this.classList.toggle("active");
 }
 
 /*
