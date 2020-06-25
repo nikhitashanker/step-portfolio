@@ -13,13 +13,20 @@
 // limitations under the License.
 
 window.onload = function onLoad() {
+  addListenersToButtons();
+  makeFirstTabVisible();
+}
+
+function addListenersToButtons() {
   const expandableContentButtons = document.getElementsByClassName("expandable");
 
   // Add an event listener for click to each button.
   for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
     expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
   }
+}
 
+function makeFirstTabVisible(){
   const tabContent = document.getElementsByClassName("tab-content");
  
   //Make the first tab shown.
