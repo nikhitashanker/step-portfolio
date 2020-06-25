@@ -54,7 +54,6 @@ function toggleContentVisibility(){
 
 /*
  * Show project content that corresponds to selected tab.
- * @param {string} selectedProjectName
  */
 function showContentForTab(selectedProjectName) {
   const tabContent = document.getElementsByClassName("tab-content");
