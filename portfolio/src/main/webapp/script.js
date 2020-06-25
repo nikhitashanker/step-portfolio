@@ -21,12 +21,14 @@ window.onload = function addEventListenerForClick() {
   }
 }
 
-/**
+/* 
  * Adds a random greeting to the page.
  */
 function addRandomFact() {
   const randomFacts =
-      ['I like to peel cuties in a way that keeps the peel in one piece.', 'I know how to speak Kannada.', 'When I was younger, I wanted to be an astronaut.', 'My favorite movie is Despicable Me 2.'];
+      ['I like to peel cuties in a way that keeps the peel in one piece.', 
+          'I know how to speak Kannada.', 'When I was younger, I wanted to be an astronaut.', 
+              'My favorite movie is Despicable Me 2.'];
 
   // Pick a random fact.
   const fact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
@@ -36,9 +38,9 @@ function addRandomFact() {
   randomFactContainer.innerText = fact;
 }
 
-/*
-  * Expands content when content title button is clicked.
-*/
+/* 
+ * Expands content when content title button is clicked.
+ */
 function toggleContentVisibility(){
   const content = this.nextElementSibling;
 
@@ -51,12 +53,14 @@ function toggleContentVisibility(){
 }
 
 /*
-  * Show project content that corresponds to selected tab.
-*/
+ * Show project content that corresponds to selected tab.
+ * @param {string} selectedProjectName
+ */
 function showContentForTab(selectedProjectName) {
   const tabContent = document.getElementsByClassName("tab-content");
     
-  // Make the only the tab content with id the same as the selected project name visible.
+  // Make the only the tab content with id the same as the selected 
+  // project name visible.
   for (let i = 0; i < tabContent.length; i++) {
     if (tabContent[i].id === selectedProjectName) {
         tabContent[i].style.display = "inline-block";
