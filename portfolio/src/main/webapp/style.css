@@ -1,14 +1,14 @@
 #content {
-  margin: 5em auto auto auto;
+  margin: 5rem auto auto auto;
   width: 50rem;
 }
 
 #ramdom-fact-container {
-  margin-top: 1.25rem;
+  padding: 5rem 5rem; 
 }
 
 .expandable {
-  background-color: coral;
+  background-color: peachpuff;
   font-size: 1rem;
   text-align: left;
   width: 100%;
@@ -41,6 +41,7 @@
   color: black;
   float: left;
   padding: 1rem 1rem;
+  outline: none;
 } 
 
 .tab-content {
@@ -64,8 +65,8 @@
 }
 
 #navbar a.active {
-  background-color: coral;
-  color: white;
+  background-color: peachpuff;
+  color: black;
 }
 
 .sticky {
@@ -76,4 +77,20 @@
 
 .sticky + .content {
   padding-top: 5rem;
+}
+
+#recommender-system {
+  background-color: peachpuff;
+}
+
+#swe-dev-portal {
+  background-color: oldlace;
+}
+
+#five-minutes-a-day {
+  background-color: lavender;
+}
+
+#uc-brainstorm {
+    background-color: pink;
 }

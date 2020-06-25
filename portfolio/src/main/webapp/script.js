@@ -23,7 +23,7 @@ window.onload = function onLoad() {
   const tabContent = document.getElementsByClassName("tab-content");
  
   //Make the first tab shown.
-  showContentForTab(tabContent[0].id);
+  showContentForTab(tabContent[0].id, "peachpuff");
 }
 
 window.onscroll = changeNavbarStickiness;
@@ -60,18 +60,23 @@ function toggleContentVisibility(){
 }
 
 /*
- * Show project content that corresponds to selected tab.
+ * Show project content that corresponds to selected tab
+ * and set the tab color to the color of the content.
  */
-function showContentForTab(selectedProjectName) {
+function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
+  const tabButtons = document.getElementsByClassName("select-tab");
     
   // Make the only the tab content with id the same as the selected 
-  // project name visible.
+  // project name visible and make only the corresponding tab match 
+  // with the content background color.
   for (let i = 0; i < tabContent.length; i++) {
     if (tabContent[i].id === selectedProjectName) {
       tabContent[i].style.display = "inline-block";
+      tabButtons[i].style.backgroundColor = activeTabColor;
     } else {
       tabContent[i].style.display = "none";
+      tabButtons[i].style.backgroundColor = "aliceblue";
     }
   }
 }
