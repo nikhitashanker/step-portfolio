@@ -46,9 +46,9 @@ function toggleContentVisibility(){
 
   // Toggle the visibility of the content.
   if (content.style.display === "block") {
-      content.style.display = "none";
+    content.style.display = "none";
   } else {
-      content.style.display = "block";
+    content.style.display = "block";
   }
 }
 
@@ -62,9 +62,9 @@ function showContentForTab(selectedProjectName) {
   // project name visible.
   for (let i = 0; i < tabContent.length; i++) {
     if (tabContent[i].id === selectedProjectName) {
-        tabContent[i].style.display = "inline-block";
+      tabContent[i].style.display = "inline-block";
     } else {
-        tabContent[i].style.display = "none";
+      tabContent[i].style.display = "none";
     }
   }
 }
