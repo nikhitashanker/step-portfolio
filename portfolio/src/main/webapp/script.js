@@ -71,7 +71,7 @@ function toggleContentVisibility(){
 
 /*
  * Show project content that corresponds to selected tab
- * and set the tab color to the color of the content.
+ * and set the tab color to the content background color.
  */
 function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
