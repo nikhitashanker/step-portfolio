@@ -1,6 +1,11 @@
 #content {
   margin: 5rem auto auto auto;
-  width: 50rem;
+  width: 100rem;
+}
+
+.random-fact {
+    padding: 5rem 5rem;
+    margin: 10rem 10rem;
 }
 
 #ramdom-fact-container {
@@ -42,12 +47,13 @@
   float: left;
   padding: 1rem 1rem;
   outline: none;
+  width: 25%;
 } 
 
 .tab-content {
-  border: 2rem;
   display: none;
   padding: 0.5rem 1rem;
+  width: 100%;
 }
 
 #navbar {
