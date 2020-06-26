@@ -42,8 +42,8 @@
 }
 
 .select-tab {
-  border: 0.1rem solid gainsboro;
   background-color: aliceblue;
+  border: 0.1rem solid gainsboro;
   color: black;
   float: left;
   outline: none;
