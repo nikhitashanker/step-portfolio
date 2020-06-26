@@ -1,18 +1,24 @@
 #content {
-  margin: 5em auto auto auto;
-  width: 50rem;
+  margin: 5rem auto auto auto;
+  padding-bottom: 1rem;
+  width: 80%;
+}
+
+.random-fact {
+  margin: 10rem 10rem;
+  padding: 5rem 5rem;
 }
 
 #ramdom-fact-container {
-  margin-top: 1.25rem;
+  padding: 5rem 5rem; 
 }
 
 .expandable {
-  background-color: coral;
+  background-color: peachpuff;
   font-size: 1rem;
+  padding: 1rem;
   text-align: left;
   width: 100%;
-  padding: 1rem;
 }
 
 .expandable-content {
@@ -36,17 +42,19 @@
 }
 
 .select-tab {
-  border: 0.1rem solid gainsboro;
   background-color: aliceblue;
+  border: 0.1rem solid gainsboro;
   color: black;
   float: left;
+  outline: none;
   padding: 1rem 1rem;
+  width: 25%;
 } 
 
 .tab-content {
-  border: 2rem;
   display: none;
   padding: 0.5rem 1rem;
+  width: 100%;
 }
 
 #navbar {
@@ -64,8 +72,8 @@
 }
 
 #navbar a.active {
-  background-color: coral;
-  color: white;
+  background-color: peachpuff;
+  color: black;
 }
 
 .sticky {
@@ -76,4 +84,20 @@
 
 .sticky + .content {
   padding-top: 5rem;
+}
+
+#recommender-system {
+  background-color: peachpuff;
+}
+
+#swe-dev-portal {
+  background-color: oldlace;
+}
+
+#five-minutes-a-day {
+  background-color: lavender;
+}
+
+#uc-brainstorm {
+  background-color: pink;
 }

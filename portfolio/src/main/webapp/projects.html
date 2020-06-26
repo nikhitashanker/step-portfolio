@@ -14,14 +14,27 @@
     </div>
     <div id="content">
       <h1>My Projects</h1>
-      <button class="select-tab" onclick="showContentForTab('swe-dev-portal')">SWE Dev Portal</button>
-      <button class="select-tab" onclick="showContentForTab('five-minutes-a-day')">5 Minutes A Day</button>
-      <button class="select-tab" onclick="showContentForTab('uc-brainstorm')">UC Brainstorm</button>
+      <button class="select-tab" onclick="showContentForTab('recommender-system', 'peachpuff')">Recommender System</button>
+      <button class="select-tab" onclick="showContentForTab('swe-dev-portal', 'oldlace')">SWE Dev Portal</button>
+      <button class="select-tab" onclick="showContentForTab('five-minutes-a-day', 'lavender')">5 Minutes A Day</button>
+      <button class="select-tab" onclick="showContentForTab('uc-brainstorm', 'pink')">UC Brainstorm</button>
+      <div id="recommender-system" class="tab-content">
+        <h4>Recommender system</h4>
+        <p>The goal of this project was to build a collaborative filtering algorithm that is able to give both book and movie 
+            recommendations by predicting user ratings for each of the books and movies they have not rated yet. The 
+            algorithm was trained and tested on the BookCrossing and MovieLens public datasets.</p>
+      </div>
       <div id="swe-dev-portal" class="tab-content">
         <h4>SWE Dev Portal</h4>
         <p>I am currently the technical lead and a developer for the Society of Women Engineers development team at
             UCLA. We are building a member <a href=https://github.com/swe-ucla/Event-Portal>portal</a> that will allow 
             users to track the events they have attended and register for Evening With Industry, a yearly event.</p>
+        <h4>As a development team member, I:</h4>
+        <ul>
+          <li>Was responsible for functionality of the Society of Women Engineers club members portal that allows club members 
+              to login or logout, build their profile, and register for the SWE event Evening with Industry</li>
+          <li>Gained experience building a REST API, making database changes, and building a basic front-end user interface</li>
+        </ul>
       </div>
       <div id="five-minutes-a-day" class="tab-content">
         <h4>5 Minutes A Day</h4>

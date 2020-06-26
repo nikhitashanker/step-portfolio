@@ -12,13 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-window.onload = function addEventListenerForClick() {
+window.onload = function onLoad() {
+  addListenersToButtons();
+  showFirstTabContent();
+}
+
+function addListenersToButtons() {
   const expandableContentButtons = document.getElementsByClassName("expandable");
 
   // Add an event listener for click to each button.
   for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
     expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
   }
+}
+
+function showFirstTabContent(){
+  const tabContent = document.getElementsByClassName("tab-content");
+ 
+  //Make the first tab shown.
+  showContentForTab(tabContent[0].id, "peachpuff");
 }
 
 window.onscroll = changeNavbarStickiness;
@@ -29,7 +41,7 @@ window.onscroll = changeNavbarStickiness;
 function addRandomFact() {
   const randomFacts =
       ['I like to peel cuties in a way that keeps the peel in one piece.', 
-          'I know how to speak Kannada.', 'When I was younger, I wanted to be an astronaut.', 
+          'I really like kiwis.', 'When I was younger, I wanted to be an astronaut.', 
               'My favorite movie is Despicable Me 2.'];
 
   // Pick a random fact.
@@ -52,21 +64,29 @@ function toggleContentVisibility(){
   } else {
     content.style.display = "block";
   }
+
+  // Toggle whether plus or minus is shown on the button.
+  this.classList.toggle("active");
 }
 
 /*
- * Show project content that corresponds to selected tab.
+ * Show project content that corresponds to selected tab
+ * and set the tab color to the content background color.
  */
-function showContentForTab(selectedProjectName) {
+function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
+  const tabButtons = document.getElementsByClassName("select-tab");
     
   // Make the only the tab content with id the same as the selected 
-  // project name visible.
+  // project name visible and make only the corresponding tab match 
+  // with the content background color.
   for (let i = 0; i < tabContent.length; i++) {
     if (tabContent[i].id === selectedProjectName) {
       tabContent[i].style.display = "inline-block";
+      tabButtons[i].style.backgroundColor = activeTabColor;
     } else {
       tabContent[i].style.display = "none";
+      tabButtons[i].style.backgroundColor = "aliceblue";
     }
   }
 }
