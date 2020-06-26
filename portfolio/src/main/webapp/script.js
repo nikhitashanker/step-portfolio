@@ -106,3 +106,13 @@ function changeNavbarStickiness() {
     navbar.classList.remove("sticky");
   }
 }
+
+/*
+ * Get the greeting by fetching data from the /data endpoint and display
+ * the greeting. 
+ */
+function getGreeting() {
+  fetch('/data').then(response => response.text()).then((greeting) => {
+    document.getElementById('greeting-container').innerText = greeting;
+  });
+}
