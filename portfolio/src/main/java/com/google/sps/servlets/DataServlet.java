@@ -62,9 +62,9 @@ public class DataServlet extends HttpServlet {
   /*
    * Converts List of comments into a JSON using the gson library.
    */
-  private String convertToJson(List<Comment> messages){
+  private String convertToJson(List<Comment> comments){
     Gson gson = new Gson();
-    return gson.toJson(messages);
+    return gson.toJson(comments);
   }
 
   /**
@@ -73,7 +73,7 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    if (value.isEmpty()) {
+    if (value == null || value.isEmpty()) {
       return defaultValue;
     }
     return value;
