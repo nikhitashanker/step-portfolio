@@ -50,11 +50,10 @@ public class DataServlet extends HttpServlet {
   }
 
   /*
-   * Convert List instance into a JSON using the gson library.
+   * Converts List instance into a JSON using the gson library.
    */
   private String convertToJson(List<String> messages){
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
-    return json;
+    return gson.toJson(messages);
   }
 }
