@@ -27,14 +27,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> messages;
+  private List<String> comments;
 
   @Override
   public void init() {
-    messages = new ArrayList<String>();
-    messages.add("I also like Despicable Me 2!");
-    messages.add("I do not like running.");
-    messages.add("Your projects look interesting.");
+    comments = new ArrayList<String>();
+    comments.add("I also like Despicable Me 2!");
+    comments.add("I do not like running.");
+    comments.add("Your projects look interesting.");
   }
 
   @Override
@@ -42,7 +42,7 @@ public class DataServlet extends HttpServlet {
     response.setContentType("text/html;");
 
     // Convert the messages into JSON.
-    String json = convertToJson(messages);
+    String json = convertToJson(comments);
 
     // Send the JSON as the response.
     response.setContentType("application/json;");
