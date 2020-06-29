@@ -46,8 +46,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get input from the form.
     String text = getParameter(request, "comment-text", "");
-    String commenterName = getParameter(request, "commenter-name", "");
-    String commenterEmail = getParameter(request, "commenter-email", "");
+    String commenterName = getParameter(request, "commenter-name", "Anonymous");
+    String commenterEmail = getParameter(request, "commenter-email", "Unknown");
 
     // Create new Comment object to store input.
     Comment newComment = new Comment(text, commenterName, commenterEmail);
@@ -73,7 +73,7 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    if (value == null) {
+    if (value.isEmpty()) {
       return defaultValue;
     }
     return value;

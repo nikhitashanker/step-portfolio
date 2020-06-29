@@ -112,9 +112,22 @@ function changeNavbarStickiness() {
  * Fetches the JSON string for comments from the server and display
  * the comments.
  */
-function getComments(){
-  fetch("/data").then(response => response.text()).then(comments => {
+function getComments() {
+  fetch("/data").then(response => response.json()).then(comments => {
     const commentContainer = document.getElementById("comment-container");
-    commentContainer.innerHTML = comments;
+
+    // Build display of comments. 
+    comments.forEach((comment) => {
+      const displayText = comment.commenterName + "(" + comment.commenterEmail + 
+          ") says" + "\"" + comment.text +"\"";
+      commentContainer.appendChild(createHeadingElement(displayText));
+    });
   });
+}
+
+/** Creates an <h4> element containing text. */
+function createHeadingElement(text) {
+  const h4Element = document.createElement('h4');
+  h4Element.innerText = text;
+  return h4Element;
 }
