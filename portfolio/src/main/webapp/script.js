@@ -118,9 +118,8 @@ function getComments() {
 
     // Build display of comments. 
     comments.forEach((comment) => {
-      const displayText = comment.commenterName + "(" + comment.commenterEmail + 
-          ") says" + "\"" + comment.text +"\"";
-      commentContainer.appendChild(createHeadingElement(displayText));
+      commentContainer.appendChild(createHeadingElement(comment.commenterName + "(" 
+          + comment.commenterEmail + ") says" + "\"" + comment.text +"\""));
     });
   });
 }
