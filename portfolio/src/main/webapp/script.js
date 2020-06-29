@@ -72,8 +72,8 @@ function toggleContentVisibility(){
 }
 
 /*
- * Show project content that corresponds to selected tab
- * and set the tab color to the content background color.
+ * Shows project content that corresponds to selected tab
+ * and sets the tab color to the content background color.
  */
 function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
@@ -107,4 +107,14 @@ function changeNavbarStickiness() {
   } else {
     navbar.classList.remove("sticky");
   }
+}
+
+/*
+ * Gets the greeting by fetching data from the /data endpoint and display
+ * the greeting. 
+ */
+function getGreeting() {
+  fetch('/data').then(response => response.text()).then((greeting) => {
+    document.getElementById('greeting-container').innerText = greeting;
+  });
 }
