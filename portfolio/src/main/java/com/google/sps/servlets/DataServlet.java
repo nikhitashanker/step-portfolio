@@ -17,7 +17,6 @@ package com.google.sps.servlets;
 import com.google.sps.servlets.Comment;
 import com.google.gson.Gson;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -50,13 +49,13 @@ public class DataServlet extends HttpServlet {
     String commenterName = getParameter(request, "commenter-name", "");
     String commenterEmail = getParameter(request, "commenter-email", "");
 
-    // Create new Comment object to store input
+    // Create new Comment object to store input.
     Comment newComment = new Comment(text, commenterName, commenterEmail);
 
     // Add comment to the comments data.
     comments.add(newComment);
 
-    // Redirect to samt HTML page.
+    // Redirect to same HTML page.
     response.sendRedirect("/index.html");
   }
 
