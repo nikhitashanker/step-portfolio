@@ -14,8 +14,10 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.servlets.Comment;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -23,19 +25,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that handles comments data */
+/** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> comments;
-
-  @Override
-  public void init() {
-    comments = new ArrayList<String>();
-    comments.add("I also like Despicable Me 2!");
-    comments.add("I do not like running.");
-    comments.add("Your projects look interesting.");
-  }
+  private List<Comment> comments = new ArrayList<Comment>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -49,11 +43,40 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get input from the form.
+    String text = getParameter(request, "comment-text", "");
+    String commenterName = getParameter(request, "commenter-name", "");
+    String commenterEmail = getParameter(request, "commenter-email", "");
+
+    // Create new Comment object to store input
+    Comment newComment = new Comment(text, commenterName, commenterEmail);
+
+    // Add comment to the comments data.
+    comments.add(newComment);
+
+    // Redirect to samt HTML page.
+    response.sendRedirect("/index.html");
+  }
+
   /*
-   * Converts List instance into a JSON using the gson library.
+   * Converts List of comments into a JSON using the gson library.
    */
-  private String convertToJson(List<String> messages){
+  private String convertToJson(List<Comment> messages){
     Gson gson = new Gson();
     return gson.toJson(messages);
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
