@@ -70,8 +70,8 @@ function toggleContentVisibility(){
 }
 
 /*
- * Show project content that corresponds to selected tab
- * and set the tab color to the content background color.
+ * Shows project content that corresponds to selected tab
+ * and sets the tab color to the content background color.
  */
 function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
@@ -108,7 +108,7 @@ function changeNavbarStickiness() {
 }
 
 /*
- * Get the greeting by fetching data from the /data endpoint and display
+ * Gets the greeting by fetching data from the /data endpoint and display
  * the greeting. 
  */
 function getGreeting() {
