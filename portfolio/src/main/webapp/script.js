@@ -13,6 +13,7 @@
 // limitations under the License.
 
 window.onload = function onLoad() {
+  getComments();
   addListenersToButtons();
   showFirstTabContent();
 }
@@ -105,4 +106,15 @@ function changeNavbarStickiness() {
   } else {
     navbar.classList.remove("sticky");
   }
+}
+
+/*
+ * Fetch the JSON string for comments from the server and display
+ * the comments.
+ */
+function getComments(){
+  fetch("/data").then(response => response.text()).then(comments => {
+    const commentContainer = document.getElementById("comment-container");
+    commentContainer.innerHTML = comments;
+  });
 }
