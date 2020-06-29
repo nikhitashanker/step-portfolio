@@ -29,7 +29,7 @@ function addListenersToButtons() {
 function showFirstTabContent(){
   const tabContent = document.getElementsByClassName("tab-content");
  
-  //Make the first tab shown.
+  // Make the first tab shown.
   if (tabContent[0] !== undefined) {
     showContentForTab(tabContent[0].id, "peachpuff");
   }
