@@ -41,7 +41,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
 
-    // Convert the messages into JSON.
+    // Convert the comments into JSON.
     String json = convertToJson(comments);
 
     // Send the JSON as the response.
