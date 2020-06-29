@@ -109,7 +109,7 @@ function changeNavbarStickiness() {
 }
 
 /*
- * Fetch the JSON string for comments from the server and display
+ * Fetches the JSON string for comments from the server and display
  * the comments.
  */
 function getComments(){
