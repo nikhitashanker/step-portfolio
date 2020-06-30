@@ -21,9 +21,8 @@ function addListenersToButtons() {
   const expandableButtons = document.getElementsByClassName('expandable');
 
   // Add an event listener for click to each button.
-  for (let buttonNumber = 0; buttonNumber < expandableButtons.length;
-       buttonNumber++) {
-    expandableButtons[buttonNumber].addEventListener(
+  for (let buttonNum = 0; buttonNum < expandableButtons.length; buttonNum++) {
+    expandableButtons[buttonNum].addEventListener(
         'click', toggleContentVisibility);
   }
 }
