@@ -30,8 +30,10 @@ function addListenersToButtons() {
 function showFirstTabContent(){
   const tabContent = document.getElementsByClassName("tab-content");
  
-  //Make the first tab shown.
-  showContentForTab(tabContent[0].id, "peachpuff");
+  // Make the first tab shown.
+  if (tabContent[0] !== undefined) {
+    showContentForTab(tabContent[0].id, "peachpuff");
+  }
 }
 
 window.onscroll = changeNavbarStickiness;
@@ -71,8 +73,8 @@ function toggleContentVisibility(){
 }
 
 /*
- * Show project content that corresponds to selected tab
- * and set the tab color to the content background color.
+ * Shows project content that corresponds to selected tab
+ * and sets the tab color to the content background color.
  */
 function showContentForTab(selectedProjectName, activeTabColor) {
   const tabContent = document.getElementsByClassName("tab-content");
