@@ -118,8 +118,7 @@ function getComments() {
 
     // Build display of comments. 
     comments.forEach((comment) => {
-      commentContainer.appendChild(createHeadingElement(comment.commenterName + "(" 
-          + comment.commenterEmail + ") says" + "\"" + comment.text +"\""));
+      commentContainer.appendChild(createHeadingElement(commentToString(comment)));
     });
   });
 }
@@ -129,4 +128,9 @@ function createHeadingElement(text) {
   const h4Element = document.createElement('h4');
   h4Element.innerText = text;
   return h4Element;
+}
+
+function commentToString(comment){
+  return `${comment.commenterName} (${comment.commenterEmail}) says \
+        "${comment.text}"`;
 }
