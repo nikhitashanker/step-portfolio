@@ -48,6 +48,7 @@
   float: left;
   outline: none;
   padding: 1rem 1rem;
+  font-family: 'Open Sans', sans-serif;
   width: 25%;
 } 
 
@@ -59,6 +60,7 @@
 
 #navbar {
   background-color: black;
+  line-height: 4;
   overflow: hidden;
 }
 
@@ -101,3 +103,25 @@
 #uc-brainstorm {
   background-color: pink;
 }
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 2.5;
+  color: black;
+}
+
+#random-fact-button {
+  background-color: peachpuff; 
+  border: none;
+  color: black;
+  display: inline-block;
+  font-size: 1rem;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+.comment-input {
+  border: 0.3rem solid black;
+  border-radius: 0.4rem;
+}
+
