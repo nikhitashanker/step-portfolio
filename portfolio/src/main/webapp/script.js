@@ -22,7 +22,7 @@ function addListenersToButtons() {
 
   // Add an event listener for click to each button.
   for (let buttonNumber = 0; buttonNumber < expandableButtons.length;
-        buttonNumber++) {
+       buttonNumber++) {
     expandableButtons[buttonNumber].addEventListener(
         'click', toggleContentVisibility);
   }
