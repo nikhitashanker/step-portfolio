@@ -1,6 +1,6 @@
 #content {
   margin: 5rem auto auto auto;
-  padding-bottom: 1rem;
+  padding-bottom<br>b<bbgvsfgvswftsfsf<FSDfsdf<<<dfedfwfebfdsfdsfs: 1rem;
   width: 80%;
 }
 
@@ -105,12 +105,22 @@
 }
 
 body {
+  color: black;
   font-family: 'Open Sans', sans-serif;
   line-height: 2.5;
-  color: black;
 }
 
 #random-fact-button {
+  background-color: peachpuff; 
+  border: none;
+  color: black;
+  display: inline-block;
+  font-size: 1rem;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+#submit-input {
   background-color: peachpuff; 
   border: none;
   color: black;
@@ -125,3 +135,20 @@ body {
   border-radius: 0.4rem;
 }
 
+.comment-container {
+  background-color: peachpuff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.add-container {
+  background-color: peachpuff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.row {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 1rem 1rem 1rem auto;
+}
