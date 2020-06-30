@@ -28,12 +28,12 @@ function addListenersToButtons() {
   }
 }
 
-function showFirstTabContent(){
-  const tabContent = document.getElementsByClassName("tab-content");
- 
+function showFirstTabContent() {
+  const tabContent = document.getElementsByClassName('tab-content');
+
   // Make the first tab shown.
   if (tabContent[0] !== undefined) {
-    showContentForTab(tabContent[0].id, "peachpuff");
+    showContentForTab(tabContent[0].id, 'peachpuff');
   }
 }
 
@@ -117,10 +117,10 @@ function changeNavbarStickiness() {
 
 /*
  * Gets the greeting by fetching data from the /data endpoint and display
- * the greeting. 
+ * the greeting.
  */
 function getGreeting() {
-  fetch('/data').then(response => response.text()).then((greeting) => {
+  fetch('/data').then((response) => response.text()).then((greeting) => {
     document.getElementById('greeting-container').innerText = greeting;
   });
 }
