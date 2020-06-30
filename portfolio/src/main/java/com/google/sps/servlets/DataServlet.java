@@ -14,7 +14,7 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.servlets.Comment;
+import com.google.sps.data.Comment;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +32,9 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-
-    // Convert the comments into JSON.
-    String json = convertToJson(comments);
-
     // Send the JSON as the response.
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(convertToJson(comments));
   }
 
   @Override
@@ -49,11 +44,8 @@ public class DataServlet extends HttpServlet {
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
     String commenterEmail = getParameter(request, "commenter-email", "Unknown");
 
-    // Create new Comment object to store input.
-    Comment newComment = new Comment(text, commenterName, commenterEmail);
-
     // Add comment to the comments data.
-    comments.add(newComment);
+    comments.add(new Comment(commenterEmail, commenterName, text));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
@@ -67,15 +59,12 @@ public class DataServlet extends HttpServlet {
     return gson.toJson(comments);
   }
 
-  /**
+  /*
    * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
+   * was not specified by the client
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    if (value == null || value.isEmpty()) {
-      return defaultValue;
-    }
-    return value;
+    return (value == null || value.isEmpty()) ? defaultValue: value;
   }
 }
