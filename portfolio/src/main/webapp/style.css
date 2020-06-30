@@ -101,3 +101,8 @@
 #uc-brainstorm {
   background-color: pink;
 }
+
+.center {
+  display: block;
+  margin: 0 auto;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>About Me</title>
@@ -33,14 +33,13 @@
           crafts. Here is my most recent drawing. It portrays a monkey in the
           rain.
         </p>
-        <center>
-          <img
-            src="images/drawing.jpeg"
-            alt="Nikhita's drawing of a monkey in the rain"
-            width="323"
-            height="250"
-          />
-        </center>
+        <img
+          class="center"
+          src="images/drawing.jpeg"
+          alt="Nikhita's drawing of a monkey in the rain"
+          width="323"
+          height="250"
+        />
       </div>
       <button type="button" class="expandable">Experience</button>
       <div class="expandable-content">
@@ -51,7 +50,9 @@
       </div>
       <div id="random-fact">
         <p>Click here to get a random fact about me:</p>
-        <button onclick="addRandomFact()">One random fact coming up!</button>
+        <button type="button" onclick="addRandomFact()">
+          One random fact coming up!
+        </button>
         <div id="random-fact-container"></div>
       </div>
     </div>
