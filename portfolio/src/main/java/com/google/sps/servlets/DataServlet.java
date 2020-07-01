@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
@@ -42,7 +43,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = (long) entity.getKey().getId();
+      long id = entity.getKey().getId();
       String text = (String) entity.getProperty("text");
       String commenterName = (String) entity.getProperty("commenterName");
       String commenterEmail = (String) entity.getProperty("commenterEmail");
