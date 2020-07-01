@@ -16,8 +16,8 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -39,9 +39,9 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     int numberOfComments = getNumberOfComments(request);
     if (numberOfComments == -1) {
-        response.setContentType("text/html");
-        response.getWriter().println("Please enter an integer greater than 1");
-        return;
+      response.setContentType("text/html");
+      response.getWriter().println("Please enter an integer greater than 1");
+      return;
     }
 
     List<Comment> comments = getCommentsFromDataStore(numberOfComments);
@@ -101,23 +101,23 @@ public class DataServlet extends HttpServlet {
   }
 
   /** Returns number of comments entered by the user or -1 if choice is invalid */
-  private int getNumberOfComments(HttpServletRequest request){
-    //Get input from the form.
+  private int getNumberOfComments(HttpServletRequest request) {
+    // Get input from the form.
     String numberOfCommentsString = request.getParameter("number-of-comments");
 
     // Convert input to an int.
     int numberOfComments;
     try {
-        numberOfComments = Integer.parseInt(numberOfCommentsString);
+      numberOfComments = Integer.parseInt(numberOfCommentsString);
     } catch (NumberFormatException e) {
-        System.err.println("Cannot convert to int: " + numberOfCommentsString);
-        return -1;
+      System.err.println("Cannot convert to int: " + numberOfCommentsString);
+      return -1;
     }
 
     // Check that the input is greater than 0.
     if (numberOfComments < 0) {
-        System.err.println("Number of comments specified is out of range: " + numberOfCommentsString);
-        return -1;
+      System.err.println("Number of comments specified is out of range: " + numberOfCommentsString);
+      return -1;
     }
     return numberOfComments;
   }

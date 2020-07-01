@@ -7,8 +7,7 @@ public class Comment {
   private long id;
   private String text;
 
-  public Comment(
-      String commenterEmail, String commenterName, long id, String text) {
+  public Comment(String commenterEmail, String commenterName, long id, String text) {
     this.commenterEmail = commenterEmail;
     this.commenterName = commenterName;
     this.id = id;
