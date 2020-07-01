@@ -119,9 +119,9 @@ function changeNavbarStickiness() {
  * Fetches the JSON string for comments from the server and display
  * the comments.
  */
-function getComments(){
-  fetch("/data").then(response => response.text()).then(comments => {
-    const commentContainer = document.getElementById("comment-container");
+function getComments() {
+  fetch('/data').then((response) => response.text()).then((comments) => {
+    const commentContainer = document.getElementById('comment-container');
     commentContainer.innerHTML = comments;
   });
 }
