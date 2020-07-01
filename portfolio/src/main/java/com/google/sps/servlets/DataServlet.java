@@ -42,13 +42,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      String text = (String) entity.getProperty("text");
-      String commenterName = (String) entity.getProperty("commenterName");
-      String commenterEmail = (String) entity.getProperty("commenterEmail");
-      long timestamp = (long) entity.getProperty("timestamp");
-
-      comments.add(new Comment(commenterEmail, commenterName, id, text, timestamp));
+      comments.add(entityToComment(entity));
     }
 
     // Send the JSON as the response.
@@ -64,14 +58,8 @@ public class DataServlet extends HttpServlet {
     String commenterEmail = getParameter(request, "commenter-email", "Unknown");
     long timestamp = System.currentTimeMillis();
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("commenterEmail", commenterEmail);
-    commentEntity.setProperty("commenterName", commenterName);
-    commentEntity.setProperty("text", text);
-    commentEntity.setProperty("timestamp", timestamp);
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    datastore.put(buildCommentEntity(commenterEmail, commenterName, text, timestamp));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
@@ -91,5 +79,23 @@ public class DataServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     return (value == null || value.isEmpty()) ? defaultValue : value;
+  }
+
+  private Comment entityToComment(Entity entity) {
+      long id = entity.getKey().getId();
+      String text = (String) entity.getProperty("text");
+      String commenterName = (String) entity.getProperty("commenterName");
+      String commenterEmail = (String) entity.getProperty("commenterEmail");
+      long timestamp = (long) entity.getProperty("timestamp");
+      return new Comment(commenterEmail, commenterName, id, text, timestamp);
+  }
+
+  private Entity buildCommentEntity(String commenterEmail, String commenterName, String text, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("commenterEmail", commenterEmail);
+    commentEntity.setProperty("commenterName", commenterName);
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
   }
 }
