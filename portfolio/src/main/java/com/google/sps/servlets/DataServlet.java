@@ -82,26 +82,8 @@ public class DataServlet extends HttpServlet {
     return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 
-  private static Comment entityToComment(Entity entity) {
-    String commenterEmail = (String) entity.getProperty("commenterEmail");
-    String commenterName = (String) entity.getProperty("commenterName");
-    long id = entity.getKey().getId();
-    String text = (String) entity.getProperty("text");
-    return new Comment(commenterEmail, commenterName, id, text);
-  }
-
-  private static Entity buildCommentEntity(
-      String commenterEmail, String commenterName, String text, long timestamp) {
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("commenterEmail", commenterEmail);
-    commentEntity.setProperty("commenterName", commenterName);
-    commentEntity.setProperty("text", text);
-    commentEntity.setProperty("timestamp", timestamp);
-    return commentEntity;
-  }
-
   /** Returns number of comments entered by the user or -1 if choice is invalid */
-  private int getNumberOfComments(HttpServletRequest request) {
+  private static int getNumberOfComments(HttpServletRequest request) {
     // Get input from the form.
     String numberOfCommentsString = request.getParameter("number-of-comments");
 
@@ -123,7 +105,7 @@ public class DataServlet extends HttpServlet {
   }
 
   /** Returns comments limiting the number to numberOfComments */
-  private List<Comment> getCommentsFromDataStore(int numberOfComments) {
+  private static List<Comment> getCommentsFromDataStore(int numberOfComments) {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -135,5 +117,23 @@ public class DataServlet extends HttpServlet {
       comments.add(entityToComment(entity));
     }
     return comments;
+  }
+
+  private static Comment entityToComment(Entity entity) {
+    String commenterEmail = (String) entity.getProperty("commenterEmail");
+    String commenterName = (String) entity.getProperty("commenterName");
+    long id = entity.getKey().getId();
+    String text = (String) entity.getProperty("text");
+    return new Comment(commenterEmail, commenterName, id, text);
+  }
+
+  private static Entity buildCommentEntity(
+      String commenterEmail, String commenterName, String text, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("commenterEmail", commenterEmail);
+    commentEntity.setProperty("commenterName", commenterName);
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
   }
 }
