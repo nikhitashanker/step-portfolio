@@ -120,12 +120,13 @@ function changeNavbarStickiness() {
  * the comments.
  */
 function getComments() {
-  fetch("/data").then(response => response.json()).then(comments => {
-    const commentContainer = document.getElementById("comment-container");
+  fetch('/data').then((response) => response.json()).then((comments) => {
+    const commentContainer = document.getElementById('comment-container');
 
-    // Build display of comments. 
+    // Build display of comments.
     comments.forEach((comment) => {
-      commentContainer.appendChild(createHeadingElement(commentToString(comment)));
+      commentContainer.appendChild(
+          createHeadingElement(commentToString(comment)));
     });
   });
 }
@@ -137,7 +138,7 @@ function createHeadingElement(text) {
   return h4Element;
 }
 
-function commentToString(comment){
+function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
         "${comment.text}"`;
 }

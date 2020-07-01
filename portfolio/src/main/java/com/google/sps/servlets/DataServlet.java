@@ -14,11 +14,11 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
   private List<Comment> comments = new ArrayList<Comment>();
 
   @Override
@@ -54,7 +53,7 @@ public class DataServlet extends HttpServlet {
   /*
    * Converts List of comments into a JSON using the gson library.
    */
-  private String convertToJson(List<Comment> comments){
+  private String convertToJson(List<Comment> comments) {
     return new Gson().toJson(comments);
   }
 
@@ -64,6 +63,6 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    return (value == null || value.isEmpty()) ? defaultValue: value;
+    return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 }
