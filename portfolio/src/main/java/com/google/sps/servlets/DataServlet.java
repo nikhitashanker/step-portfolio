@@ -14,19 +14,39 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that handles comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
+  static final ImmutableList<String> comments = ImmutableList.of("I also like Despicable Me 2!", 
+        "I do not like running.", "Your projects look interesting.");
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.getWriter().println("Hello Nikhita!");
+
+    // Convert the comments into JSON.
+    String json = convertToJson(comments);
+
+    // Send the JSON as the response.
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+
+  /*
+   * Converts List instance into a JSON using the gson library.
+   */
+  private String convertToJson(List<String> messages){
+    Gson gson = new Gson();
+    return gson.toJson(messages);
   }
 }
