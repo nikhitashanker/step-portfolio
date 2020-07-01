@@ -68,7 +68,7 @@ public class DataServlet extends HttpServlet {
   /*
    * Converts List of comments into a JSON using the gson library.
    */
-  private String convertToJson(List<Comment> comments) {
+  private static String convertToJson(List<Comment> comments) {
     return new Gson().toJson(comments);
   }
 
@@ -76,12 +76,12 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 
-  private Comment entityToComment(Entity entity) {
+  private static Comment entityToComment(Entity entity) {
     String commenterEmail = (String) entity.getProperty("commenterEmail");
     String commenterName = (String) entity.getProperty("commenterName");
     long id = entity.getKey().getId();
@@ -90,7 +90,7 @@ public class DataServlet extends HttpServlet {
     return new Comment(commenterEmail, commenterName, id, text, timestamp);
   }
 
-  private Entity buildCommentEntity(
+  private static Entity buildCommentEntity(
       String commenterEmail, String commenterName, String text, long timestamp) {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commenterEmail", commenterEmail);
