@@ -82,15 +82,16 @@ public class DataServlet extends HttpServlet {
   }
 
   private Comment entityToComment(Entity entity) {
-      long id = entity.getKey().getId();
-      String text = (String) entity.getProperty("text");
-      String commenterName = (String) entity.getProperty("commenterName");
-      String commenterEmail = (String) entity.getProperty("commenterEmail");
-      long timestamp = (long) entity.getProperty("timestamp");
-      return new Comment(commenterEmail, commenterName, id, text, timestamp);
+    long id = entity.getKey().getId();
+    String text = (String) entity.getProperty("text");
+    String commenterName = (String) entity.getProperty("commenterName");
+    String commenterEmail = (String) entity.getProperty("commenterEmail");
+    long timestamp = (long) entity.getProperty("timestamp");
+    return new Comment(commenterEmail, commenterName, id, text, timestamp);
   }
 
-  private Entity buildCommentEntity(String commenterEmail, String commenterName, String text, long timestamp) {
+  private Entity buildCommentEntity(
+      String commenterEmail, String commenterName, String text, long timestamp) {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commenterEmail", commenterEmail);
     commentEntity.setProperty("commenterName", commenterName);
