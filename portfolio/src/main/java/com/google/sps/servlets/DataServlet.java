@@ -132,7 +132,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : resultsList) {
-      comments.add(entityToComment(commenterEmail, commenterName, id, text));
+      comments.add(entityToComment(entity));
     }
     return comments;
   }
