@@ -6,15 +6,13 @@ public class Comment {
   private String commenterName;
   private long id;
   private String text;
-  private long timestamp;
 
   public Comment(
-      String commenterEmail, String commenterName, long id, String text, long timestamp) {
+      String commenterEmail, String commenterName, long id, String text) {
     this.commenterEmail = commenterEmail;
     this.commenterName = commenterName;
     this.id = id;
     this.text = text;
-    this.timestamp = timestamp;
   }
 
   public String getCommenterEmail() {
@@ -31,9 +29,5 @@ public class Comment {
 
   public String getText() {
     return text;
-  }
-
-  public long getTimestamp() {
-    return timestamp;
   }
 }

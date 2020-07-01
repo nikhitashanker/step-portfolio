@@ -120,7 +120,7 @@ function changeNavbarStickiness() {
  * the comments.
  */
 function getComments() {
-  fetch('/data').then((response) => response.json()).then((comments) => {
+  fetch('/data?number-of-comments=5').then((response) => response.json()).then((comments) => {
     const commentContainer = document.getElementById('comment-container');
 
     // Build display of comments.
