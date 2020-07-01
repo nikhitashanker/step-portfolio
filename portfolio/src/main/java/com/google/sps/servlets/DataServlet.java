@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<Comment> comments = new ArrayList<Comment>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
