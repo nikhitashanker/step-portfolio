@@ -44,10 +44,8 @@ public class DataServlet extends HttpServlet {
       return;
     }
 
-    List<Comment> comments = getCommentsFromDataStore(numberOfComments);
-
-    // Send the JSON as the response.
     response.setContentType("application/json;");
+    List<Comment> comments = getCommentsFromDataStore(numberOfComments);
     response.getWriter().println(convertToJson(comments));
   }
 
