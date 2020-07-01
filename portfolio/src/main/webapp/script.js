@@ -13,6 +13,7 @@
 // limitations under the License.
 
 window.onload = function onLoad() {
+  getComments();
   addListenersToButtons();
   showFirstTabContent();
 };
@@ -115,11 +116,12 @@ function changeNavbarStickiness() {
 }
 
 /*
- * Gets the greeting by fetching data from the /data endpoint and display
- * the greeting.
+ * Fetches the JSON string for comments from the server and display
+ * the comments.
  */
-function getGreeting() {
-  fetch('/data').then((response) => response.text()).then((greeting) => {
-    document.getElementById('greeting-container').innerText = greeting;
+function getComments(){
+  fetch("/data").then(response => response.text()).then(comments => {
+    const commentContainer = document.getElementById("comment-container");
+    commentContainer.innerHTML = comments;
   });
 }
