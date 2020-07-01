@@ -82,10 +82,10 @@ public class DataServlet extends HttpServlet {
   }
 
   private Comment entityToComment(Entity entity) {
+    String commenterEmail = (String) entity.getProperty("commenterEmail");
+    String commenterName = (String) entity.getProperty("commenterName");
     long id = entity.getKey().getId();
     String text = (String) entity.getProperty("text");
-    String commenterName = (String) entity.getProperty("commenterName");
-    String commenterEmail = (String) entity.getProperty("commenterEmail");
     long timestamp = (long) entity.getProperty("timestamp");
     return new Comment(commenterEmail, commenterName, id, text, timestamp);
   }
