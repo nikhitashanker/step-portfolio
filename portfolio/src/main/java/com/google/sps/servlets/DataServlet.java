@@ -42,9 +42,16 @@ public class DataServlet extends HttpServlet {
     String text = getParameter(request, "comment-text", "");
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
     String commenterEmail = getParameter(request, "commenter-email", "Unknown");
+    long timestamp = System.currentTimeMillis();
 
-    // Add comment to the comments data.
-    comments.add(new Comment(commenterEmail, commenterName, text));
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("commenterEmail", commenterEmail);
+    commentEntity.setProperty("commenterName", commenterName);
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
