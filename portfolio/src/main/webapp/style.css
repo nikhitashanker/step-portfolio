@@ -10,7 +10,7 @@
 }
 
 #ramdom-fact-container {
-  padding: 5rem 5rem; 
+  padding: 5rem 5rem;
 }
 
 .expandable {
@@ -31,7 +31,7 @@
 
 .expandable:after {
   color: black;
-  content: '+';
+  content: "+";
   float: right;
   font-size: 1rem;
   margin-left: 0.5rem;
@@ -49,7 +49,7 @@
   outline: none;
   padding: 1rem 1rem;
   width: 25%;
-} 
+}
 
 .tab-content {
   display: none;
@@ -100,4 +100,9 @@
 
 #uc-brainstorm {
   background-color: pink;
+}
+
+.center {
+  display: block;
+  margin: 0 auto;
 }

@@ -16,23 +16,24 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
-}
+};
 
 function addListenersToButtons() {
-  const expandableContentButtons = document.getElementsByClassName("expandable");
+  const expandableButtons = document.getElementsByClassName('expandable');
 
   // Add an event listener for click to each button.
-  for (let buttonNumber = 0; buttonNumber < expandableContentButtons.length; buttonNumber++) {
-    expandableContentButtons[buttonNumber].addEventListener("click", toggleContentVisibility);
+  for (let buttonNum = 0; buttonNum < expandableButtons.length; buttonNum++) {
+    expandableButtons[buttonNum].addEventListener(
+        'click', toggleContentVisibility);
   }
 }
 
-function showFirstTabContent(){
-  const tabContent = document.getElementsByClassName("tab-content");
- 
+function showFirstTabContent() {
+  const tabContent = document.getElementsByClassName('tab-content');
+
   // Make the first tab shown.
   if (tabContent[0] !== undefined) {
-    showContentForTab(tabContent[0].id, "peachpuff");
+    showContentForTab(tabContent[0].id, 'peachpuff');
   }
 }
 
@@ -42,10 +43,12 @@ window.onscroll = changeNavbarStickiness;
  * Adds a random greeting to the page.
  */
 function addRandomFact() {
-  const randomFacts =
-      ['I like to peel cuties in a way that keeps the peel in one piece.', 
-          'I really like kiwis.', 'When I was younger, I wanted to be an astronaut.', 
-              'My favorite movie is Despicable Me 2.'];
+  const randomFacts = [
+    'I like to peel cuties in a way that keeps the peel in one piece.',
+    'I really like kiwis.',
+    'When I was younger, I wanted to be an astronaut.',
+    'My favorite movie is Despicable Me 2.',
+  ];
 
   // Pick a random fact.
   const fact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
@@ -55,21 +58,21 @@ function addRandomFact() {
   randomFactContainer.innerText = fact;
 }
 
-/* 
+/*
  * Expands content when content title button is clicked.
  */
-function toggleContentVisibility(){
+function toggleContentVisibility() {
   const content = this.nextElementSibling;
 
   // Toggle the visibility of the content.
-  if (content.style.display === "block") {
-    content.style.display = "none";
+  if (content.style.display === 'block') {
+    content.style.display = 'none';
   } else {
-    content.style.display = "block";
+    content.style.display = 'block';
   }
 
   // Toggle whether plus or minus is shown on the button.
-  this.classList.toggle("active");
+  this.classList.toggle('active');
 }
 
 /*
@@ -77,36 +80,38 @@ function toggleContentVisibility(){
  * and sets the tab color to the content background color.
  */
 function showContentForTab(selectedProjectName, activeTabColor) {
-  const tabContent = document.getElementsByClassName("tab-content");
-  const tabButtons = document.getElementsByClassName("select-tab");
-    
-  // Make the only the tab content with id the same as the selected 
-  // project name visible and make only the corresponding tab match 
+  const tabContent = document.getElementsByClassName('tab-content');
+  const tabButtons = document.getElementsByClassName('select-tab');
+
+  // Make the only the tab content with id the same as the selected
+  // project name visible and make only the corresponding tab match
   // with the content background color.
   for (let i = 0; i < tabContent.length; i++) {
     if (tabContent[i].id === selectedProjectName) {
-      tabContent[i].style.display = "inline-block";
+      tabContent[i].style.display = 'inline-block';
       tabButtons[i].style.backgroundColor = activeTabColor;
     } else {
-      tabContent[i].style.display = "none";
-      tabButtons[i].style.backgroundColor = "aliceblue";
+      tabContent[i].style.display = 'none';
+      tabButtons[i].style.backgroundColor = 'aliceblue';
     }
   }
 }
 
 /**
- * Makes navigation bar become fixed at top when it is about to go out of view. When it is in view, 
- * it is changed to being shown like all other components of the page.
+ * Makes navigation bar become fixed at top when it is about to go out of view.
+ * When it is in view, it is changed to being shown like all other components of
+ * the page.
  */
 function changeNavbarStickiness() {
-  const navbar = document.getElementById("navbar");
+  const navbar = document.getElementById('navbar');
   const navbarThickness = navbar.offsetTop;
 
-  // Change navbar CSS classlist based on whether navbar is in view or out of view
+  // Change navbar CSS classlist based on whether navbar is in view or out of
+  // view
   if (window.pageYOffset >= navbarThickness) {
-    navbar.classList.add("sticky");
+    navbar.classList.add('sticky');
   } else {
-    navbar.classList.remove("sticky");
+    navbar.classList.remove('sticky');
   }
 }
 
@@ -114,9 +119,9 @@ function changeNavbarStickiness() {
  * Fetches the JSON string for comments from the server and display
  * the comments.
  */
-function getComments(){
-  fetch("/data").then(response => response.text()).then(comments => {
-    const commentContainer = document.getElementById("comment-container");
+function getComments() {
+  fetch('/data').then((response) => response.text()).then((comments) => {
+    const commentContainer = document.getElementById('comment-container');
     commentContainer.innerHTML = comments;
   });
 }
