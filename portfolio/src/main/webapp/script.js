@@ -137,7 +137,7 @@ function getComments() {
 function deleteComments() {
   const request = new Request('/delete-data', {method: 'POST'});
 
-  fetch(request).then((response) => response.json()).then((comments) => {
+  fetch(request).then(() => {
     getComments();
   });
 }
