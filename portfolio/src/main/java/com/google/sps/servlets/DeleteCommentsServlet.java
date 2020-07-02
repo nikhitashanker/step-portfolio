@@ -44,7 +44,7 @@ public class DeleteCommentsServlet extends HttpServlet {
       keys.add(entity.getKey());
     }
 
-    // Delete all comments with specified keys
+    // Delete all comments with specified keys.
     datastore.delete(keys);
   }
 }
