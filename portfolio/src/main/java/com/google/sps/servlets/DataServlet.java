@@ -42,15 +42,14 @@ public class DataServlet extends HttpServlet {
     int numberOfComments;
     try {
       numberOfComments = getNumberOfComments(request);
+      response.setContentType("application/json;");
+      response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
     } catch (Exception e) {
       System.err.println(e.getMessage());
       response.setContentType("text/html");
       response.getWriter().println("Please enter an integer value greater than 1");
       return;
     }
-
-    response.setContentType("application/json;");
-    response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
   }
 
   @Override
