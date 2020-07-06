@@ -34,19 +34,23 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  public static final String PARAMETER = "number-of-comments";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get input from the form.
-    int numberOfComments = getNumberOfComments(request);
-    if (numberOfComments == -1) {
+    int numberOfComments;
+    try {
+      numberOfComments = getNumberOfComments(request);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
       response.setContentType("text/html");
-      response.getWriter().println("Please enter an integer greater than 1");
+      response.getWriter().println("Please enter an integer value greater than 1");
       return;
     }
 
     response.setContentType("application/json;");
-    List<Comment> comments = getCommentsFromDataStore(numberOfComments);
-    response.getWriter().println(convertToJson(comments));
+    response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
   }
 
   @Override
@@ -81,23 +85,23 @@ public class DataServlet extends HttpServlet {
   }
 
   /** Returns number of comments entered by the user or -1 if choice is invalid */
-  private static int getNumberOfComments(HttpServletRequest request) {
+  private static int getNumberOfComments(HttpServletRequest request) throws Exception {
     // Get input from the form.
-    String numberOfCommentsString = request.getParameter("number-of-comments");
+    String numberOfCommentsString = request.getParameter(PARAMETER);
 
     // Convert input to an int.
     int numberOfComments;
     try {
       numberOfComments = Integer.parseInt(numberOfCommentsString);
     } catch (NumberFormatException e) {
-      System.err.println("Cannot convert to int: " + numberOfCommentsString);
-      return -1;
+      throw(new NumberFormatException(
+          String.format("Cannot convert to int: %s", numberOfCommentsString)));
     }
 
     // Check that the input is greater than 0.
     if (numberOfComments < 0) {
-      System.err.println("Number of comments specified is out of range: " + numberOfCommentsString);
-      return -1;
+      throw(new Exception(String.format(
+          "Number of comments specified is out of range: %s", numberOfCommentsString)));
     }
     return numberOfComments;
   }
