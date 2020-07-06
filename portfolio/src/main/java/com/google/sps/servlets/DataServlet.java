@@ -58,7 +58,8 @@ public class DataServlet extends HttpServlet {
     String commenterEmail = getParameter(request, "commenter-email", "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(buildCommentEntity(commenterEmail, commenterName, text, System.currentTimeMillis()));
+    datastore.put(
+        buildCommentEntity(commenterEmail, commenterName, text, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
