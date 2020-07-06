@@ -39,6 +39,11 @@
       <artifactId>guava</artifactId>
       <version>19.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-1.0-sdk</artifactId>
+      <version>1.9.59</version>
+    </dependency>
   </dependencies>
 
   <build>
