@@ -58,7 +58,12 @@
       <h1>Comments</h1>
       <div id="comment-container"></div>
       <h1>Add a comment</h1>
-      <form action="/data" method="post">
+      <form
+        id="my-form"
+        class="hidden"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <ul>
           <li>
             <label for="comment">Comment:</label>
@@ -73,7 +78,10 @@
             <input type="email" id="mail" name="commenter-email" />
           </li>
         </ul>
-        <input type="submit" />
+        <p>Upload an image:</p>
+        <input type="file" name="image" />
+        <br /><br />
+        <button type="submit">Submit</button>
       </form>
     </div>
   </body>
