@@ -14,6 +14,13 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -27,13 +34,23 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<Comment> comments = new ArrayList<Comment>();
+  public static final String PARAMETER = "number-of-comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Send the JSON as the response.
+    // Get input from the form.
+    int numberOfComments;
+    try {
+      numberOfComments = getNumberOfComments(request);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      response.setContentType("text/html");
+      response.getWriter().println("Please enter an integer value greater than 1");
+      return;
+    }
+
     response.setContentType("application/json;");
-    response.getWriter().println(convertToJson(comments));
+    response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
   }
 
   @Override
@@ -43,8 +60,9 @@ public class DataServlet extends HttpServlet {
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
     String commenterEmail = getParameter(request, "commenter-email", "Unknown");
 
-    // Add comment to the comments data.
-    comments.add(new Comment(commenterEmail, commenterName, text));
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(
+        buildCommentEntity(commenterEmail, commenterName, text, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
@@ -53,7 +71,7 @@ public class DataServlet extends HttpServlet {
   /*
    * Converts List of comments into a JSON using the gson library.
    */
-  private String convertToJson(List<Comment> comments) {
+  private static String convertToJson(List<Comment> comments) {
     return new Gson().toJson(comments);
   }
 
@@ -61,8 +79,63 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     return (value == null || value.isEmpty()) ? defaultValue : value;
+  }
+
+  /** Returns number of comments entered by the user or -1 if choice is invalid */
+  private static int getNumberOfComments(HttpServletRequest request) throws Exception {
+    // Get input from the form.
+    String numberOfCommentsString = request.getParameter(PARAMETER);
+
+    // Convert input to an int.
+    int numberOfComments;
+    try {
+      numberOfComments = Integer.parseInt(numberOfCommentsString);
+    } catch (NumberFormatException e) {
+      throw(new NumberFormatException(
+          String.format("Cannot convert to int: %s", numberOfCommentsString)));
+    }
+
+    // Check that the input is greater than 0.
+    if (numberOfComments < 0) {
+      throw(new Exception(String.format(
+          "Number of comments specified is out of range: %s", numberOfCommentsString)));
+    }
+    return numberOfComments;
+  }
+
+  /** Returns comments limiting the number to numberOfComments */
+  private static List<Comment> getCommentsFromDataStore(int numberOfComments) {
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(numberOfComments));
+
+    List<Comment> comments = new ArrayList<>();
+    for (Entity entity : resultsList) {
+      comments.add(entityToComment(entity));
+    }
+    return comments;
+  }
+
+  private static Comment entityToComment(Entity entity) {
+    String commenterEmail = (String) entity.getProperty("commenterEmail");
+    String commenterName = (String) entity.getProperty("commenterName");
+    long id = entity.getKey().getId();
+    String text = (String) entity.getProperty("text");
+    return new Comment(commenterEmail, commenterName, id, text);
+  }
+
+  private static Entity buildCommentEntity(
+      String commenterEmail, String commenterName, String text, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("commenterEmail", commenterEmail);
+    commentEntity.setProperty("commenterName", commenterName);
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
   }
 }
