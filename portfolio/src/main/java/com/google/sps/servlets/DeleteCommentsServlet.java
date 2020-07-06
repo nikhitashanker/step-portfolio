@@ -33,13 +33,12 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteCommentsServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment");
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
-    List<Key> keys = new ArrayList<>();
 
     // Get keys for all comments.
+    List<Key> keys = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       keys.add(entity.getKey());
     }
