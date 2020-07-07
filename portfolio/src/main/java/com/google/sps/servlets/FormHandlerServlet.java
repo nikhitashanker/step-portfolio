@@ -39,12 +39,18 @@ public class FormHandlerServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the URL of the image that the user uploaded to Blobstore.
-    String imageUrl = getUploadedFileUrl(request, IMAGE);
+    String imageUrl;
+    try {
+      imageUrl = getUploadedFileUrl(request, IMAGE);
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      return;
+    }
 
     // Get input from the form.
-    String text = getParameter(request, TEXT, "");
-    String commenterName = getParameter(request, NAME, "Anonymous");
-    String commenterEmail = getParameter(request, EMAIL, "Unknown");
+    String text = getParameter(request, TEXT, /* DefaultValue= */ "");
+    String commenterName = getParameter(request, NAME, /* DefaultValue= */ "Anonymous");
+    String commenterEmail = getParameter(request, EMAIL, /* DefaultValue= */ "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(DatastoreHelper.buildCommentEntity(
@@ -55,8 +61,8 @@ public class FormHandlerServlet extends HttpServlet {
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private static String getUploadedFileUrl(
-      HttpServletRequest request, String formInputElementName) {
+  private static String getUploadedFileUrl(HttpServletRequest request, String formInputElementName)
+      throws Exception {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(IMAGE);
@@ -66,7 +72,12 @@ public class FormHandlerServlet extends HttpServlet {
       return null;
     }
 
-    // Our form only contains a single file input, so get the first index.
+    // User submitted more than 1 file, so we throw an exception.
+    if (blobKeys.size() > 1) {
+      throw new Exception(String.format("Number of files %d uploaded exceeds 1.", blobKeys.size()));
+    }
+
+    // Get the first index.
     BlobKey blobKey = blobKeys.get(0);
 
     // User submitted form without selecting a file, so we can't get a URL. (live server)
