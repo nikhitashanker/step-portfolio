@@ -143,6 +143,7 @@ function createDivElement(text, imageUrl) {
   h4Element.innerText = text;
   div.appendChild(h4Element);
 
+  // If this comment has an image, add it as a child of the div element.
   if (imageUrl !== undefined) {
     const imgElement = document.createElement('img');
     imgElement.src = imageUrl;
