@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
   private static String commentText = "comment-text";
-  private static final String commentName = "comment-name";
-  private static final String commentEmail = "comment-email";
+  private static final String commentName = "commenter-name";
+  private static final String commentEmail = "commenter-email";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

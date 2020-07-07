@@ -9,11 +9,12 @@ public class Comment {
   private String text;
   private long timestamp;
 
-  public Comment(
-      String commenterEmail, String commenterName, long id, String imageUrl, String text, long timestamp) {
+  public Comment(String commenterEmail, String commenterName, long id, String imageUrl, String text,
+      long timestamp) {
     this.commenterEmail = commenterEmail;
     this.commenterName = commenterName;
     this.id = id;
+    this.imageUrl = imageUrl;
     this.text = text;
     this.timestamp = timestamp;
   }
@@ -30,7 +31,7 @@ public class Comment {
     return id;
   }
 
-  public String getImageUrl(){
+  public String getImageUrl() {
     return imageUrl;
   }
 
