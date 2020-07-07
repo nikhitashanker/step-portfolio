@@ -127,16 +127,26 @@ function getComments() {
     // Build display of comments.
     comments.forEach((comment) => {
       commentContainer.appendChild(
-          createHeadingElement(commentToString(comment)));
+          createHeadingElement(commentToString(comment), comment.imageUrl));
     });
   });
 }
 
-/** Creates an <h4> element containing text. */
-function createHeadingElement(text) {
+/** Creates an <div> element containing. */
+function createHeadingElement(text, imageUrl) {
+  const div = document.createElement('div');
+  div.className = 'speech-bubble';
+
   const h4Element = document.createElement('h4');
   h4Element.innerText = text;
-  return h4Element;
+  div.appendChild(h4Element);
+
+  if (imageUrl !== undefined) {
+    const imgElement = document.createElement('img');
+    imgElement.src = imageUrl;
+    div.append(imgElement);
+  }
+  return div;
 }
 
 function commentToString(comment) {
