@@ -47,7 +47,7 @@ public class FormHandlerServlet extends HttpServlet {
     String commenterEmail = getParameter(request, EMAIL, "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(new DatastoreHelper().buildCommentEntity(
+    datastore.put(DatastoreHelper.buildCommentEntity(
         commenterEmail, commenterName, imageUrl, text, System.currentTimeMillis()));
 
     // Redirect to same HTML page.

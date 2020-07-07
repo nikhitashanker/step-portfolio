@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/blobstore-upload-url")
 public class BlobstoreUploadUrlServlet extends HttpServlet {
+  public static final String UPLOADURL = "/my-form-handler";
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
     response.getWriter().println(
-        BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/my-form-handler"));
+        BlobstoreServiceFactory.getBlobstoreService().createUploadUrl(UPLOADURL));
   }
 }

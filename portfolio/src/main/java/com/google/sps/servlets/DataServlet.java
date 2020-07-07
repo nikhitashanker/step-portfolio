@@ -43,7 +43,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      comments.add(new DatastoreHelper().entityToComment(entity));
+      comments.add(DatastoreHelper.entityToComment(entity));
     }
 
     // Send the JSON as the response.
