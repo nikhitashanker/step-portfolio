@@ -139,6 +139,18 @@ function getComments() {
       });
 }
 
+/*
+ * Deletes all comments and refreshes display.
+ */
+function deleteComments() {
+  const request = new Request('/delete-data', {method: 'POST'});
+
+  fetch(request).then(() => {
+    getComments();
+  });
+}
+
+
 /** Creates an <h4> element containing text. */
 function createHeadingElement(text) {
   const h4Element = document.createElement('h4');
