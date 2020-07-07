@@ -31,19 +31,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
-  private static String commentText = "comment-text";
-  private static final String commentName = "commenter-name";
-  private static final String commentEmail = "commenter-email";
+  private static String TEXT = "comment-text";
+  private static final String NAME = "commenter-name";
+  private static final String EMAIL = "commenter-email";
+  private static final String IMAGE = "image";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the URL of the image that the user uploaded to Blobstore.
-    String imageUrl = getUploadedFileUrl(request, "image");
+    String imageUrl = getUploadedFileUrl(request, IMAGE);
 
     // Get input from the form.
-    String text = getParameter(request, commentText, "");
-    String commenterName = getParameter(request, commentName, "Anonymous");
-    String commenterEmail = getParameter(request, commentEmail, "Unknown");
+    String text = getParameter(request, TEXT, "");
+    String commenterName = getParameter(request, NAME, "Anonymous");
+    String commenterEmail = getParameter(request, EMAIL, "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(new DatastoreHelper().buildCommentEntity(
