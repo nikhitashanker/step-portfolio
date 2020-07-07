@@ -55,7 +55,8 @@ public class FormHandlerServlet extends HttpServlet {
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private static String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+  private static String getUploadedFileUrl(
+      HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(IMAGE);
