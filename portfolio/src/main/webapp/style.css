@@ -1,3 +1,7 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 2.5;
+}
 #content {
   margin: 5rem auto auto auto;
   padding-bottom: 1rem;
@@ -105,4 +109,26 @@
 .center {
   display: block;
   margin: 0 auto;
+}
+
+.speech-bubble {
+  padding: 0.3rem 0.3rem;
+  position: relative;
+  background: peachpuff;
+  border-radius: 0.4em;
+  margin-bottom: 1rem;
+}
+
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 1.25rem solid transparent;
+  border-right-color: peachpuff;
+  border-left: 0;
+  margin-top: -1.25rem;
+  margin-left: -1.25rem;
 }
