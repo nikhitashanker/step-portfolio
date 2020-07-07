@@ -127,13 +127,15 @@ function getComments() {
     // Build display of comments.
     comments.forEach((comment) => {
       commentContainer.appendChild(
-          createHeadingElement(commentToString(comment), comment.imageUrl));
+          createDivElement(commentToString(comment), comment.imageUrl));
     });
   });
 }
 
-/** Creates an <div> element containing. */
-function createHeadingElement(text, imageUrl) {
+/*
+ * Creates an <div> element containing text and image.
+ */
+function createDivElement(text, imageUrl) {
   const div = document.createElement('div');
   div.className = 'speech-bubble';
 

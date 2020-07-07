@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
-  private static String TEXT = "comment-text";
+  private static final String TEXT = "comment-text";
   private static final String NAME = "commenter-name";
   private static final String EMAIL = "commenter-email";
   private static final String IMAGE = "image";
