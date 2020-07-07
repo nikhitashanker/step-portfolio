@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import com.google.sps.utilities.DatastoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      comments.add(entityToComment(entity));
+      comments.add(new DatastoreHelper().entityToComment(entity));
     }
 
     // Send the JSON as the response.
@@ -50,53 +51,10 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(convertToJson(comments));
   }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get input from the form.
-    String text = getParameter(request, "comment-text", "");
-    String commenterName = getParameter(request, "commenter-name", "Anonymous");
-    String commenterEmail = getParameter(request, "commenter-email", "Unknown");
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(
-        buildCommentEntity(commenterEmail, commenterName, text, System.currentTimeMillis()));
-
-    // Redirect to same HTML page.
-    response.sendRedirect("/index.html");
-  }
-
   /*
    * Converts List of comments into a JSON using the gson library.
    */
   private static String convertToJson(List<Comment> comments) {
     return new Gson().toJson(comments);
-  }
-
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    return (value == null || value.isEmpty()) ? defaultValue : value;
-  }
-
-  private static Comment entityToComment(Entity entity) {
-    String commenterEmail = (String) entity.getProperty("commenterEmail");
-    String commenterName = (String) entity.getProperty("commenterName");
-    long id = entity.getKey().getId();
-    String text = (String) entity.getProperty("text");
-    long timestamp = (long) entity.getProperty("timestamp");
-    return new Comment(commenterEmail, commenterName, id, text, timestamp);
-  }
-
-  private static Entity buildCommentEntity(
-      String commenterEmail, String commenterName, String text, long timestamp) {
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("commenterEmail", commenterEmail);
-    commentEntity.setProperty("commenterName", commenterName);
-    commentEntity.setProperty("text", text);
-    commentEntity.setProperty("timestamp", timestamp);
-    return commentEntity;
   }
 }
