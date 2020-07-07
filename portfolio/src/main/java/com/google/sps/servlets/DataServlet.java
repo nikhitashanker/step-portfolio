@@ -59,7 +59,7 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     String text = getParameter(request, "comment-text", "");
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
-    String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail(); //getParameter(request, "commenter-email", "Unknown");
+    String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(

@@ -24,18 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginStatusServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    UserService userService = UserServiceFactory.getUserService();
-
+    // Get the current login status.
     LoginStatus status;
-    if (userService.isUserLoggedIn()) {
+    if (UserServiceFactory.getUserService().isUserLoggedIn()) {
       status = new LoginStatus(true);
-      System.out.println(true);
     } else {
       status = new LoginStatus(false);
-      System.out.println(false);
     }
 
-    System.out.println(convertToJson(status));
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(convertToJson(status));

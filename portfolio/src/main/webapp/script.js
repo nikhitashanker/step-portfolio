@@ -177,6 +177,8 @@ function showCommentForm() {
         return response.json();
       })
       .then((loginStatus) => {
+        // If user is logged in show the comment form,
+        // otherwise show the login prompt.
         if (loginStatus.isLoggedIn) {
           const commentForm = document.getElementById('comment-form');
           commentForm.classList.remove('hidden');
