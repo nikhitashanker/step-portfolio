@@ -133,7 +133,8 @@ function getComments() {
 }
 
 /*
- * Creates an <div> element containing text and image.
+ * Creates an <div> element containing text and an image
+ * if specified.
  */
 function createDivElement(text, imageUrl) {
   const div = document.createElement('div');
