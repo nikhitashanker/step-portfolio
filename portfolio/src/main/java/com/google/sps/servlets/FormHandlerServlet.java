@@ -44,6 +44,8 @@ public class FormHandlerServlet extends HttpServlet {
       imageUrl = getUploadedFileUrl(request, IMAGE);
     } catch (Exception e) {
       System.err.println(e.getMessage());
+      response.setContentType("text/html");
+      response.getWriter().println("Please upload a single file.");
       return;
     }
 
