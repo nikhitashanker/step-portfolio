@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that handles comments data. */
+/** Servlet that returns the login status of the user. */
 @WebServlet("/login-status")
 public class LoginStatusServlet extends HttpServlet {
   @Override
@@ -29,8 +29,10 @@ public class LoginStatusServlet extends HttpServlet {
     LoginStatus status;
     if (userService.isUserLoggedIn()) {
       status = new LoginStatus(true);
+      System.out.println(true);
     } else {
       status = new LoginStatus(false);
+      System.out.println(false);
     }
 
     System.out.println(convertToJson(status));
@@ -39,9 +41,6 @@ public class LoginStatusServlet extends HttpServlet {
     response.getWriter().println(convertToJson(status));
   }
 
-  /**
-   * Converts a ServerStats instance into a JSON string using manual String concatentation.
-   */
   private String convertToJson(LoginStatus status) {
     return new Gson().toJson(status);
   }

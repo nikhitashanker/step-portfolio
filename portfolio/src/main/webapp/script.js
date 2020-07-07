@@ -16,6 +16,7 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
+  showCommentForm();
 };
 
 function addListenersToButtons() {
@@ -165,4 +166,24 @@ function getQueryString(numberOfComments) {
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
         "${comment.text}"`;
+}
+
+/*
+ * Shows comment form if user is logged in.
+ */
+function showCommentForm() {
+  fetch('/login-status')
+      .then((response) => {
+        return response.json();
+      })
+      .then((loginStatus) => {
+        console.log(loginStatus);
+        if (loginStatus.isLoggedIn) {
+          const commentForm = document.getElementById('comment-form');
+          commentForm.classList.remove('hidden');
+        } else {
+          const loginPrompt = document.getElementById('login-prompt');
+          loginPrompt.classList.remove('hidden');
+        }
+      });
 }

@@ -70,7 +70,7 @@
         Delete all comments
       </button>
       <h1>Add a comment</h1>
-      <form action="/data" method="post">
+      <form id="comment-form" class="hidden" action="/data" method="post">
         <ul>
           <li>
             <label for="comment">Comment:</label>
@@ -87,6 +87,7 @@
         </ul>
         <input type="submit" />
       </form>
+      <p id="login-prompt" class="hidden">Login <a href="/login">here</a>.</p>
     </div>
   </body>
 </html>
