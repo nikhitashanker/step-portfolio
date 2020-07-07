@@ -120,15 +120,23 @@ function changeNavbarStickiness() {
  * the comments.
  */
 function getComments() {
-  fetch('/data').then((response) => response.json()).then((comments) => {
-    const commentContainer = document.getElementById('comment-container');
+  const numberOfComments = document.getElementById('comments-limit').value;
+  fetch(getQueryString(numberOfComments))
+      .then((response) => response.json())
+      .then((comments) => {
+        const commentContainer = document.getElementById('comment-container');
 
-    // Build display of comments.
-    comments.forEach((comment) => {
-      commentContainer.appendChild(
-          createHeadingElement(commentToString(comment)));
-    });
-  });
+        // Remove existing display.
+        while (commentContainer.firstChild) {
+          commentContainer.removeChild(commentContainer.firstChild);
+        }
+
+        // Build display of comments.
+        comments.forEach((comment) => {
+          commentContainer.appendChild(
+              createHeadingElement(commentToString(comment)));
+        });
+      });
 }
 
 /** Creates an <h4> element containing text. */
@@ -136,6 +144,10 @@ function createHeadingElement(text) {
   const h4Element = document.createElement('h4');
   h4Element.innerText = text;
   return h4Element;
+}
+
+function getQueryString(numberOfComments) {
+  return `/data?number-of-comments=${numberOfComments}`;
 }
 
 function commentToString(comment) {
