@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -57,7 +59,7 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     String text = getParameter(request, "comment-text", "");
     String commenterName = getParameter(request, "commenter-name", "Anonymous");
-    String commenterEmail = getParameter(request, "commenter-email", "Unknown");
+    String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail(); //getParameter(request, "commenter-email", "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(

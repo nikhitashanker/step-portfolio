@@ -177,7 +177,6 @@ function showCommentForm() {
         return response.json();
       })
       .then((loginStatus) => {
-        console.log(loginStatus);
         if (loginStatus.isLoggedIn) {
           const commentForm = document.getElementById('comment-form');
           commentForm.classList.remove('hidden');
