@@ -16,7 +16,9 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
-  showCommentForm();
+  fetchLoginUrl();
+  fetchLogoutUrl();
+  showCommentFormAndLoginPrompt();
 };
 
 function addListenersToButtons() {
@@ -169,22 +171,60 @@ function commentToString(comment) {
 }
 
 /*
- * Shows comment form if user is logged in.
+ * Shows comment form and logout prompt if user is logged in,
+ * and shows login prompt if user is not logged in.
  */
-function showCommentForm() {
+function showCommentFormAndLoginPrompt() {
   fetch('/login-status')
       .then((response) => {
         return response.json();
       })
       .then((loginStatus) => {
-        // If user is logged in show the comment form,
-        // otherwise show the login prompt.
-        if (loginStatus.isLoggedIn) {
-          const commentForm = document.getElementById('comment-form');
-          commentForm.classList.remove('hidden');
-        } else {
-          const loginPrompt = document.getElementById('login-prompt');
-          loginPrompt.classList.remove('hidden');
-        }
+        const isLoggedIn = loginStatus.isLoggedIn;
+        showCommentForm(isLoggedIn);
+        showLoginOrLogoutForm(isLoggedIn);
+      });
+}
+
+function showCommentForm(isLoggedIn) {
+  const commentForm = document.getElementById('comment-form');
+  if (isLoggedIn) {
+    commentForm.classList.remove('hidden');
+  } else {
+    commentForm.classList.add('hidden');
+  }
+}
+
+function showLoginOrLogoutForm(isLoggedIn) {
+  const loginPrompt = document.getElementById('login-prompt');
+  const logoutPrompt = document.getElementById('logout-prompt');
+  if (isLoggedIn) {
+    loginPrompt.classList.add('hidden');
+    logoutPrompt.classList.remove('hidden');
+  } else {
+    loginPrompt.classList.remove('hidden');
+    logoutPrompt.classList.add('hidden');
+  }
+}
+
+function fetchLoginUrl() {
+  fetch('/login-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((loginUrl) => {
+        const loginPrompt = document.getElementById('login-prompt');
+        loginPrompt.href = loginUrl;
+      });
+}
+
+function fetchLogoutUrl() {
+  fetch('/logout-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((logoutUrl) => {
+        const logoutPrompt = document.getElementById('logout-prompt');
+        logoutPrompt.href = logoutUrl;
       });
 }
