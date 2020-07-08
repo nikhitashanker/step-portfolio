@@ -151,7 +151,6 @@ function deleteComments() {
   });
 }
 
-
 /*
  * Creates an <div> element containing text and an image
  * if specified.
