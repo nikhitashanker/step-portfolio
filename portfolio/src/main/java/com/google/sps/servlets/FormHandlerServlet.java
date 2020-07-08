@@ -12,6 +12,7 @@ import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import com.google.sps.utilities.CommonUtils;
 import com.google.sps.utilities.DatastoreHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,9 +51,9 @@ public class FormHandlerServlet extends HttpServlet {
     }
 
     // Get input from the form.
-    String text = getParameter(request, TEXT, /* DefaultValue= */ "");
-    String commenterName = getParameter(request, NAME, /* DefaultValue= */ "Anonymous");
-    String commenterEmail = getParameter(request, EMAIL, /* DefaultValue= */ "Unknown");
+    String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
+    String commenterName = CommonUtils.getParameter(request, NAME, /* DefaultValue= */ "Anonymous");
+    String commenterEmail = CommonUtils.getParameter(request, EMAIL, /* DefaultValue= */ "Unknown");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(DatastoreHelper.buildCommentEntity(
@@ -101,17 +102,5 @@ public class FormHandlerServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
-  }
-
-  /*
-   * Converts List of comments into a JSON using the gson library.
-   */
-  private static String convertToJson(List<Comment> comments) {
-    return new Gson().toJson(comments);
-  }
-
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 }

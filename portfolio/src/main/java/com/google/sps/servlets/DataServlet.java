@@ -20,8 +20,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import com.google.sps.utilities.CommonUtils;
 import com.google.sps.utilities.DatastoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,13 +48,6 @@ public class DataServlet extends HttpServlet {
 
     // Send the JSON as the response.
     response.setContentType("application/json;");
-    response.getWriter().println(convertToJson(comments));
-  }
-
-  /*
-   * Converts List of comments into a JSON using the gson library.
-   */
-  private static String convertToJson(List<Comment> comments) {
-    return new Gson().toJson(comments);
+    response.getWriter().println(CommonUtils.convertToJson(comments));
   }
 }
