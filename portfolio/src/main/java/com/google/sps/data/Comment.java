@@ -1,5 +1,7 @@
 package com.google.sps.data;
 
+import com.google.sps.data.ConvertibleToJSON;
+
 /** Object that stores comment data. */
 public class Comment {
   private String commenterEmail;

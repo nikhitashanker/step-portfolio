@@ -47,20 +47,14 @@ public class DataServlet extends HttpServlet {
     try {
       numberOfComments = getNumberOfComments(request);
       response.setContentType("application/json;");
-      response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
+      response.getWriter().println(
+          CommonUtils.convertToJson(getCommentsFromDataStore(numberOfComments)));
     } catch (Exception e) {
       System.err.println(e.getMessage());
       response.setContentType("text/html");
       response.getWriter().println("Please enter an integer value greater than 1");
       return;
     }
-  }
-
-  /*
-   * Converts List of comments into a JSON using the gson library.
-   */
-  private static String convertToJson(List<Comment> comments) {
-    return new Gson().toJson(comments);
   }
 
   /**

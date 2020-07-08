@@ -11,6 +11,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import com.google.sps.data.ConvertibleToJSON;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,10 @@ public class LoginStatusServlet extends HttpServlet {
 
     // Send the JSON as the response
     response.setContentType("application/json;");
-    response.getWriter().println(convertToJson(status));
+    response.getWriter().println(status.convertToJson());
   }
 
-  private String convertToJson(LoginStatus status) {
-    return new Gson().toJson(status);
-  }
-
-  private class LoginStatus {
+  private class LoginStatus extends ConvertibleToJSON {
     private boolean isLoggedIn;
     public LoginStatus(boolean isLoggedIn) {
       this.isLoggedIn = isLoggedIn;
