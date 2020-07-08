@@ -23,7 +23,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import com.google.sps.utilities.CommonUtils;
 import com.google.sps.utilities.DatastoreHelper;
@@ -55,15 +54,6 @@ public class DataServlet extends HttpServlet {
       response.getWriter().println("Please enter an integer value greater than 1");
       return;
     }
-  }
-
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 
   /** Returns number of comments entered by the user or -1 if choice is invalid */
