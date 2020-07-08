@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.sps.data.Comment;
 
 public class DatastoreHelper {
-  private static final String ITEMTYPE = "Comment";
+  private static final String ITEM_TYPE = "Comment";
   private static final String EMAIL = "commenterEmail";
   private static final String NAME = "commenterName";
   private static final String IMAGE = "imageUrl";
@@ -23,7 +23,7 @@ public class DatastoreHelper {
 
   public static Entity buildCommentEntity(
       String commenterEmail, String commenterName, String imageUrl, String text, long timestamp) {
-    Entity commentEntity = new Entity(ITEMTYPE);
+    Entity commentEntity = new Entity(ITEM_TYPE);
     commentEntity.setProperty(EMAIL, commenterEmail);
     commentEntity.setProperty(NAME, commenterName);
     commentEntity.setProperty(IMAGE, imageUrl);
