@@ -28,9 +28,9 @@ public class LoginStatusServlet extends HttpServlet {
     // Get the current login status.
     LoginStatus status;
     if (UserServiceFactory.getUserService().isUserLoggedIn()) {
-      status = new LoginStatus(true);
+      status = LoginStatus.getLoggedInInstance();
     } else {
-      status = new LoginStatus(false);
+      status = LoginStatus.getNotLoggedInInstance();
     }
 
     // Send the JSON as the response
@@ -38,10 +38,19 @@ public class LoginStatusServlet extends HttpServlet {
     response.getWriter().println(status.convertToJson());
   }
 
-  private class LoginStatus extends ConvertibleToJSON {
+  private static class LoginStatus extends ConvertibleToJSON {
+    private static final LoginStatus STATUS_LOGGED_IN = new LoginStatus(true);
+    private static final LoginStatus STATUS_NOT_LOGGED_IN = new LoginStatus(false);
     private boolean isLoggedIn;
-    public LoginStatus(boolean isLoggedIn) {
+
+    private LoginStatus(boolean isLoggedIn) {
       this.isLoggedIn = isLoggedIn;
+    }
+    public static LoginStatus getLoggedInInstance() {
+      return STATUS_LOGGED_IN;
+    }
+    public static LoginStatus getNotLoggedInInstance() {
+      return STATUS_NOT_LOGGED_IN;
     }
   }
 }
