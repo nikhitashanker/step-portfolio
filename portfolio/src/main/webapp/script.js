@@ -16,6 +16,7 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
+  fetchBlobstoreUrlAndShowForm();
 };
 
 function addListenersToButtons() {
@@ -134,7 +135,7 @@ function getComments() {
         // Build display of comments.
         comments.forEach((comment) => {
           commentContainer.appendChild(
-              createHeadingElement(commentToString(comment)));
+              createDivElement(commentToString(comment), comment.imageUrl));
         });
       });
 }
@@ -150,12 +151,25 @@ function deleteComments() {
   });
 }
 
+/*
+ * Creates an <div> element containing text and an image
+ * if specified.
+ */
+function createDivElement(text, imageUrl) {
+  const div = document.createElement('div');
+  div.className = 'speech-bubble';
 
-/** Creates an <h4> element containing text. */
-function createHeadingElement(text) {
   const h4Element = document.createElement('h4');
   h4Element.innerText = text;
-  return h4Element;
+  div.appendChild(h4Element);
+
+  // If this comment has an image, add it as a child of the div element.
+  if (imageUrl !== undefined) {
+    const imgElement = document.createElement('img');
+    imgElement.src = imageUrl;
+    div.append(imgElement);
+  }
+  return div;
 }
 
 function getQueryString(numberOfComments) {
@@ -165,4 +179,16 @@ function getQueryString(numberOfComments) {
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
         "${comment.text}"`;
+}
+
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const commentForm = document.getElementById('comment-form');
+        commentForm.action = imageUploadUrl;
+        commentForm.classList.remove('hidden');
+      });
 }

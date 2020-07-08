@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <title>About Me</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="script.js"></script>
   </head>
   <body>
@@ -70,22 +75,25 @@
         Delete all comments
       </button>
       <h1>Add a comment</h1>
-      <form action="/data" method="post">
-        <ul>
-          <li>
-            <label for="comment">Comment:</label>
-            <textarea type="text" id="comment" name="comment-text"></textarea>
-          </li>
-          <li>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="commenter-name" />
-          </li>
-          <li>
-            <label for="mail">Email:</label>
-            <input type="email" id="mail" name="commenter-email" />
-          </li>
-        </ul>
-        <input type="submit" />
+      <form
+        id="comment-form"
+        class="hidden"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <label for="comment">Comment:</label>
+        <textarea type="text" id="comment" name="comment-text"></textarea>
+        <br /><br />
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="commenter-name" />
+        <br /><br />
+        <label for="mail">Email:</label>
+        <input type="email" id="mail" name="commenter-email" />
+        <br /><br />
+        <p>(Optional) Upload an image:</p>
+        <input type="file" name="image" />
+        <br /><br />
+        <button type="submit">Submit</button>
       </form>
     </div>
   </body>
