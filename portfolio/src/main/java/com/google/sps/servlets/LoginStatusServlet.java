@@ -11,7 +11,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
-import com.google.sps.data.ConvertibleToJSON;
+import com.google.sps.utilities.CommonUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +35,10 @@ public class LoginStatusServlet extends HttpServlet {
 
     // Send the JSON as the response
     response.setContentType("application/json;");
-    response.getWriter().println(status.convertToJson());
+    response.getWriter().println(CommonUtils.convertToJson(status));
   }
 
-  private static class LoginStatus extends ConvertibleToJSON {
+  private static class LoginStatus {
     private static final LoginStatus STATUS_LOGGED_IN = new LoginStatus(true);
     private static final LoginStatus STATUS_NOT_LOGGED_IN = new LoginStatus(false);
     private boolean isLoggedIn;
