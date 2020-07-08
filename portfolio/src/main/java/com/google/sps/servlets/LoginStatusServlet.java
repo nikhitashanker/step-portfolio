@@ -41,7 +41,7 @@ public class LoginStatusServlet extends HttpServlet {
     return new Gson().toJson(status);
   }
 
-  public class LoginStatus {
+  private class LoginStatus {
     private boolean isLoggedIn;
     public LoginStatus(boolean isLoggedIn) {
       this.isLoggedIn = isLoggedIn;
