@@ -38,8 +38,4 @@ public class Comment {
   public String getText() {
     return text;
   }
-
-  public long getTimestamp() {
-    return timestamp;
-  }
 }

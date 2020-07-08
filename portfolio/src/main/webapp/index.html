@@ -60,8 +60,20 @@
         </button>
         <div id="random-fact-container"></div>
       </div>
+      <label for="comments-limit">Number of comments displayed:</label>
+      <input
+        type="number"
+        id="comments-limit"
+        name="comments-limit"
+        onchange="getComments()"
+        value="5"
+        min="1"
+      />
       <h1>Comments</h1>
       <div id="comment-container"></div>
+      <button type="button" onclick="deleteComments()">
+        Delete all comments
+      </button>
       <h1>Add a comment</h1>
       <form
         id="comment-form"

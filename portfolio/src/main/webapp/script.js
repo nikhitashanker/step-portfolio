@@ -121,16 +121,36 @@ function changeNavbarStickiness() {
  * the comments.
  */
 function getComments() {
-  fetch('/data').then((response) => response.json()).then((comments) => {
-    const commentContainer = document.getElementById('comment-container');
+  const numberOfComments = document.getElementById('comments-limit').value;
+  fetch(getQueryString(numberOfComments))
+      .then((response) => response.json())
+      .then((comments) => {
+        const commentContainer = document.getElementById('comment-container');
 
-    // Build display of comments.
-    comments.forEach((comment) => {
-      commentContainer.appendChild(
-          createDivElement(commentToString(comment), comment.imageUrl));
-    });
+        // Remove existing display.
+        while (commentContainer.firstChild) {
+          commentContainer.removeChild(commentContainer.firstChild);
+        }
+
+        // Build display of comments.
+        comments.forEach((comment) => {
+          commentContainer.appendChild(
+              createDivElement(commentToString(comment), comment.imageUrl));
+        });
+      });
+}
+
+/*
+ * Deletes all comments and refreshes display.
+ */
+function deleteComments() {
+  const request = new Request('/delete-data', {method: 'POST'});
+
+  fetch(request).then(() => {
+    getComments();
   });
 }
+
 
 /*
  * Creates an <div> element containing text and an image
@@ -151,6 +171,10 @@ function createDivElement(text, imageUrl) {
     div.append(imgElement);
   }
   return div;
+}
+
+function getQueryString(numberOfComments) {
+  return `/data?number-of-comments=${numberOfComments}`;
 }
 
 function commentToString(comment) {
