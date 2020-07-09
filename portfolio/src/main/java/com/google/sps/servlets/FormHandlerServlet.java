@@ -10,6 +10,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import com.google.sps.utilities.CommonUtils;
@@ -53,7 +54,7 @@ public class FormHandlerServlet extends HttpServlet {
     // Get input from the form.
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
     String commenterName = CommonUtils.getParameter(request, NAME, /* DefaultValue= */ "Anonymous");
-    String commenterEmail = CommonUtils.getParameter(request, EMAIL, /* DefaultValue= */ "Unknown");
+    String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(DatastoreHelper.buildCommentEntity(

@@ -21,7 +21,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Comment;
 import com.google.sps.utilities.CommonUtils;
 import com.google.sps.utilities.DatastoreHelper;
@@ -43,31 +44,16 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     int numberOfComments;
     try {
-      numberOfComments = getNumberOfComments(request);
       response.setContentType("application/json;");
-      response.getWriter().println(convertToJson(getCommentsFromDataStore(numberOfComments)));
+      numberOfComments = getNumberOfComments(request);
+      response.getWriter().println(
+          CommonUtils.convertToJson(getCommentsFromDataStore(numberOfComments)));
     } catch (Exception e) {
       System.err.println(e.getMessage());
       response.setContentType("text/html");
       response.getWriter().println("Please enter an integer value greater than 1");
       return;
     }
-  }
-
-  /*
-   * Converts List of comments into a JSON using the gson library.
-   */
-  private static String convertToJson(List<Comment> comments) {
-    return new Gson().toJson(comments);
-  }
-
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    return (value == null || value.isEmpty()) ? defaultValue : value;
   }
 
   /** Returns number of comments entered by the user or -1 if choice is invalid */
