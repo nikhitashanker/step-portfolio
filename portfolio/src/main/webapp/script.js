@@ -210,15 +210,17 @@ function showCommentForm(isLoggedIn) {
   }
 }
 
-function showLoginOrLogoutForm(isLoggedIn) {
+function showLoginOrLogoutForm(isLoggedIn, email) {
   const loginPrompt = document.getElementById('login-prompt');
   const logoutPrompt = document.getElementById('logout-prompt');
+  const greeting = document.getElementById('greeting');
   if (isLoggedIn) {
     loginPrompt.classList.add('hidden');
     logoutPrompt.classList.remove('hidden');
   } else {
     loginPrompt.classList.remove('hidden');
     logoutPrompt.classList.add('hidden');
+    greeting.classList.add('hidden');
   }
 }
 
@@ -257,7 +259,7 @@ function fetchBlobstoreUrlAndShowForm() {
 }
 
 function showUserInfoForm(isLoggedIn) {
-  const commentForm = document.getElementById('user-info-form');
+  const userInfoForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
     fetch('/user-info')
         .then((response) => {
@@ -269,10 +271,17 @@ function showUserInfoForm(isLoggedIn) {
             username.value = userInfo.username;
             const showEmail = document.getElementById('show-email');
             showEmail.checked = userInfo.showEmail;
+            const greeting = document.getElementById('greeting');
+            greeting.classList.remove('hidden');
+            greeting.innerText = getGreeting(userInfo.email);
           }
         });
-    commentForm.classList.remove('hidden');
+    userInfoForm.classList.remove('hidden');
   } else {
-    commentForm.classList.add('hidden');
+    userInfoForm.classList.add('hidden');
   }
+}
+
+function getGreeting(email) {
+  return `Hi there! You are currently signed in as ${email}.`;
 }

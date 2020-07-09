@@ -2,6 +2,11 @@ body {
   font-family: "Open Sans", sans-serif;
   line-height: 2.5;
 }
+
+button {
+
+}
+
 #content {
   margin: 5rem auto auto auto;
   padding-bottom: 1rem;

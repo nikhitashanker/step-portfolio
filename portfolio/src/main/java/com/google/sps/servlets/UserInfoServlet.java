@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.UserInfo;
@@ -36,8 +37,7 @@ public class UserInfoServlet extends HttpServlet {
   private static final String USERNAME = "username";
   private static final String SHOW_EMAIL = "show-email";
   private static final UserService userService = UserServiceFactory.getUserService();
-  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+    private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (userService.isUserLoggedIn()) {
@@ -56,10 +56,12 @@ public class UserInfoServlet extends HttpServlet {
       return;
     }
 
-    String id = userService.getCurrentUser().getUserId();
+    User currentUser = userService.getCurrentUser();
+    String email = currentUser.getEmail();
+    String id = currentUser.getUserId();
     boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true;
     String username = request.getParameter(USERNAME);
-    datastore.put(UserInfoUtils.buildUserInfoEntity(id, showEmail, username));
+    datastore.put(UserInfoUtils.buildUserInfoEntity(id, email, showEmail, username));
 
     // Redirect to the same HTML page.
     response.sendRedirect("/index.html");

@@ -1,12 +1,18 @@
 package com.google.sps.data;
 
 public class UserInfo {
-  private String username;
+  private String email;
   private boolean showEmail;
+  private String username;
 
-  public UserInfo(String username, boolean showEmail) {
+  public UserInfo(String email, boolean showEmail, String username) {
+    this.email = email;
     this.username = username;
     this.showEmail = showEmail;
+  }
+
+  public String getEmail() {
+      return email;
   }
 
   public String getUsername() {

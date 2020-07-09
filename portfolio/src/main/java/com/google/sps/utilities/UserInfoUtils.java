@@ -11,8 +11,9 @@ import com.google.sps.data.UserInfo;
 
 public class UserInfoUtils {
   private static final String ID = "id";
-  private static final String USERNAME = "username";
+  private static final String EMAIL = "email";
   private static final String SHOW_EMAIL = "showEmail";
+  private static final String USERNAME = "username";
   private static final String USER_INFO = "UserInfo";
   /**
    * Returns the user info of the user with id, or null if the user is not found.
@@ -29,17 +30,19 @@ public class UserInfoUtils {
     return entityToUserInfo(entity);
   }
 
-  public static Entity buildUserInfoEntity(String id, boolean showEmail, String username) {
+  public static Entity buildUserInfoEntity(String id, String email, boolean showEmail, String username) {
     Entity entity = new Entity(USER_INFO, id);
     entity.setProperty(ID, id);
-    entity.setProperty(USERNAME, username);
+    entity.setProperty(EMAIL, email);
     entity.setProperty(SHOW_EMAIL, showEmail);
+    entity.setProperty(USERNAME, username);
     return entity;
   }
 
   private static UserInfo entityToUserInfo(Entity entity) {
-    String username = (String) entity.getProperty(USERNAME);
+    String email = (String) entity.getProperty(EMAIL);
     boolean showEmail = (boolean) entity.getProperty(SHOW_EMAIL);
-    return new UserInfo(username, showEmail);
+    String username = (String) entity.getProperty(USERNAME);
+    return new UserInfo(email, showEmail, username);
   }
 }
