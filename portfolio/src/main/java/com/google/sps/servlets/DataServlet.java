@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  public static final String NUMBER_OF_COMMENTS = "number-of-comments";
+  private static final String NUMBER_OF_COMMENTS = "number-of-comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
