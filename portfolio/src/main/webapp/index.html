@@ -95,13 +95,13 @@
       <a id="login-prompt" class="hidden">Login</a>
       <a id="logout-prompt" class="hidden">Logout</a>
     </div>
-    <form method="POST" action="userinfo" id="username-form">
+    <form method="POST" action="/user-info" id="user-info-form" class="hidden">
     <br />
     <p>
     <label for="username">Username:</label>
-    <input name="username" />
-    <label for="username">Show my email address with comments:</label>
-    <input name="showEmail" type="checkbox" />
+    <input name="username" id="username" />
+    <label for="showEmail">Show my email address with comments:</label>
+    <input name="showEmail" type="checkbox" id="show-email" />
     <br/>
     <button>Submit</button>
     </form>

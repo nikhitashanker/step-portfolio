@@ -21,6 +21,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.utilities.CommonUtils;
 import com.google.sps.data.UserInfo;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,14 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/user-info")
 public class UserInfoServlet extends HttpServlet {
-  UserService userService = UserServiceFactory.getUserService();
+  private static final UserService userService = UserServiceFactory.getUserService();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (userService.isUserLoggedIn) {
-        UserInfo userInfo = getUserInfo(userService.getCurrentUser().getUserId());
-    
-        // Send the JSON as the response
+    if (userService.isUserLoggedIn()) {
         response.setContentType("application/json;");
+        UserInfo userInfo = getUserInfo(userService.getCurrentUser().getUserId());
         response.getWriter().println(CommonUtils.convertToJson(userInfo));
     } else {
 
@@ -52,14 +51,14 @@ public class UserInfoServlet extends HttpServlet {
       return;
     }
 
-    String name = request.getParameter("username");
-    boolean showEmail = request.getParameter("showEmail"); 
+    String username = request.getParameter("username");
+    boolean showEmail = Boolean.valueOf(request.getParameter("show-email")); 
     String id = userService.getCurrentUser().getUserId();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity entity = new Entity("UserInfo", id);
     entity.setProperty("id", id);
-    entity.setProperty("name", name);
+    entity.setProperty("username", username);
     entity.setProperty("showEmail", showEmail);
     // The put() function automatically inserts new data or updates existing data based on ID
     datastore.put(entity);
@@ -71,17 +70,19 @@ public class UserInfoServlet extends HttpServlet {
   /**
    * Returns the username of the user with id, or empty String if the user has not set a username.
    */
-  private String getUserInfo(String id) {
+  private UserInfo getUserInfo(String id) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("UserInfo")
                       .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
     if (entity == null) {
-      return "";
+      return null;
     }
-    String userName = (String) entity.getProperty("username");
+    String username = (String) entity.getProperty("username");
     boolean showEmail = (boolean) entity.getProperty("showEmail");
-    return new UserInfo(userName, showEmail);
+    System.out.println(username);
+    System.out.println(showEmail);
+    return new UserInfo(username, showEmail);
   }
 }

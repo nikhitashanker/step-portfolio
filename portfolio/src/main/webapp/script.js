@@ -197,6 +197,7 @@ function showCommentFormAndLoginPrompt() {
         const isLoggedIn = loginStatus.isLoggedIn;
         showCommentForm(isLoggedIn);
         showLoginOrLogoutForm(isLoggedIn);
+        showUserInfoForm(isLoggedIn);
       });
 }
 
@@ -255,9 +256,21 @@ function fetchBlobstoreUrlAndShowForm() {
       });
 }
 
-function showUsername(isLoggedIn) {  
-  const commentForm = document.getElementById('comment-form');
+function showUserInfoForm(isLoggedIn) {  
+  const commentForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
+    fetch('/user-info')
+      .then((response) => {
+        return response.json();
+      })
+      .then((userInfo) => {
+          if (userInfo) {
+            const username = document.getElementById('username');
+            username.value = userInfo.username;
+            const showEmail = document.getElementById('show-email');
+            showEmail.checked = userInfo.showEmail;
+          }
+      });
     commentForm.classList.remove('hidden');
   } else {
     commentForm.classList.add('hidden');
