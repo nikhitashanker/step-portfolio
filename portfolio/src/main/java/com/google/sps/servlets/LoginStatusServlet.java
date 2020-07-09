@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginStatusServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json;");
+
     // Get the current login status.
     LoginStatus status;
     if (UserServiceFactory.getUserService().isUserLoggedIn()) {
@@ -33,8 +35,7 @@ public class LoginStatusServlet extends HttpServlet {
       status = LoginStatus.getNotLoggedInInstance();
     }
 
-    // Send the JSON as the response
-    response.setContentType("application/json;");
+    // Send the JSON as the response.
     response.getWriter().println(CommonUtils.convertToJson(status));
   }
 

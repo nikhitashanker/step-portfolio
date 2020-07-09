@@ -44,8 +44,8 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     int numberOfComments;
     try {
-      numberOfComments = getNumberOfComments(request);
       response.setContentType("application/json;");
+      numberOfComments = getNumberOfComments(request);
       response.getWriter().println(
           CommonUtils.convertToJson(getCommentsFromDataStore(numberOfComments)));
     } catch (Exception e) {
