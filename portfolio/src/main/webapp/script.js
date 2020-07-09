@@ -254,3 +254,12 @@ function fetchBlobstoreUrlAndShowForm() {
         commentForm.classList.remove('hidden');
       });
 }
+
+function showUsername(isLoggedIn) {  
+  const commentForm = document.getElementById('comment-form');
+  if (isLoggedIn) {
+    commentForm.classList.remove('hidden');
+  } else {
+    commentForm.classList.add('hidden');
+  }
+}
