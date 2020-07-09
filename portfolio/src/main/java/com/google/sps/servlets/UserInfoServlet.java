@@ -21,8 +21,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.sps.utilities.CommonUtils;
 import com.google.sps.data.UserInfo;
+import com.google.sps.utilities.CommonUtils;
+import com.google.sps.utilities.UserInfoUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -32,21 +33,19 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/user-info")
 public class UserInfoServlet extends HttpServlet {
-  private static final UserService userService = UserServiceFactory.getUserService();
-  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private static final String ID = "id";
   private static final String USERNAME = "username";
   private static final String SHOW_EMAIL = "show-email";
-  private static final String USER_INFO = "UserInfo";
-  
+  private static final UserService userService = UserServiceFactory.getUserService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (userService.isUserLoggedIn()) {
-        response.setContentType("application/json;");
-        UserInfo userInfo = getUserInfo(userService.getCurrentUser().getUserId());
-        response.getWriter().println(CommonUtils.convertToJson(userInfo));
+      response.setContentType("application/json;");
+      UserInfo userInfo = UserInfoUtils.getUserInfo(userService.getCurrentUser().getUserId());
+      response.getWriter().println(CommonUtils.convertToJson(userInfo));
     } else {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
     }
   }
 
@@ -58,40 +57,11 @@ public class UserInfoServlet extends HttpServlet {
     }
 
     String id = userService.getCurrentUser().getUserId();
-    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true; 
+    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true;
     String username = request.getParameter(USERNAME);
-    datastore.put(buildUserInfoEntity(id, showEmail, username));
+    datastore.put(UserInfoUtils.buildUserInfoEntity(id, showEmail, username));
 
     // Redirect to the same HTML page.
     response.sendRedirect("/index.html");
-  }
-
-  /**
-   * Returns the username of the user with id, or empty String if the user has not set a username.
-   */
-  private UserInfo getUserInfo(String id) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query(USER_INFO)
-                      .setFilter(new Query.FilterPredicate(ID, Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
-    if (entity == null) {
-      return null;
-    }
-    return entityToUserInfo(entity);
-  }
-
-  private static Entity buildUserInfoEntity(String id, boolean showEmail, String username) {
-    Entity entity = new Entity(USER_INFO, id);
-    entity.setProperty(ID, id);
-    entity.setProperty(USERNAME, username);
-    entity.setProperty(SHOW_EMAIL, showEmail);
-    return entity;
-  }
-
-  private static UserInfo entityToUserInfo(Entity entity) {
-    String username = (String) entity.getProperty(USERNAME);
-    boolean showEmail = (boolean) entity.getProperty(SHOW_EMAIL);
-    return new UserInfo(username, showEmail);
   }
 }

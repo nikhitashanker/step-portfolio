@@ -256,21 +256,21 @@ function fetchBlobstoreUrlAndShowForm() {
       });
 }
 
-function showUserInfoForm(isLoggedIn) {  
+function showUserInfoForm(isLoggedIn) {
   const commentForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
     fetch('/user-info')
-      .then((response) => {
-        return response.json();
-      })
-      .then((userInfo) => {
+        .then((response) => {
+          return response.json();
+        })
+        .then((userInfo) => {
           if (userInfo) {
             const username = document.getElementById('username');
             username.value = userInfo.username;
             const showEmail = document.getElementById('show-email');
             showEmail.checked = userInfo.showEmail;
           }
-      });
+        });
     commentForm.classList.remove('hidden');
   } else {
     commentForm.classList.add('hidden');

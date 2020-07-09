@@ -10,11 +10,15 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import com.google.sps.data.UserInfo;
+import com.google.sps.utilities.CommentUtils;
 import com.google.sps.utilities.CommonUtils;
-import com.google.sps.utilities.DatastoreHelper;
+import com.google.sps.utilities.UserInfoUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -33,9 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
+  private static final UserService userService = UserServiceFactory.getUserService();
   private static final String TEXT = "comment-text";
-  private static final String NAME = "commenter-name";
-  private static final String EMAIL = "commenter-email";
   private static final String IMAGE = "image";
 
   @Override
@@ -51,13 +54,26 @@ public class FormHandlerServlet extends HttpServlet {
       return;
     }
 
-    // Get input from the form.
+    // Set email to email from UserService if they opted to show their email and Unknown otherwise.
+    // Set username to username if use provided one and Anonymous otherwise.
+    User currentUser = userService.getCurrentUser();
+    UserInfo userInfo = UserInfoUtils.getUserInfo(currentUser.getUserId());
+    String commenterEmail;
+    String commenterName;
+    if (userInfo == null) {
+      commenterEmail = "Unknown";
+      commenterName = "Anonymous";
+    } else {
+      String userEmail = currentUser.getEmail();
+      commenterEmail = userInfo.getShowEmail() ? userEmail : "Unknown";
+      commenterName = userInfo.getUsername();
+    }
+
+    // Get input from the form for comment text.
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
-    String commenterName = CommonUtils.getParameter(request, NAME, /* DefaultValue= */ "Anonymous");
-    String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(DatastoreHelper.buildCommentEntity(
+    datastore.put(CommentUtils.buildCommentEntity(
         commenterEmail, commenterName, imageUrl, text, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
