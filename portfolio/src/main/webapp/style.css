@@ -4,14 +4,14 @@ body {
 }
 
 button {
-  background-color: pink; /* Green */
+  background-color: pink;
   border: none;
   color: black;
+  display: inline-block;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 1rem;
 }
 
 #content {
@@ -124,25 +124,25 @@ button {
 }
 
 .speech-bubble {
-  padding: 0.3rem 0.3rem;
-  position: relative;
   background: lightskyblue;
   border-radius: 0.4rem;
   margin-bottom: 1rem;
+  padding: 0.3rem 0.3rem;
+  position: relative;
 }
 
 .speech-bubble:after {
+  border: 1.25rem solid transparent;
+  border-left: 0;
+  border-right-color: lightskyblue;
   content: "";
-  position: absolute;
+  height: 0;
   left: 0;
+  margin-left: -1.25rem;
+  margin-top: -1.25rem;
+  position: absolute;
   top: 50%;
   width: 0;
-  height: 0;
-  border: 1.25rem solid transparent;
-  border-right-color: lightskyblue;
-  border-left: 0;
-  margin-top: -1.25rem;
-  margin-left: -1.25rem;
 }
 
 #login-prompt,

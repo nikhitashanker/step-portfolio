@@ -64,7 +64,7 @@ public class UserInfoServlet extends HttpServlet {
     User currentUser = userService.getCurrentUser();
     String email = currentUser.getEmail();
     String id = currentUser.getUserId();
-    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true;
+    boolean showEmail = request.getParameter(SHOW_EMAIL) != null;
     String username = request.getParameter(USERNAME);
     datastore.put(UserInfoUtils.buildUserInfoEntity(id, email, showEmail, username));
 

@@ -18,7 +18,7 @@ window.onload = function onLoad() {
   showFirstTabContent();
   fetchLoginUrl();
   fetchLogoutUrl();
-  showCommentFormAndLoginPrompt();
+  checkLoginStatus();
 };
 
 function addListenersToButtons() {
@@ -184,10 +184,10 @@ function commentToString(comment) {
 }
 
 /*
- * Shows comment form and logout prompt if user is logged in,
- * and shows login prompt if user is not logged in.
+ * Checks login status and shows comment form, greeting, and logout prompt if
+ * user is logged in, and shows login prompt if user is not logged in.
  */
-function showCommentFormAndLoginPrompt() {
+function checkLoginStatus() {
   fetch('/login-status')
       .then((response) => {
         return response.json();
@@ -195,7 +195,7 @@ function showCommentFormAndLoginPrompt() {
       .then((loginStatus) => {
         const isLoggedIn = loginStatus.isLoggedIn;
         showCommentForm(isLoggedIn);
-        showLoginOrLogoutForm(isLoggedIn);
+        showLoginOrLogoutPrompt(isLoggedIn);
         showUserInfoFormAndGreeting(isLoggedIn);
       });
 }
@@ -218,17 +218,15 @@ function showCommentForm(isLoggedIn) {
   }
 }
 
-function showLoginOrLogoutForm(isLoggedIn, email) {
+function showLoginOrLogoutPrompt(isLoggedIn) {
   const loginPrompt = document.getElementById('login-prompt');
   const logoutPrompt = document.getElementById('logout-prompt');
-  const greeting = document.getElementById('greeting');
   if (isLoggedIn) {
     loginPrompt.classList.add('hidden');
     logoutPrompt.classList.remove('hidden');
   } else {
     loginPrompt.classList.remove('hidden');
     logoutPrompt.classList.add('hidden');
-    greeting.classList.add('hidden');
   }
 }
 
@@ -255,6 +253,7 @@ function fetchLogoutUrl() {
 }
 
 function showUserInfoFormAndGreeting(isLoggedIn) {
+  const greeting = document.getElementById('greeting');
   const userInfoForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
     fetch('/user-info')
@@ -267,13 +266,12 @@ function showUserInfoFormAndGreeting(isLoggedIn) {
             username.value = userInfo.username;
             const showEmail = document.getElementById('show-email');
             showEmail.checked = userInfo.showEmail;
-            const greeting = document.getElementById('greeting');
-            greeting.classList.remove('hidden');
             greeting.innerText = getGreeting(userInfo.email);
           }
         });
     userInfoForm.classList.remove('hidden');
   } else {
+    greeting.innerText = 'Hello there!';
     userInfoForm.classList.add('hidden');
   }
 }
