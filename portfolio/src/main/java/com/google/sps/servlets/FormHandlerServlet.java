@@ -54,16 +54,9 @@ public class FormHandlerServlet extends HttpServlet {
       return;
     }
 
-    // Set commenter email to email from UserService if they opted to show their email and Unknown
-    // otherwise.
+    // Set the commenter email.
     UserInfo userInfo = UserInfoUtils.getUserInfo(userService.getCurrentUser().getUserId());
-    String commenterEmail;
-    if (userInfo == null) {
-      commenterEmail = "Unknown";
-    } else {
-      String userEmail = userInfo.getEmail();
-      commenterEmail = userInfo.getShowEmail() ? userEmail : "Unknown";
-    }
+    String commenterEmail = getCommenterEmail(userInfo);
 
     // Set commenter name to username if user provided one and Anonymous otherwise.
     String commenterName = userInfo == null ? "Anonymous" : userInfo.getUsername();
@@ -118,5 +111,14 @@ public class FormHandlerServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
+  }
+
+  // Return email from userInfo if user opted to show their email
+  // and Unknown otherwise.
+  private static String getCommenterEmail(UserInfo userInfo) {
+    if (userInfo != null && userInfo.getShowEmail()) {
+      return userInfo.getEmail();
+    }
+    return "Unknown";
   }
 }
