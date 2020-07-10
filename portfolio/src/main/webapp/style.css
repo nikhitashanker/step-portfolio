@@ -145,7 +145,8 @@ button {
   margin-left: -1.25rem;
 }
 
-#login-prompt, #logout-prompt {
+#login-prompt,
+#logout-prompt {
   background-color: lightskyblue;
   color: black;
   padding: 1rem 2rem;

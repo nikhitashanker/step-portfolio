@@ -42,6 +42,7 @@ public class UserInfoServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (userService.isUserLoggedIn()) {
+      // Send user info as JSON response.
       response.setContentType("application/json;");
       UserInfo userInfo = UserInfoUtils.getUserInfo(userService.getCurrentUser().getUserId());
       response.getWriter().println(CommonUtils.convertToJson(userInfo));
@@ -57,10 +58,13 @@ public class UserInfoServlet extends HttpServlet {
       return;
     }
 
+    // Get user information from userService and request parameters.
+    // For showEmail, when SHOW_EMAIL is null meaning the checkbox is unchecked
+    // showEmail is set to false otherwise it is set to true.
     User currentUser = userService.getCurrentUser();
     String email = currentUser.getEmail();
     String id = currentUser.getUserId();
-    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true; 
+    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true;
     String username = request.getParameter(USERNAME);
     datastore.put(UserInfoUtils.buildUserInfoEntity(id, email, showEmail, username));
 
