@@ -4,7 +4,14 @@ body {
 }
 
 button {
-
+  background-color: pink; /* Green */
+  border: none;
+  color: black;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
 }
 
 #content {
@@ -67,7 +74,7 @@ button {
 }
 
 #navbar {
-  background-color: black;
+  background-color: lightskyblue;
   overflow: hidden;
 }
 
@@ -119,7 +126,7 @@ button {
 .speech-bubble {
   padding: 0.3rem 0.3rem;
   position: relative;
-  background: peachpuff;
+  background: lightskyblue;
   border-radius: 0.4rem;
   margin-bottom: 1rem;
 }
@@ -132,10 +139,18 @@ button {
   width: 0;
   height: 0;
   border: 1.25rem solid transparent;
-  border-right-color: peachpuff;
+  border-right-color: lightskyblue;
   border-left: 0;
   margin-top: -1.25rem;
   margin-left: -1.25rem;
+}
+
+.link {
+  background-color: lightskyblue;
+  color: black;
+  padding: 1rem 2rem;
+  text-align: center;
+  text-decoration: none;
 }
 
 .hidden {
