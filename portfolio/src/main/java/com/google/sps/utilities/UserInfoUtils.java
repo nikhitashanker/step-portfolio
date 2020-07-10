@@ -15,6 +15,7 @@ public class UserInfoUtils {
   private static final String SHOW_EMAIL = "showEmail";
   private static final String USERNAME = "username";
   private static final String USER_INFO = "UserInfo";
+
   /**
    * Returns the user info of the user with id, or null if the user is not found.
    */

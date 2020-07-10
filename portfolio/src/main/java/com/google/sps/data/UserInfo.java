@@ -7,19 +7,19 @@ public class UserInfo {
 
   public UserInfo(String email, boolean showEmail, String username) {
     this.email = email;
-    this.username = username;
     this.showEmail = showEmail;
+    this.username = username;
   }
 
   public String getEmail() {
     return email;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
   public boolean getShowEmail() {
     return showEmail;
+  }
+
+  public String getUsername() {
+    return username;
   }
 }

@@ -196,13 +196,14 @@ function showCommentFormAndLoginPrompt() {
         const isLoggedIn = loginStatus.isLoggedIn;
         showCommentForm(isLoggedIn);
         showLoginOrLogoutForm(isLoggedIn);
-        showUserInfoForm(isLoggedIn);
+        showUserInfoFormAndGreeting(isLoggedIn);
       });
 }
 
 function showCommentForm(isLoggedIn) {
   const commentForm = document.getElementById('comment-form');
   if (isLoggedIn) {
+    // Show comment form after image URL is fetched.
     fetch('/blobstore-upload-url')
         .then((response) => {
           return response.text();
@@ -253,7 +254,7 @@ function fetchLogoutUrl() {
       });
 }
 
-function showUserInfoForm(isLoggedIn) {
+function showUserInfoFormAndGreeting(isLoggedIn) {
   const userInfoForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
     fetch('/user-info')

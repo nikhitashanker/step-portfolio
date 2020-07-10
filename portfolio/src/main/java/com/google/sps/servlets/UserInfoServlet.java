@@ -38,6 +38,7 @@ public class UserInfoServlet extends HttpServlet {
   private static final String SHOW_EMAIL = "show-email";
   private static final UserService userService = UserServiceFactory.getUserService();
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (userService.isUserLoggedIn()) {
@@ -59,7 +60,7 @@ public class UserInfoServlet extends HttpServlet {
     User currentUser = userService.getCurrentUser();
     String email = currentUser.getEmail();
     String id = currentUser.getUserId();
-    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true;
+    boolean showEmail = request.getParameter(SHOW_EMAIL) == null ? false : true; 
     String username = request.getParameter(USERNAME);
     datastore.put(UserInfoUtils.buildUserInfoEntity(id, email, showEmail, username));
 
