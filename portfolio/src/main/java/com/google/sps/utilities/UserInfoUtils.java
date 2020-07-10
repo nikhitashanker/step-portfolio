@@ -30,7 +30,8 @@ public class UserInfoUtils {
     return entityToUserInfo(entity);
   }
 
-  public static Entity buildUserInfoEntity(String id, String email, boolean showEmail, String username) {
+  public static Entity buildUserInfoEntity(
+      String id, String email, boolean showEmail, String username) {
     Entity entity = new Entity(USER_INFO, id);
     entity.setProperty(ID, id);
     entity.setProperty(EMAIL, email);

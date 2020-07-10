@@ -37,7 +37,7 @@ public class UserInfoServlet extends HttpServlet {
   private static final String USERNAME = "username";
   private static final String SHOW_EMAIL = "show-email";
   private static final UserService userService = UserServiceFactory.getUserService();
-    private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (userService.isUserLoggedIn()) {

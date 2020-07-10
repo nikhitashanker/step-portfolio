@@ -203,15 +203,15 @@ function showCommentFormAndLoginPrompt() {
 function showCommentForm(isLoggedIn) {
   const commentForm = document.getElementById('comment-form');
   if (isLoggedIn) {
-     fetch('/blobstore-upload-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((imageUploadUrl) => {
-        const commentForm = document.getElementById('comment-form');
-        commentForm.action = imageUploadUrl;
-        commentForm.classList.remove('hidden');
-      });
+    fetch('/blobstore-upload-url')
+        .then((response) => {
+          return response.text();
+        })
+        .then((imageUploadUrl) => {
+          const commentForm = document.getElementById('comment-form');
+          commentForm.action = imageUploadUrl;
+          commentForm.classList.remove('hidden');
+        });
   } else {
     commentForm.classList.add('hidden');
   }
@@ -253,8 +253,6 @@ function fetchLogoutUrl() {
       });
 }
 
-
-
 function showUserInfoForm(isLoggedIn) {
   const userInfoForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
@@ -282,4 +280,3 @@ function showUserInfoForm(isLoggedIn) {
 function getGreeting(email) {
   return `Hi there! You are currently signed in as ${email}.`;
 }
-

@@ -12,7 +12,7 @@ public class UserInfo {
   }
 
   public String getEmail() {
-      return email;
+    return email;
   }
 
   public String getUsername() {
