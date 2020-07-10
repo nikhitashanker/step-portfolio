@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>About Me</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="scriptCommentForm.js"></script>
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="index.html">Back</a>
+    </div>
+    <h1>Add a comment</h1>
+    <form
+      id="comment-form"
+      class="hidden"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <label for="comment">Comment:</label>
+      <br /><br />
+      <textarea type="text" id="comment" name="comment-text"></textarea>
+      <br /><br />
+      <p>(Optional) Upload an image:</p>
+      <input type="file" name="image" />
+      <br /><br />
+      <button type="submit">Submit</button>
+    </form>
+    <h3 id="greeting">Hello there!</h3>
+    <a id="login-prompt" class="hidden">Login</a>
+    <a id="logout-prompt" class="hidden">Logout</a>
+    <form method="post" action="/user-info" id="user-info-form" class="hidden">
+      <br />
+      <h1>Set or change your info:</h1>
+      <label for="username">Username:</label>
+      <input name="username" type="text" id="username" />
+      <br />
+      <label for="show-email">Show my email address with comments:</label>
+      <input
+        name="show-email"
+        type="checkbox"
+        id="show-email"
+        value="show-email"
+      />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

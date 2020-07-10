@@ -69,6 +69,6 @@ public class UserInfoServlet extends HttpServlet {
     datastore.put(UserInfoUtils.buildUserInfoEntity(id, email, showEmail, username));
 
     // Redirect to the same HTML page.
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/comments.html");
   }
 }

@@ -145,6 +145,7 @@ button {
   width: 0;
 }
 
+#comment,
 #login-prompt,
 #logout-prompt {
   background-color: lightskyblue;

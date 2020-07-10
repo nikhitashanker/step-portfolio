@@ -50,7 +50,7 @@ public class FormHandlerServlet extends HttpServlet {
     } catch (Exception e) {
       System.err.println(e.getMessage());
       response.setContentType("text/html");
-      response.getWriter().println("Please upload a single file.");
+      response.getWriter().println(String.format("The error is %s", e.toString()));
       return;
     }
 

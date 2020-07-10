@@ -16,9 +16,6 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
-  fetchLoginUrl();
-  fetchLogoutUrl();
-  checkLoginStatus();
 };
 
 function addListenersToButtons() {
@@ -181,101 +178,4 @@ function getQueryString(numberOfComments) {
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
         "${comment.text}"`;
-}
-
-/*
- * Checks login status and shows comment form, greeting, and logout prompt if
- * user is logged in, and shows login prompt if user is not logged in.
- */
-function checkLoginStatus() {
-  fetch('/login-status')
-      .then((response) => {
-        return response.json();
-      })
-      .then((loginStatus) => {
-        const isLoggedIn = loginStatus.isLoggedIn;
-        showCommentForm(isLoggedIn);
-        showLoginOrLogoutPrompt(isLoggedIn);
-        showUserInfoFormAndGreeting(isLoggedIn);
-      });
-}
-
-function showCommentForm(isLoggedIn) {
-  const commentForm = document.getElementById('comment-form');
-  if (isLoggedIn) {
-    // Show comment form after image URL is fetched.
-    fetch('/blobstore-upload-url')
-        .then((response) => {
-          return response.text();
-        })
-        .then((imageUploadUrl) => {
-          const commentForm = document.getElementById('comment-form');
-          commentForm.action = imageUploadUrl;
-          commentForm.classList.remove('hidden');
-        });
-  } else {
-    commentForm.classList.add('hidden');
-  }
-}
-
-function showLoginOrLogoutPrompt(isLoggedIn) {
-  const loginPrompt = document.getElementById('login-prompt');
-  const logoutPrompt = document.getElementById('logout-prompt');
-  if (isLoggedIn) {
-    loginPrompt.classList.add('hidden');
-    logoutPrompt.classList.remove('hidden');
-  } else {
-    loginPrompt.classList.remove('hidden');
-    logoutPrompt.classList.add('hidden');
-  }
-}
-
-function fetchLoginUrl() {
-  fetch('/login-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((loginUrl) => {
-        const loginPrompt = document.getElementById('login-prompt');
-        loginPrompt.href = loginUrl;
-      });
-}
-
-function fetchLogoutUrl() {
-  fetch('/logout-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((logoutUrl) => {
-        const logoutPrompt = document.getElementById('logout-prompt');
-        logoutPrompt.href = logoutUrl;
-      });
-}
-
-function showUserInfoFormAndGreeting(isLoggedIn) {
-  const greeting = document.getElementById('greeting');
-  const userInfoForm = document.getElementById('user-info-form');
-  if (isLoggedIn) {
-    fetch('/user-info')
-        .then((response) => {
-          return response.json();
-        })
-        .then((userInfo) => {
-          if (userInfo) {
-            const username = document.getElementById('username');
-            username.value = userInfo.username;
-            const showEmail = document.getElementById('show-email');
-            showEmail.checked = userInfo.showEmail;
-            greeting.innerText = getGreeting(userInfo.email);
-          }
-        });
-    userInfoForm.classList.remove('hidden');
-  } else {
-    greeting.innerText = 'Hello there!';
-    userInfoForm.classList.add('hidden');
-  }
-}
-
-function getGreeting(email) {
-  return `Hi there! You are currently signed in as ${email}.`;
 }
