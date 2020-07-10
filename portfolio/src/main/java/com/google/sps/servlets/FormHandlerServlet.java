@@ -55,18 +55,18 @@ public class FormHandlerServlet extends HttpServlet {
     }
 
     // Set commenter email to email from UserService if they opted to show their email and Unknown
-    // otherwise. Set commenter name to username if user provided one and Anonymous otherwise.
+    // otherwise. 
     UserInfo userInfo = UserInfoUtils.getUserInfo(userService.getCurrentUser().getUserId());
     String commenterEmail;
-    String commenterName;
     if (userInfo == null) {
       commenterEmail = "Unknown";
-      commenterName = "Anonymous";
     } else {
       String userEmail = userInfo.getEmail();
       commenterEmail = userInfo.getShowEmail() ? userEmail : "Unknown";
-      commenterName = userInfo.getUsername();
     }
+
+    // Set commenter name to username if user provided one and Anonymous otherwise.
+    String commenterName = userInfo == null ? "Anonymous" : userInfo.getUsername();
 
     // Get input from the form for comment text.
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
