@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
@@ -195,20 +194,14 @@ function showCommentFormAndLoginPrompt() {
         return response.json();
       })
       .then((loginStatus) => {
-        const loginPrompt = document.getElementById('login-prompt');
-        const loggedInContent = document.getElementById('logged-in-content');
-         if (loginStatus) {
-    loginPrompt.classList.add('hidden');
-    loggedInContent.classList.remove('hidden');
-  } else {
-    loginPrompt.classList.remove('hidden');
-    loggedInContent.classList.add('hidden');
-  }
+        const isLoggedIn = loginStatus.isLoggedIn;
+        showCommentForm(isLoggedIn);
+        showLoginOrLogoutForm(isLoggedIn);
+        showUserInfoForm(isLoggedIn);
       });
 }
 
 function showCommentForm(isLoggedIn) {
-  console.log(isLoggedIn);
   const commentForm = document.getElementById('comment-form');
   if (isLoggedIn) {
     commentForm.classList.remove('hidden');
