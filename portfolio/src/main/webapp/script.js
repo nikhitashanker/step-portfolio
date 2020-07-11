@@ -133,8 +133,8 @@ function getComments() {
 
         // Build display of comments.
         comments.forEach((comment) => {
-          commentContainer.appendChild(
-              createDivElement(commentToString(comment), comment.imageUrl));
+          commentContainer.appendChild(createDivElement(
+              commentToString(comment), comment.blobKeyString));
         });
       });
 }
@@ -154,7 +154,7 @@ function deleteComments() {
  * Creates an <div> element containing text and an image
  * if specified.
  */
-function createDivElement(text, imageUrl) {
+function createDivElement(text, blobstoreKeyString) {
   const div = document.createElement('div');
   div.className = 'speech-bubble';
 
@@ -163,10 +163,16 @@ function createDivElement(text, imageUrl) {
   div.appendChild(h4Element);
 
   // If this comment has an image, add it as a child of the div element.
-  if (imageUrl !== undefined) {
+  if (blobstoreKeyString !== undefined) {
+    console.log(blobstoreKeyString);
     const imgElement = document.createElement('img');
-    imgElement.src = imageUrl;
-    div.append(imgElement);
+    const request =
+        new Request(getBlobStoreRequestString(blobstoreKeyString), {method: 'GET'});
+    fetch(request).then((response) => response.blob()).then((blob) => {
+      var objectUrl = URL.createObjectURL(blob);
+      imgElement.src = objectUrl;
+      div.append(imgElement);
+    });
   }
   return div;
 }
@@ -178,4 +184,8 @@ function getQueryString(numberOfComments) {
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
         "${comment.text}"`;
+}
+
+function getBlobStoreRequestString(blobstoreKeyString){
+    `/blobstore-image?blob-key=${blobstoreKeyString}`;
 }

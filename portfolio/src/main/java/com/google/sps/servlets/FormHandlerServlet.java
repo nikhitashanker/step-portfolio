@@ -44,9 +44,9 @@ public class FormHandlerServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the URL of the image that the user uploaded to Blobstore.
-    String imageUrl;
+    String blobKeyString;
     try {
-      imageUrl = getUploadedFileUrl(request, IMAGE);
+      blobKeyString = getUploadedBlobKeyString(request, IMAGE);
     } catch (Exception e) {
       System.err.println(e.getMessage());
       response.setContentType("text/html");
@@ -66,15 +66,15 @@ public class FormHandlerServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(CommentUtils.buildCommentEntity(
-        commenterEmail, commenterName, imageUrl, text, System.currentTimeMillis()));
+        commenterEmail, commenterName, blobKeyString, text, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
-  private static String getUploadedFileUrl(HttpServletRequest request, String formInputElementName)
-      throws Exception {
+  private static String getUploadedBlobKeyString(
+      HttpServletRequest request, String formInputElementName) throws Exception {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(IMAGE);
@@ -99,18 +99,7 @@ public class FormHandlerServlet extends HttpServlet {
       return null;
     }
 
-    // Use ImagesService to get a URL that points to the uploaded file.
-    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
-
-    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
-    // path to the image, rather than the path returned by imagesService which contains a host.
-    try {
-      URL url = new URL(imagesService.getServingUrl(options));
-      return url.getPath();
-    } catch (MalformedURLException e) {
-      return imagesService.getServingUrl(options);
-    }
+    return blobKey.getKeyString();
   }
 
   // Return email from userInfo if user opted to show their email
