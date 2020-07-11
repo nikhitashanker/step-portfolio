@@ -76,7 +76,7 @@ public class FormHandlerServlet extends HttpServlet {
 
     // Add the comment to datastore.
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(CommentUtils.buildCommentEntity(commenterEmail, commenterName, blobKeyString,
+    datastore.put(CommentUtils.buildCommentEntity(blobKeyString, commenterEmail, commenterName,
         textWithSentiment, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
