@@ -12,9 +12,9 @@ public class SentimentUtils {
 
   public static String getSentimentTag(String text) throws IOException {
     if (decideIsPositive(text)) {
-        return POSITIVE_COMMENT_TAG;
+      return POSITIVE_COMMENT_TAG;
     } else {
-        return NEGATIVE_COMMENT_TAG;
+      return NEGATIVE_COMMENT_TAG;
     }
   }
 
