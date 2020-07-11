@@ -164,12 +164,11 @@ function createDivElement(text, blobstoreKeyString) {
 
   // If this comment has an image, add it as a child of the div element.
   if (blobstoreKeyString !== undefined) {
-    console.log(blobstoreKeyString);
     const imgElement = document.createElement('img');
-    const request =
-        new Request(getBlobStoreRequestString(blobstoreKeyString), {method: 'GET'});
+    const request = new Request(
+        getBlobStoreRequestString(blobstoreKeyString), {method: 'GET'});
     fetch(request).then((response) => response.blob()).then((blob) => {
-      var objectUrl = URL.createObjectURL(blob);
+      const objectUrl = URL.createObjectURL(blob);
       imgElement.src = objectUrl;
       div.append(imgElement);
     });
@@ -186,6 +185,6 @@ function commentToString(comment) {
         "${comment.text}"`;
 }
 
-function getBlobStoreRequestString(blobstoreKeyString){
-    `/blobstore-image?blob-key=${blobstoreKeyString}`;
+function getBlobStoreRequestString(blobstoreKeyString) {
+  return `/blobstore-image?blob-key=${blobstoreKeyString}`;
 }
