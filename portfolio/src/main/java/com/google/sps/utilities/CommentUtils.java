@@ -1,6 +1,5 @@
 package com.google.sps.utilities;
 
-import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.data.Comment;
 
@@ -22,8 +21,8 @@ public class CommentUtils {
     return new Comment(commenterEmail, commenterName, id, blobKeyString, text, timestamp);
   }
 
-  public static Entity buildCommentEntity(String commenterEmail, String commenterName,
-      String blobKeyString, String text, long timestamp) {
+  public static Entity buildCommentEntity(
+      String commenterEmail, String commenterName, String blobKeyString, String text, long timestamp) {
     Entity commentEntity = new Entity(ITEM_TYPE);
     commentEntity.setProperty(EMAIL, commenterEmail);
     commentEntity.setProperty(NAME, commenterName);

@@ -1,7 +1,5 @@
 package com.google.sps.data;
 
-import com.google.appengine.api.blobstore.BlobKey;
-
 /** Object that stores comment data. */
 public class Comment {
   private String commenterEmail;
