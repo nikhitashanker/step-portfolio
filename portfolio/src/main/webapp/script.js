@@ -182,7 +182,7 @@ function getQueryString(numberOfComments) {
 
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
-        "${comment.text}"`;
+        ${comment.text}`;
 }
 
 function getBlobStoreRequestString(blobstoreKeyString) {
