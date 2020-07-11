@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import com.google.sps.data.UserInfo;
 import com.google.sps.utilities.CommentUtils;
+import com.google.sps.utilities.SentimentUtils;
 import com.google.sps.utilities.CommonUtils;
 import com.google.sps.utilities.UserInfoUtils;
 import java.io.IOException;
@@ -64,9 +65,19 @@ public class FormHandlerServlet extends HttpServlet {
     // Get input from the form for comment text.
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
 
+    // Get text with the sentiment tag added.
+    String textWithSentiment = null;
+    try {
+      textWithSentiment = String.format("(%s) : %s", SentimentUtils.getSentimentTag(text), text);
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+      response.setContentType("text/html");
+    }
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(CommentUtils.buildCommentEntity(
-        commenterEmail, commenterName, blobKeyString, text, System.currentTimeMillis()));
+
+    datastore.put(CommentUtils.buildCommentEntity(commenterEmail, commenterName, blobKeyString,
+        textWithSentiment, System.currentTimeMillis()));
 
     // Redirect to same HTML page.
     response.sendRedirect("/index.html");
