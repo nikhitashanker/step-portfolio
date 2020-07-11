@@ -70,7 +70,7 @@ public class FormHandlerServlet extends HttpServlet {
     try {
       textWithSentiment = String.format("(%s) : %s", SentimentUtils.getSentimentTag(text), text);
     } catch (IOException e) {
-      System.err.println(e.getMessage());
+      System.err.println("IOException occurred.");
       response.setContentType("text/html");
     }
 
