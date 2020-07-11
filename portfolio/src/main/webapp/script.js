@@ -126,7 +126,7 @@ function changeNavbarStickiness() {
 function getComments() {
   const numberOfComments = document.getElementById('comments-limit').value;
   fetch(getQueryString(numberOfComments))
-      .then((response) => response.json())
+      .then((response) => {response.json(); console.log(response);})
       .then((comments) => {
         const commentContainer = document.getElementById('comment-container');
 

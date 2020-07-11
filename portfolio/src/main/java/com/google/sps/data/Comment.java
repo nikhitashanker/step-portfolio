@@ -5,6 +5,7 @@ public class Comment {
   private String commenterEmail;
   private String commenterName;
   private long id;
+  private boolean isPositive;
   private String imageUrl;
   private String text;
   private long timestamp;

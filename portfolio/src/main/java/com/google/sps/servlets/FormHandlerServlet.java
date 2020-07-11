@@ -1,5 +1,8 @@
 package com.google.sps.servlets;
 
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -57,6 +60,11 @@ public class FormHandlerServlet extends HttpServlet {
     String commenterEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    if (isPositive(text)){
+        text += "POSITIVE COMMENT: ";
+    } else {
+        text += "NEGATIVE COMMENT: ";
+    }
     datastore.put(DatastoreHelper.buildCommentEntity(
         commenterEmail, commenterName, imageUrl, text, System.currentTimeMillis()));
 
@@ -103,5 +111,15 @@ public class FormHandlerServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
+  }
+
+  private static boolean isPositive(String comment) throws IOException {
+      Document doc =
+    Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+LanguageServiceClient languageService = LanguageServiceClient.create();
+Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+float score = sentiment.getScore();
+languageService.close();
+return score > 0;
   }
 }

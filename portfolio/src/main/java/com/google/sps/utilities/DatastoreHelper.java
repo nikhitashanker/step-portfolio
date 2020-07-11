@@ -8,6 +8,7 @@ public class DatastoreHelper {
   private static final String EMAIL = "commenterEmail";
   private static final String NAME = "commenterName";
   private static final String IMAGE = "imageUrl";
+  private static final String IS_POSITIVE = "isPositive";
   private static final String TEXT = "text";
   private static final String TIMESTAMP = "timestamp";
 
