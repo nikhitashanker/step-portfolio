@@ -24,8 +24,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Comment;
+import com.google.sps.utilities.CommentUtils;
 import com.google.sps.utilities.CommonUtils;
-import com.google.sps.utilities.DatastoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that handles comments data. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  public static final String NUMBER_OF_COMMENTS = "number-of-comments";
+  private static final String NUMBER_OF_COMMENTS = "number-of-comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -88,7 +88,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : resultsList) {
-      comments.add(DatastoreHelper.entityToComment(entity));
+      comments.add(CommentUtils.entityToComment(entity));
     }
     return comments;
   }

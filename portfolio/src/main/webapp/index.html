@@ -84,16 +84,35 @@
         <label for="comment">Comment:</label>
         <textarea type="text" id="comment" name="comment-text"></textarea>
         <br /><br />
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="commenter-name" />
-        <br /><br />
         <p>(Optional) Upload an image:</p>
         <input type="file" name="image" />
         <br /><br />
         <button type="submit">Submit</button>
       </form>
+      <h3 id="greeting">Hello there!</h3>
       <a id="login-prompt" class="hidden">Login</a>
       <a id="logout-prompt" class="hidden">Logout</a>
+      <form
+        method="post"
+        action="/user-info"
+        id="user-info-form"
+        class="hidden"
+      >
+        <br />
+        <h1>Set or change your info:</h1>
+        <label for="username">Username:</label>
+        <input name="username" type="text" id="username" />
+        <br />
+        <label for="show-email">Show my email address with comments:</label>
+        <input
+          name="show-email"
+          type="checkbox"
+          id="show-email"
+          value="show-email"
+        />
+        <br />
+        <button type="submit">Submit</button>
+      </form>
     </div>
   </body>
 </html>

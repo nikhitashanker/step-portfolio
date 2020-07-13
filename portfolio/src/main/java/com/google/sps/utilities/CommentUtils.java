@@ -3,7 +3,7 @@ package com.google.sps.utilities;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.data.Comment;
 
-public class DatastoreHelper {
+public class CommentUtils {
   private static final String ITEM_TYPE = "Comment";
   private static final String EMAIL = "commenterEmail";
   private static final String NAME = "commenterName";
