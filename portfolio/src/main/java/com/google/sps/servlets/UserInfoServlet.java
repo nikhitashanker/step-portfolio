@@ -41,13 +41,13 @@ public class UserInfoServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
+    } else {
       // Send user info as JSON response.
       response.setContentType("application/json;");
       UserInfo userInfo = UserInfoUtils.getUserInfo(userService.getCurrentUser().getUserId());
       response.getWriter().println(CommonUtils.convertToJson(userInfo));
-    } else {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
     }
   }
 
