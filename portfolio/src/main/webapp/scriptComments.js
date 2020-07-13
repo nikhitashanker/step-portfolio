@@ -19,7 +19,7 @@ window.onload = function onLoad() {
 };
 
 /*
- * Checks login status and shows comment form, greeting, and logout prompt if
+ * Checks login status and shows comment form, and logout prompt if
  * user is logged in, and shows login prompt if user is not logged in.
  */
 function checkLoginStatus() {
@@ -31,7 +31,7 @@ function checkLoginStatus() {
         const isLoggedIn = loginStatus.isLoggedIn;
         showCommentForm(isLoggedIn);
         showLoginOrLogoutPrompt(isLoggedIn);
-        showUserInfoFormAndGreeting(isLoggedIn);
+        showUserInfoForm(isLoggedIn);
       });
 }
 
@@ -87,8 +87,7 @@ function fetchLogoutUrl() {
       });
 }
 
-function showUserInfoFormAndGreeting(isLoggedIn) {
-  const greeting = document.getElementById('greeting');
+function showUserInfoForm(isLoggedIn) {
   const userInfoForm = document.getElementById('user-info-form');
   if (isLoggedIn) {
     fetch('/user-info')
@@ -101,16 +100,10 @@ function showUserInfoFormAndGreeting(isLoggedIn) {
             username.value = userInfo.username;
             const showEmail = document.getElementById('show-email');
             showEmail.checked = userInfo.showEmail;
-            greeting.innerText = getGreeting(userInfo.email);
           }
         });
     userInfoForm.classList.remove('hidden');
   } else {
-    greeting.innerText = 'Hello there!';
     userInfoForm.classList.add('hidden');
   }
-}
-
-function getGreeting(email) {
-  return `Hi there! You are currently signed in as ${email}.`;
 }
