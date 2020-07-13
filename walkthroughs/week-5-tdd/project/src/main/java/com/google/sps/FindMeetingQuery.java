@@ -21,21 +21,28 @@ import java.util.HashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> eventsList = new ArrayList<TimeRange>();
+    List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
     for (Event e : events) {
         HashSet<String> intersection = new HashSet<String>(e.getAttendees());
-        intersection.retainAll(e.getAttendees());
+        intersection.retainAll(request.getAttendees());
         if (intersection.size() > 0)
-            eventsList.add(e.getWhen());
+            potentialConflicts.add(e.getWhen());
     } 
     Collection<TimeRange> timeRanges = new ArrayList<TimeRange>();
-    int lastEnd = TimeRange.START_OF_DAY;
-    Collections.sort(eventsList, TimeRange.ORDER_BY_START);
-    for (TimeRange e : eventsList) {
-        if (e.start() - lastEnd >= request.getDuration()) {
-            timeRanges.add(TimeRange.fromStartEnd(lastEnd, e.start(), false));
-            lastEnd = e.start();
+    int lastConflictEnd = TimeRange.START_OF_DAY;
+    Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
+    long requestDuration = request.getDuration();
+    for (TimeRange currentConflict : potentialConflicts) {
+        int currentConflictStart = currentConflict.start();
+        if (currentConflictStart - lastConflictEnd >= requestDuration) {
+            timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, currentConflictStart, false));
         }
+        int currentConflictEnd = currentConflict.end();
+        if (currentConflictEnd > lastConflictEnd)
+            lastConflictEnd = currentConflictEnd;
+    }
+    if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
+        timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
     }
     return timeRanges;
   }
