@@ -38,8 +38,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
   private static final UserService userService = UserServiceFactory.getUserService();
-  private static final String TEXT = "comment-text";
+  private static final String ANONYMOUS = "Anonymous";
   private static final String IMAGE = "image";
+  private static final String TEXT = "comment-text";
+  private static final String UNKNOWN = "Unknown";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,7 +61,7 @@ public class FormHandlerServlet extends HttpServlet {
     String commenterEmail = getCommenterEmail(userInfo);
 
     // Set commenter name to username if user provided one and Anonymous otherwise.
-    String commenterName = userInfo == null ? "Anonymous" : userInfo.getUsername();
+    String commenterName = userInfo == null ? ANONYMOUS : userInfo.getUsername();
 
     // Get input from the form for comment text.
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
@@ -119,6 +121,6 @@ public class FormHandlerServlet extends HttpServlet {
     if (userInfo != null && userInfo.getShowEmail()) {
       return userInfo.getEmail();
     }
-    return "Unknown";
+    return UNKNOWN;
   }
 }
