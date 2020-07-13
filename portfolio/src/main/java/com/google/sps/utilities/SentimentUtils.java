@@ -7,8 +7,8 @@ import com.google.sps.data.Comment;
 import java.io.IOException;
 
 public class SentimentUtils {
-  public static final String POSITIVE_COMMENT_TAG = "POSITIVE COMMENT";
-  public static final String NEGATIVE_COMMENT_TAG = "NEGATIVE COMMENT";
+  private static final String POSITIVE_COMMENT_TAG = "POSITIVE COMMENT";
+  private static final String NEGATIVE_COMMENT_TAG = "NEGATIVE COMMENT";
 
   public static String getSentimentTag(String text) throws IOException {
     if (decideIsPositive(text)) {

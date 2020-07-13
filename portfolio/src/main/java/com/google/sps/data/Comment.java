@@ -2,12 +2,12 @@ package com.google.sps.data;
 
 /** Object that stores comment data. */
 public class Comment {
-  private String blobKeyString;
-  private String commenterEmail;
-  private String commenterName;
-  private long id;
-  private String text;
-  private long timestamp;
+  private final String blobKeyString;
+  private final String commenterEmail;
+  private final String commenterName;
+  private final long id;
+  private final String text;
+  private final long timestamp;
 
   public Comment(String blobKeyString, String commenterEmail, String commenterName, long id,
       String text, long timestamp) {
