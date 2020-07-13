@@ -13,11 +13,30 @@
 // limitations under the License.
 
 package com.google.sps;
-
+import java.util.Collections;
 import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    List<TimeRange> eventsList = new ArrayList<TimeRange>();
+    for (Event e : events) {
+        HashSet<String> intersection = new HashSet<String>(e.getAttendees());
+        intersection.retainAll(e.getAttendees());
+        if (intersection.size() > 0)
+            eventsList.add(e.getWhen());
+    } 
+    Collection<TimeRange> timeRanges = new ArrayList<TimeRange>();
+    int lastEnd = TimeRange.START_OF_DAY;
+    Collections.sort(eventsList, TimeRange.ORDER_BY_START);
+    for (TimeRange e : eventsList) {
+        if (e.start() - lastEnd >= request.getDuration()) {
+            timeRanges.add(TimeRange.fromStartEnd(lastEnd, e.start(), false));
+            lastEnd = e.start();
+        }
+    }
+    return timeRanges;
   }
 }
