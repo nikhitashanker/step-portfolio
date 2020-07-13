@@ -66,7 +66,7 @@ public class FormHandlerServlet extends HttpServlet {
     String text = CommonUtils.getParameter(request, TEXT, /* DefaultValue= */ "");
 
     // Get text with the sentiment tag added.
-    String textWithSentiment = null;
+    String textWithSentiment = text;
     try {
       textWithSentiment = String.format("(%s) : %s", SentimentUtils.getSentimentTag(text), text);
     } catch (IOException e) {
