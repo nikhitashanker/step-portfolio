@@ -16,9 +16,6 @@ window.onload = function onLoad() {
   getComments();
   addListenersToButtons();
   showFirstTabContent();
-  fetchLoginUrl();
-  fetchLogoutUrl();
-  checkLoginStatus();
 };
 
 function addListenersToButtons() {
@@ -136,8 +133,8 @@ function getComments() {
 
         // Build display of comments.
         comments.forEach((comment) => {
-          commentContainer.appendChild(
-              createDivElement(commentToString(comment), comment.imageUrl));
+          commentContainer.appendChild(createDivElement(
+              commentToString(comment), comment.blobKeyString));
         });
       });
 }
@@ -157,7 +154,7 @@ function deleteComments() {
  * Creates an <div> element containing text and an image
  * if specified.
  */
-function createDivElement(text, imageUrl) {
+function createDivElement(text, blobstoreKeyString) {
   const div = document.createElement('div');
   div.className = 'speech-bubble';
 
@@ -166,10 +163,15 @@ function createDivElement(text, imageUrl) {
   div.appendChild(h4Element);
 
   // If this comment has an image, add it as a child of the div element.
-  if (imageUrl !== undefined) {
+  if (blobstoreKeyString !== undefined) {
     const imgElement = document.createElement('img');
-    imgElement.src = imageUrl;
-    div.append(imgElement);
+    const request = new Request(
+        getBlobStoreRequestString(blobstoreKeyString), {method: 'GET'});
+    fetch(request).then((response) => response.blob()).then((blob) => {
+      const objectUrl = URL.createObjectURL(blob);
+      imgElement.src = objectUrl;
+      div.append(imgElement);
+    });
   }
   return div;
 }
@@ -180,102 +182,9 @@ function getQueryString(numberOfComments) {
 
 function commentToString(comment) {
   return `${comment.commenterName} (${comment.commenterEmail}) says \
-        "${comment.text}"`;
+        ${comment.text}`;
 }
 
-/*
- * Checks login status and shows comment form, greeting, and logout prompt if
- * user is logged in, and shows login prompt if user is not logged in.
- */
-function checkLoginStatus() {
-  fetch('/login-status')
-      .then((response) => {
-        return response.json();
-      })
-      .then((loginStatus) => {
-        const isLoggedIn = loginStatus.isLoggedIn;
-        showCommentForm(isLoggedIn);
-        showLoginOrLogoutPrompt(isLoggedIn);
-        showUserInfoFormAndGreeting(isLoggedIn);
-      });
-}
-
-function showCommentForm(isLoggedIn) {
-  const commentForm = document.getElementById('comment-form');
-  if (isLoggedIn) {
-    // Show comment form after image URL is fetched.
-    fetch('/blobstore-upload-url')
-        .then((response) => {
-          return response.text();
-        })
-        .then((imageUploadUrl) => {
-          const commentForm = document.getElementById('comment-form');
-          commentForm.action = imageUploadUrl;
-          commentForm.classList.remove('hidden');
-        });
-  } else {
-    commentForm.classList.add('hidden');
-  }
-}
-
-function showLoginOrLogoutPrompt(isLoggedIn) {
-  const loginPrompt = document.getElementById('login-prompt');
-  const logoutPrompt = document.getElementById('logout-prompt');
-  if (isLoggedIn) {
-    loginPrompt.classList.add('hidden');
-    logoutPrompt.classList.remove('hidden');
-  } else {
-    loginPrompt.classList.remove('hidden');
-    logoutPrompt.classList.add('hidden');
-  }
-}
-
-function fetchLoginUrl() {
-  fetch('/login-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((loginUrl) => {
-        const loginPrompt = document.getElementById('login-prompt');
-        loginPrompt.href = loginUrl;
-      });
-}
-
-function fetchLogoutUrl() {
-  fetch('/logout-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((logoutUrl) => {
-        const logoutPrompt = document.getElementById('logout-prompt');
-        logoutPrompt.href = logoutUrl;
-      });
-}
-
-function showUserInfoFormAndGreeting(isLoggedIn) {
-  const greeting = document.getElementById('greeting');
-  const userInfoForm = document.getElementById('user-info-form');
-  if (isLoggedIn) {
-    fetch('/user-info')
-        .then((response) => {
-          return response.json();
-        })
-        .then((userInfo) => {
-          if (userInfo) {
-            const username = document.getElementById('username');
-            username.value = userInfo.username;
-            const showEmail = document.getElementById('show-email');
-            showEmail.checked = userInfo.showEmail;
-            greeting.innerText = getGreeting(userInfo.email);
-          }
-        });
-    userInfoForm.classList.remove('hidden');
-  } else {
-    greeting.innerText = 'Hello there!';
-    userInfoForm.classList.add('hidden');
-  }
-}
-
-function getGreeting(email) {
-  return `Hi there! You are currently signed in as ${email}.`;
+function getBlobStoreRequestString(blobstoreKeyString) {
+  return `/blobstore-image?blob-key=${blobstoreKeyString}`;
 }
