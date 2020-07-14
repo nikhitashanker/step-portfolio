@@ -13,12 +13,12 @@
 // limitations under the License.
 
 package com.google.sps;
-import java.util.Collections;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
@@ -38,7 +38,7 @@ public final class FindMeetingQuery {
         // add a new time range to the time ranges returned.
         int currentConflictStart = currentConflict.start();
         if (currentConflictStart - lastConflictEnd >= requestDuration) {
-            timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, currentConflictStart, false));
+            timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, currentConflictStart, /* inclusive= */ false));
         }
 
         // Update the latest conflict end time seen so far.
@@ -49,7 +49,7 @@ public final class FindMeetingQuery {
 
     // Check if the time between the latest end time and the end of the day is a valid time range.
     if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
-        timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
+        timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, /* inclusive= */ true));
     }
     return timeRanges;
   }
