@@ -54,7 +54,7 @@ public final class FindMeetingQuery {
     return timeRanges;
   }
 
-  private List<TimeRange> getPotentialConflicts(Collection<Event> events, MeetingRequest request) {
+  private static List<TimeRange> getPotentialConflicts(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
     Collection<String> requestAttendees = request.getAttendees();
     for (Event event : events) {
