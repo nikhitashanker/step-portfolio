@@ -29,19 +29,20 @@ public final class FindMeetingQuery {
 
     // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
-
-    // Iterate through the conflicts, keeping track of latest end time seen so far.
-    // If the time between the end time of the current conflict and the latest end time 
-    // conflict seen so far is greater that the request duration provided,
-    // add a new time range to the time ranges returned.
+   
     Collection<TimeRange> timeRanges = new ArrayList<TimeRange>();
     int lastConflictEnd = TimeRange.START_OF_DAY;
     long requestDuration = request.getDuration();
     for (TimeRange currentConflict : potentialConflicts) {
+        // If the time between the end time of the current conflict and the latest end time 
+        // conflict seen so far is greater that the request duration provided,
+        // add a new time range to the time ranges returned.
         int currentConflictStart = currentConflict.start();
         if (currentConflictStart - lastConflictEnd >= requestDuration) {
             timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, currentConflictStart, false));
         }
+
+        // Update the latest conflict end time seen so far.
         int currentConflictEnd = currentConflict.end();
         if (currentConflictEnd > lastConflictEnd)
             lastConflictEnd = currentConflictEnd;
@@ -51,7 +52,7 @@ public final class FindMeetingQuery {
     if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
         timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
     }
-    
+
     return timeRanges;
   }
 
