@@ -25,8 +25,18 @@ public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Find potential conflicts between scheduled events and request.
-    List<TimeRange> potentialConflicts = getPotentialConflicts(events, request);
+    Collection<String> mandatoryAttendees = request.getAttendees();
+    List<TimeRange> mandatoryConflicts = getPotentialConflicts(events, mandatoryAttendees);
+    List<TimeRange> allConflicts = new ArrayList(mandatoryConflicts);
+    allConflicts.addAll(getPotentialConflicts(events, request.getOptionalAttendees()));
+    Collection<TimeRange> timeRanges = queryUsingConflicts(events, request, allConflicts);
+    if (timeRanges.size() > 0 || mandatoryAttendees.size() == 0)
+      return timeRanges;
+    return queryUsingConflicts(events, request, mandatoryConflicts);
+  }
 
+  public Collection<TimeRange> queryUsingConflicts(Collection<Event> events, MeetingRequest request, 
+        List<TimeRange> potentialConflicts) {
     // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
    
@@ -55,9 +65,8 @@ public final class FindMeetingQuery {
     return timeRanges;
   }
 
-  private static List<TimeRange> getPotentialConflicts(Collection<Event> events, MeetingRequest request) {
+  private static List<TimeRange> getPotentialConflicts(Collection<Event> events, Collection<String> requestAttendees) {
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
-    Collection<String> requestAttendees = request.getAttendees();
     for (Event event : events) {
         // Find the intersection between current event attendees and request attendees.
         Set<String> intersection = new HashSet<String>(event.getAttendees());
