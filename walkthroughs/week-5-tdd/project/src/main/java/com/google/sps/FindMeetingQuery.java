@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.HashSet;
 
 public final class FindMeetingQuery {
+  /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Find potential conflicts.
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
@@ -49,6 +50,8 @@ public final class FindMeetingQuery {
         if (currentConflictEnd > lastConflictEnd)
             lastConflictEnd = currentConflictEnd;
     }
+
+    // Check if the time between the latest end time and the end of the day is a valid time range.
     if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
         timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
     }
