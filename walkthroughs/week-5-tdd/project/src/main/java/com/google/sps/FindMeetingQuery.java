@@ -17,19 +17,15 @@ import java.util.Collections;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.HashSet;
+
 
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // Find potential conflicts.
-    List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
-    for (Event e : events) {
-        HashSet<String> intersection = new HashSet<String>(e.getAttendees());
-        intersection.retainAll(request.getAttendees());
-        if (intersection.size() > 0)
-            potentialConflicts.add(e.getWhen());
-    } 
+    // Find potential conflicts between scheduled events and request.
+    List<TimeRange> potentialConflicts = getPotentialConflicts(events, request);
 
     // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
@@ -56,5 +52,20 @@ public final class FindMeetingQuery {
         timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
     }
     return timeRanges;
+  }
+
+  private List<TimeRange> getPotentialConflicts(Collection<Event> events, MeetingRequest request) {
+    List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
+    Collection<String> requestAttendees = request.getAttendees();
+    for (Event event : events) {
+        Set<String> eventAttendees = event.getAttendees();
+        for (String attendee: eventAttendees) {
+            if (requestAttendees.contains(attendee)) {
+                potentialConflicts.add(event.getWhen());
+                break;
+            }
+        }
+    } 
+    return potentialConflicts;
   }
 }
