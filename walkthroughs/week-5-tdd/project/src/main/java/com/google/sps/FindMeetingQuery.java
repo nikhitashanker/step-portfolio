@@ -27,9 +27,9 @@ public final class FindMeetingQuery {
     // Find potential conflicts between scheduled events and request using only
     // mandatory attendees.
     Collection<String> mandatoryAttendees = request.getAttendees();
-
-    // Find potential conflicts between scheduled events for all attendees.
     List<TimeRange> mandatoryAttendeeConflicts = getPotentialConflicts(events, mandatoryAttendees);
+
+    // Find potential conflicts between scheduled events and request using all attendees.
     List<TimeRange> allConflicts = new ArrayList(mandatoryAttendeeConflicts);
     allConflicts.addAll(getPotentialConflicts(events, request.getOptionalAttendees()));
 
