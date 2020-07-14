@@ -58,13 +58,14 @@ public final class FindMeetingQuery {
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
     Collection<String> requestAttendees = request.getAttendees();
     for (Event event : events) {
-        Set<String> eventAttendees = event.getAttendees();
-        for (String attendee: eventAttendees) {
-            if (requestAttendees.contains(attendee)) {
-                potentialConflicts.add(event.getWhen());
-                break;
-            }
-        }
+        // Find the intersection between current event attendees and request attendees.
+        HashSet<String> intersection = new HashSet<String>(event.getAttendees());
+        intersection.retainAll(requestAttendees);
+
+        // If the intersection size is greater than 0, add this event time to the potential
+        // conflicts.
+        if (intersection.size() > 0)
+            potentialConflicts.add(event.getWhen());
     } 
     return potentialConflicts;
   }
