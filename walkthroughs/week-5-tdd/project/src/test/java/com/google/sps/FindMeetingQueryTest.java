@@ -277,7 +277,7 @@ public final class FindMeetingQueryTest {
   public void optionalAttendeeIsIgnoredInResult() {
     // Have each person have different events. The optional 
     // attendee should be ignored because there is no time
-    // that accomadates the optional attendee.
+    // that accommodates the optional attendee.
     //
     // Events  : |^^^^^|--A--|^^C^^|--B--|^^^^^|
     // Day     : |-----------------------------|
@@ -306,7 +306,7 @@ public final class FindMeetingQueryTest {
   @Test
   public void optionalAttendeeIsConsidered() {
     // Have each person have different events. We should see two options because 
-    // there are results that accomadate for the optional attendee.
+    // there are results that accommodate for the optional attendee.
     //
     // Events  : |     |--A--|^^C^^|--B--|     |
     // Day     : |-----------------------------|
@@ -335,7 +335,7 @@ public final class FindMeetingQueryTest {
   public void optionalAttendeeJustEnoughRoom() {
     // Have one person optional attendee, but make it so that there is 
     // just enough room at one point in the day to have the meeting.
-    // Optional attendee should be ignored becaue if we include him
+    // Optional attendee should be ignored because if we include it
     // then we cannot find a time that works. 
     // 
     // Events  : |--A--|-B-| |----A----|
@@ -361,7 +361,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithGaps() {
-    // Have 2 optional attendees each of which have different events. We should see three options
+    // Have 2 optional attendees each of whom have different events. We should see three options
     // which are the gaps.
     //
     // Events  :       |--A--|     |--B--|
@@ -388,8 +388,8 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithoutGaps() {
-    // Have two optional attendees, but make it so that there is not enough room at any point in the day to
-    // have the meeting.
+    // Have two optional attendees, but make it so that there is not enough room at any point in the 
+    // day to have the meeting.
     //
     // Events  : |--A-----||------B----|
     // Day     : |---------------------|
