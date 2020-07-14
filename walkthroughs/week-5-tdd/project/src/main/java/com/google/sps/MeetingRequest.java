@@ -34,7 +34,7 @@ public final class MeetingRequest {
   private final Collection<String> attendees = new HashSet<>();
 
   // Some optional attendees for this new meeting. Use a set to avoid duplicates.
-  private final Collection<String> optional_attendees = new HashSet<>();
+  private final Collection<String> optionalAttendees = new HashSet<>();
 
   // The duration of the meeting in minutes.
   private final long duration;
@@ -42,6 +42,12 @@ public final class MeetingRequest {
   public MeetingRequest(Collection<String> attendees, long duration) {
     this.duration = duration;
     this.attendees.addAll(attendees);
+  }
+  
+  public MeetingRequest(Collection<String> attendees, Collection<String> optionalAttendees, long duration) {
+    this.duration = duration;
+    this.attendees.addAll(attendees);
+    this.optionalAttendees.addAll(optionalAttendees);
   }
 
   /**
@@ -55,7 +61,7 @@ public final class MeetingRequest {
    * Returns a read-only copy of the people who are optional to attend this meeting.
    */
   public Collection<String> getOptionalAttendees() {
-    return Collections.unmodifiableCollection(optional_attendees);
+    return Collections.unmodifiableCollection(optionalAttendees);
   }
 
   /**
@@ -63,7 +69,7 @@ public final class MeetingRequest {
    */
   public void addOptionalAttendee(String attendee) {
     if (!attendees.contains(attendee)) {
-      optional_attendees.add(attendee);
+      optionalAttendees.add(attendee);
     }
   }
 
