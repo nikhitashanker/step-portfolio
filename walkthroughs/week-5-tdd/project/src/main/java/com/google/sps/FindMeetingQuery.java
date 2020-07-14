@@ -36,7 +36,7 @@ public final class FindMeetingQuery {
     // Find time ranges based on all conflicts.
     Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
 
-    // If the number time ranges is positive or the number of mandatory attendees is zero
+    // If the number of time ranges is positive or the number of mandatory attendees is zero
     // return the time ranges based on all conflicts.
     if (timeRanges.size() > 0 || mandatoryAttendees.size() == 0)
       return timeRanges;
@@ -46,7 +46,7 @@ public final class FindMeetingQuery {
   }
 
   // Return time ranges for the request using potential conflicts provided.
-  public Collection<TimeRange> queryUsingPotentialConflicts(Collection<Event> events, 
+  private static Collection<TimeRange> queryUsingPotentialConflicts(Collection<Event> events, 
         MeetingRequest request, List<TimeRange> potentialConflicts) {
     // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
