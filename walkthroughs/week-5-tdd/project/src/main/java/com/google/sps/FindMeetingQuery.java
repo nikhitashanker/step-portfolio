@@ -51,6 +51,7 @@ public final class FindMeetingQuery {
     if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
         timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, true));
     }
+    
     return timeRanges;
   }
 
