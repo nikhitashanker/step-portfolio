@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
-
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
