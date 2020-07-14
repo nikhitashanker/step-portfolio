@@ -24,19 +24,30 @@ import java.util.Set;
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // Find potential conflicts between scheduled events and request.
+    // Find potential conflicts between scheduled events and request using only
+    // mandatory attendees.
     Collection<String> mandatoryAttendees = request.getAttendees();
-    List<TimeRange> mandatoryConflicts = getPotentialConflicts(events, mandatoryAttendees);
-    List<TimeRange> allConflicts = new ArrayList(mandatoryConflicts);
+
+    // Find potential conflicts between scheduled events for all attendees.
+    List<TimeRange> mandatoryAttendeeConflicts = getPotentialConflicts(events, mandatoryAttendees);
+    List<TimeRange> allConflicts = new ArrayList(mandatoryAttendeeConflicts);
     allConflicts.addAll(getPotentialConflicts(events, request.getOptionalAttendees()));
-    Collection<TimeRange> timeRanges = queryUsingConflicts(events, request, allConflicts);
+
+    // Find time ranges based on all conflicts.
+    Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
+
+    // If the number time ranges is positive or the number of mandatory attendees is zero
+    // return the time ranges based on all conflicts.
     if (timeRanges.size() > 0 || mandatoryAttendees.size() == 0)
       return timeRanges;
-    return queryUsingConflicts(events, request, mandatoryConflicts);
+    
+    // Return the time ranges based on mandatory attendee conflicts.
+    return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
   }
 
-  public Collection<TimeRange> queryUsingConflicts(Collection<Event> events, MeetingRequest request, 
-        List<TimeRange> potentialConflicts) {
+  // Return time ranges for the request using potential conflicts provided.
+  public Collection<TimeRange> queryUsingPotentialConflicts(Collection<Event> events, 
+        MeetingRequest request, List<TimeRange> potentialConflicts) {
     // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
    
@@ -65,7 +76,8 @@ public final class FindMeetingQuery {
     return timeRanges;
   }
 
-  private static List<TimeRange> getPotentialConflicts(Collection<Event> events, Collection<String> requestAttendees) {
+  private static List<TimeRange> getPotentialConflicts(Collection<Event> events, 
+        Collection<String> requestAttendees) {
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
     for (Event event : events) {
         // Find the intersection between current event attendees and request attendees.
