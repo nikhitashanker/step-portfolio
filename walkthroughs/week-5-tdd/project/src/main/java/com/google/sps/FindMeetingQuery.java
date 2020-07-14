@@ -45,7 +45,7 @@ public final class FindMeetingQuery {
     return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
   }
 
-  // Return time ranges for the request using potential conflicts provided.
+  // Returns time ranges for the request using potential conflicts provided.
   private static Collection<TimeRange> queryUsingPotentialConflicts(Collection<Event> events, 
         MeetingRequest request, List<TimeRange> potentialConflicts) {
     // Sort the potential conflicts in order of ascending start time.
