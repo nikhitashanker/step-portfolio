@@ -21,6 +21,7 @@ import java.util.HashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+    // Find potential conflicts.
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
     for (Event e : events) {
         HashSet<String> intersection = new HashSet<String>(e.getAttendees());
@@ -28,9 +29,16 @@ public final class FindMeetingQuery {
         if (intersection.size() > 0)
             potentialConflicts.add(e.getWhen());
     } 
+
+    // Sort the potential conflicts in order of ascending start time.
+    Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
+
+    // Iterate through the conflicts, keeping track of latest end time seen so far.
+    // If the time between the end time of the current conflict and the latest end time 
+    // conflict seen so far is greater that the request duration provided,
+    // add a new time range to the time ranges returned.
     Collection<TimeRange> timeRanges = new ArrayList<TimeRange>();
     int lastConflictEnd = TimeRange.START_OF_DAY;
-    Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
     long requestDuration = request.getDuration();
     for (TimeRange currentConflict : potentialConflicts) {
         int currentConflictStart = currentConflict.start();
