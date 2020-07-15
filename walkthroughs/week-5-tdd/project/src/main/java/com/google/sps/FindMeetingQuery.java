@@ -38,8 +38,9 @@ public final class FindMeetingQuery {
 
     // If time ranges based on all conflicts is not empty or no mandatory attendees
     // return the time ranges based on all conflicts.
-    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty())
+    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty()) {
       return timeRanges;
+    }
     
     // Return the time ranges based on mandatory attendee conflicts.
     return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
