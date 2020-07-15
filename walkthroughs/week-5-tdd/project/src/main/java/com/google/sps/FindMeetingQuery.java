@@ -86,7 +86,7 @@ public final class FindMeetingQuery {
         Set<String> intersection = new HashSet<String>(event.getAttendees());
         intersection.retainAll(requestAttendees);
 
-        // If the intersection size is greater than 0, add this event time to the potential
+        // If the intersection is not empty, add this event time to the potential
         // conflicts.
         if (!intersection.isEmpty()) {
             potentialConflicts.add(event.getWhen());
