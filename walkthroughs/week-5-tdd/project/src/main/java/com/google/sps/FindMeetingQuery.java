@@ -36,9 +36,9 @@ public final class FindMeetingQuery {
     // Find time ranges based on all conflicts.
     Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
 
-    // If the number of time ranges is positive or the number of mandatory attendees is zero
+    // If time ranges based on all conflicts is not empty or no mandatory attendees
     // return the time ranges based on all conflicts.
-    if (timeRanges.size() > 0 || mandatoryAttendees.size() == 0)
+    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty())
       return timeRanges;
     
     // Return the time ranges based on mandatory attendee conflicts.
@@ -85,7 +85,7 @@ public final class FindMeetingQuery {
         Set<String> intersection = new HashSet<String>(event.getAttendees());
         intersection.retainAll(requestAttendees);
 
-        // If the intersection is not empty, add this event time to the potential
+        // If the intersection size is greater than 0, add this event time to the potential
         // conflicts.
         if (!intersection.isEmpty()) {
             potentialConflicts.add(event.getWhen());
