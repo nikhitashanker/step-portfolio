@@ -44,8 +44,9 @@ public final class FindMeetingQuery {
 
         // Update the latest conflict end time seen so far.
         int currentConflictEnd = currentConflict.end();
-        if (currentConflictEnd > lastConflictEnd)
+        if (currentConflictEnd > lastConflictEnd) {
             lastConflictEnd = currentConflictEnd;
+        }
     }
 
     // Check if the time between the latest end time and the end of the day is a valid time range.
@@ -63,10 +64,11 @@ public final class FindMeetingQuery {
         Set<String> intersection = new HashSet<String>(event.getAttendees());
         intersection.retainAll(requestAttendees);
 
-        // If the intersection size is greater than 0, add this event time to the potential
+        // If the intersection is not empty, add this event time to the potential
         // conflicts.
-        if (intersection.size() > 0)
+        if (!intersection.isEmpty()) {
             potentialConflicts.add(event.getWhen());
+        }
     } 
     return potentialConflicts;
   }
