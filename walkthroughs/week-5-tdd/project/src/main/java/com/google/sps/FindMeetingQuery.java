@@ -93,20 +93,19 @@ public final class FindMeetingQuery {
 
   private static List<TimeRange> queryMaxNumberOfOptionalAttendess(long requestDuration, Collection<TimeRange> mandatoryTimeRanges, 
         Map<TimeRange, Integer> optionalConflicts) {
-        System.out.println("hello");
         int min = Integer.MAX_VALUE;
-        System.out.println(mandatoryTimeRanges);
         List<TimeRange> result = new ArrayList<TimeRange>();
-        for (Entry<TimeRange, Integer> optionalConflict : optionalConflicts.entrySet()) {
-            for (TimeRange mandatoryTimeRange : mandatoryTimeRanges) {
-                if (mandatoryTimeRange.contains(optionalConflict.getKey())) {
-                    System.out.println(optionalConflict.getKey());
-                    if (optionalConflict.getKey().duration() >= requestDuration) {
-                        if (optionalConflict.getValue() < min) {
+        for (TimeRange mandatoryTimeRange : mandatoryTimeRanges) {
+            for (Entry<TimeRange, Integer> optionalConflict : optionalConflicts.entrySet()) {
+                TimeRange timeRange = optionalConflict.getKey();
+                Integer numberOfAttendees = optionalConflict.getValue();
+                if (mandatoryTimeRange.contains(timeRange)) {
+                    if (timeRange.duration() >= requestDuration) {
+                        if (numberOfAttendees < min) {
                             result.clear();
-                            result.add(optionalConflict.getKey());
-                        } else if (optionalConflict.getValue() == min) {
-                            result.add(optionalConflict.getKey());
+                            result.add(timeRange);
+                        } else if (numberOfAttendees == min) {
+                            result.add(timeRange);
                         }
                     }
                 }
