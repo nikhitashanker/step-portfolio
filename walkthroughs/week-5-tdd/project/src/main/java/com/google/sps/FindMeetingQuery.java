@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.HashMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +35,8 @@ public final class FindMeetingQuery {
 
     // Find potential conflicts between scheduled events and request using all attendees.
     List<TimeRange> allConflicts = new ArrayList(mandatoryAttendeeConflicts);
-    allConflicts.addAll(getPotentialConflicts(events, request.getOptionalAttendees()));
+    List<TimeRange> optionalConflicts = getPotentialConflicts(events, request.getOptionalAttendees());
+    allConflicts.addAll(optionalConflicts);
 
     // Find time ranges based on all conflicts.
     Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
@@ -43,8 +47,16 @@ public final class FindMeetingQuery {
       return timeRanges;
     }
     
+    Collection<TimeRange> mandatoryTimeRanges = queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
+
+    Map<TimeRange, Integer> optionalConflictsWithCount = getPotentialConflictsOptional(events, request.getOptionalAttendees());
+
     // Return the time ranges based on mandatory attendee conflicts.
-    return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
+    Collection<TimeRange> maximumOptionalAttendees = queryMaxNumberOfOptionalAttendess(request.getDuration(), mandatoryTimeRanges, optionalConflictsWithCount);
+    if (maximumOptionalAttendees.isEmpty()) {
+        return mandatoryTimeRanges;
+    }
+    return maximumOptionalAttendees;
   }
 
   // Returns time ranges for the request using potential conflicts provided.
@@ -79,6 +91,30 @@ public final class FindMeetingQuery {
     return timeRanges;
   }
 
+  private static List<TimeRange> queryMaxNumberOfOptionalAttendess(long requestDuration, Collection<TimeRange> mandatoryTimeRanges, 
+        Map<TimeRange, Integer> optionalConflicts) {
+        System.out.println("hello");
+        int min = Integer.MAX_VALUE;
+        System.out.println(mandatoryTimeRanges);
+        List<TimeRange> result = new ArrayList<TimeRange>();
+        for (Entry<TimeRange, Integer> optionalConflict : optionalConflicts.entrySet()) {
+            for (TimeRange mandatoryTimeRange : mandatoryTimeRanges) {
+                if (mandatoryTimeRange.contains(optionalConflict.getKey())) {
+                    System.out.println(optionalConflict.getKey());
+                    if (optionalConflict.getKey().duration() >= requestDuration) {
+                        if (optionalConflict.getValue() < min) {
+                            result.clear();
+                            result.add(optionalConflict.getKey());
+                        } else if (optionalConflict.getValue() == min) {
+                            result.add(optionalConflict.getKey());
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+  }
+
   private static List<TimeRange> getPotentialConflicts(Collection<Event> events, 
         Collection<String> requestAttendees) {
     List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
@@ -91,6 +127,24 @@ public final class FindMeetingQuery {
         // conflicts.
         if (!intersection.isEmpty()) {
             potentialConflicts.add(event.getWhen());
+        }
+    } 
+    return potentialConflicts;
+  }
+
+  private static Map<TimeRange, Integer> getPotentialConflictsOptional(Collection<Event> events, 
+        Collection<String> requestAttendees) {
+    Map<TimeRange, Integer> potentialConflicts = new HashMap<TimeRange, Integer>();
+    for (Event event : events) {
+        // Find the intersection between current event attendees and request attendees.
+        Set<String> intersection = new HashSet<String>(event.getAttendees());
+        intersection.retainAll(requestAttendees);
+
+        // If the intersection is not empty, add this event time to the potential
+        // conflicts.
+        if (!intersection.isEmpty()) {
+            potentialConflicts.put(event.getWhen(), intersection.size());
+            System.out.println("hiii");
         }
     } 
     return potentialConflicts;
