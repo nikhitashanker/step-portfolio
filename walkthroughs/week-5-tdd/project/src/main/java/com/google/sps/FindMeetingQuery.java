@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Find potential conflicts between scheduled events and request using only
     // mandatory attendees.
-    Collection<String> mandatoryAttendees = request.getAttendees();
+    ImmutableSet<String> mandatoryAttendees = ImmutableSet.copyOf(request.getAttendees());
     List<TimeRange> mandatoryAttendeeConflicts = getPotentialConflicts(events, mandatoryAttendees);
 
     // Find potential conflicts between scheduled events and request using all attendees.
