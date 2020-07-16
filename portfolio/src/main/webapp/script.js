@@ -37,8 +37,6 @@ function showFirstTabContent() {
   }
 }
 
-window.onscroll = changeNavbarStickiness;
-
 /**
  * Adds a random greeting to the page.
  */
@@ -94,24 +92,6 @@ function showContentForTab(selectedProjectName, activeTabColor) {
       tabContent[i].style.display = 'none';
       tabButtons[i].style.backgroundColor = 'aliceblue';
     }
-  }
-}
-
-/**
- * Makes navigation bar become fixed at top when it is about to go out of view.
- * When it is in view, it is changed to being shown like all other components of
- * the page.
- */
-function changeNavbarStickiness() {
-  const navbar = document.getElementById('navbar');
-  const navbarThickness = navbar.offsetTop;
-
-  // Change navbar CSS classlist based on whether navbar is in view or out of
-  // view
-  if (window.pageYOffset >= navbarThickness) {
-    navbar.classList.add('sticky');
-  } else {
-    navbar.classList.remove('sticky');
   }
 }
 
