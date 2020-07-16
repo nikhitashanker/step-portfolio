@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Find potential conflicts between scheduled events and request using only
     // mandatory attendees.
-    Collection<String> mandatoryAttendees = request.getAttendees();
+    ImmutableSet<String> mandatoryAttendees = ImmutableSet.copyOf(request.getAttendees());
     List<TimeRange> mandatoryAttendeeConflicts = getPotentialConflicts(events, mandatoryAttendees);
 
     // Find potential conflicts between scheduled events and request using all attendees.
@@ -36,16 +37,17 @@ public final class FindMeetingQuery {
     // Find time ranges based on all conflicts.
     Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
 
-    // If the number of time ranges is positive or the number of mandatory attendees is zero
+    // If time ranges based on all conflicts is not empty or no mandatory attendees
     // return the time ranges based on all conflicts.
-    if (timeRanges.size() > 0 || mandatoryAttendees.size() == 0)
+    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty()) {
       return timeRanges;
+    }
     
     // Return the time ranges based on mandatory attendee conflicts.
     return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
   }
 
-  // Return time ranges for the request using potential conflicts provided.
+  // Returns time ranges for the request using potential conflicts provided.
   private static Collection<TimeRange> queryUsingPotentialConflicts(Collection<Event> events, 
         MeetingRequest request, List<TimeRange> potentialConflicts) {
     // Sort the potential conflicts in order of ascending start time.
@@ -65,8 +67,9 @@ public final class FindMeetingQuery {
 
         // Update the latest conflict end time seen so far.
         int currentConflictEnd = currentConflict.end();
-        if (currentConflictEnd > lastConflictEnd)
+        if (currentConflictEnd > lastConflictEnd) {
             lastConflictEnd = currentConflictEnd;
+        }
     }
 
     // Check if the time between the latest end time and the end of the day is a valid time range.
@@ -84,10 +87,11 @@ public final class FindMeetingQuery {
         Set<String> intersection = new HashSet<String>(event.getAttendees());
         intersection.retainAll(requestAttendees);
 
-        // If the intersection size is greater than 0, add this event time to the potential
+        // If the intersection is not empty, add this event time to the potential
         // conflicts.
-        if (intersection.size() > 0)
+        if (!intersection.isEmpty()) {
             potentialConflicts.add(event.getWhen());
+        }
     } 
     return potentialConflicts;
   }
