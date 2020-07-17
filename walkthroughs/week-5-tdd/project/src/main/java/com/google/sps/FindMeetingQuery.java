@@ -43,8 +43,10 @@ public final class FindMeetingQuery {
       return timeRanges;
     }
     
+    Collection<TimeRange> timeRangesMandatory = queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
+
     // Return the time ranges based on mandatory attendee conflicts.
-    return queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
+    return getTimeRangesWithMaximumOptionalAttendees(events, timeRangesMandatory, request);
   }
 
   // Returns time ranges for the request using potential conflicts provided.
@@ -57,15 +59,11 @@ public final class FindMeetingQuery {
     int lastConflictEnd = TimeRange.START_OF_DAY;
     long requestDuration = request.getDuration();
     for (TimeRange currentConflict : potentialConflicts) {
-        // If the time between the end time of the current conflict and the latest end time 
-        // conflict seen so far is greater that the request duration provided,
-        // add a new time range to the time ranges returned.
         int currentConflictStart = currentConflict.start();
         if (currentConflictStart - lastConflictEnd >= requestDuration) {
             timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, currentConflictStart, /* inclusive= */ false));
         }
 
-        // Update the latest conflict end time seen so far.
         int currentConflictEnd = currentConflict.end();
         if (currentConflictEnd > lastConflictEnd) {
             lastConflictEnd = currentConflictEnd;
@@ -94,5 +92,35 @@ public final class FindMeetingQuery {
         }
     } 
     return potentialConflicts;
+  }
+
+  private static Collection<TimeRange> getTimeRangesWithMaximumOptionalAttendees(Collection<Event> events, Collection<TimeRange> mandatoryTimeRanges, MeetingRequest request) {
+      Collection<String> optionalAttendees = request.getOptionalAttendees();
+      List<TimeRange> result = new ArrayList<TimeRange>();
+      int min = Integer.MAX_VALUE;
+      System.out.println("hello");
+      System.out.println(mandatoryTimeRanges);
+      System.out.println(events);
+      for (TimeRange timeRange : mandatoryTimeRanges) {
+          Set<String> optionalAttendeesWithConflict = new HashSet<String>();
+          for (Event e : events) {
+            for (String attendee : e.getAttendees()) {   
+                if (optionalAttendees.contains(attendee)) {
+                    optionalAttendeesWithConflict.add(attendee);
+                }
+            }
+          }
+          int numberOfOptionalAttendees = optionalAttendeesWithConflict.size();
+    System.out.println("The min is" + min);
+    if (numberOfOptionalAttendees < min) {
+    result.clear();
+    result.add(timeRange);
+    min = numberOfOptionalAttendees;
+    } else if (numberOfOptionalAttendees == min) {
+    result.add(timeRange);
+    }
+      }
+        
+      return result;
   }
 }
