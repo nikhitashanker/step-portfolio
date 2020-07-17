@@ -28,6 +28,7 @@ import java.util.Set;
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+      System.out.println(events);
     // Find potential conflicts between scheduled events and request using only
     // mandatory attendees.
     ImmutableSet<String> mandatoryAttendees = ImmutableSet.copyOf(request.getAttendees());
@@ -43,16 +44,18 @@ public final class FindMeetingQuery {
 
     // If time ranges based on all conflicts is not empty or no mandatory attendees
     // return the time ranges based on all conflicts.
-    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty()) {
+    if (!timeRanges.isEmpty()) {
       return timeRanges;
     }
     
     Collection<TimeRange> mandatoryTimeRanges = queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
 
-    Map<TimeRange, Integer> optionalConflictsWithCount = getPotentialConflictsOptional(events, request.getOptionalAttendees());
+    if (optionalConflicts.isEmpty())
+        return mandatoryTimeRanges;
+
 
     // Return the time ranges based on mandatory attendee conflicts.
-    Collection<TimeRange> maximumOptionalAttendees = queryMaxNumberOfOptionalAttendess(request.getDuration(), mandatoryTimeRanges, optionalConflictsWithCount);
+    Collection<TimeRange> maximumOptionalAttendees = getPotentialConflictsOptional(request.getDuration(), events, request.getOptionalAttendees(), mandatoryTimeRanges);
     if (maximumOptionalAttendees.isEmpty()) {
         return mandatoryTimeRanges;
     }
@@ -88,31 +91,12 @@ public final class FindMeetingQuery {
     if (TimeRange.END_OF_DAY - lastConflictEnd >= requestDuration) {
         timeRanges.add(TimeRange.fromStartEnd(lastConflictEnd, TimeRange.END_OF_DAY, /* inclusive= */ true));
     }
+    for (TimeRange range : timeRanges) {
+        System.out.println(range);
+    }
     return timeRanges;
   }
 
-  private static List<TimeRange> queryMaxNumberOfOptionalAttendess(long requestDuration, Collection<TimeRange> mandatoryTimeRanges, 
-        Map<TimeRange, Integer> optionalConflicts) {
-        int min = Integer.MAX_VALUE;
-        List<TimeRange> result = new ArrayList<TimeRange>();
-        for (TimeRange mandatoryTimeRange : mandatoryTimeRanges) {
-            for (Entry<TimeRange, Integer> optionalConflict : optionalConflicts.entrySet()) {
-                TimeRange timeRange = optionalConflict.getKey();
-                Integer numberOfAttendees = optionalConflict.getValue();
-                if (mandatoryTimeRange.contains(timeRange)) {
-                    if (timeRange.duration() >= requestDuration) {
-                        if (numberOfAttendees < min) {
-                            result.clear();
-                            result.add(timeRange);
-                        } else if (numberOfAttendees == min) {
-                            result.add(timeRange);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-  }
 
   private static List<TimeRange> getPotentialConflicts(Collection<Event> events, 
         Collection<String> requestAttendees) {
@@ -131,21 +115,55 @@ public final class FindMeetingQuery {
     return potentialConflicts;
   }
 
-  private static Map<TimeRange, Integer> getPotentialConflictsOptional(Collection<Event> events, 
-        Collection<String> requestAttendees) {
-    Map<TimeRange, Integer> potentialConflicts = new HashMap<TimeRange, Integer>();
-    for (Event event : events) {
+  private static List<TimeRange> getPotentialConflictsOptional(long duration, Collection<Event> events, 
+        Collection<String> requestAttendees, Collection<TimeRange> mandatoryTimeRanges) {
+    int min = Integer.MAX_VALUE;
+List<TimeRange> potentialConflicts = new ArrayList<TimeRange>();
+
+    System.out.println("begin");
+    for (TimeRange range : mandatoryTimeRanges) {
+        System.out.println(range);
+    }
+    System.out.println("End");
+   for (Event event : events) {
         // Find the intersection between current event attendees and request attendees.
+        
         Set<String> intersection = new HashSet<String>(event.getAttendees());
         intersection.retainAll(requestAttendees);
 
+
         // If the intersection is not empty, add this event time to the potential
         // conflicts.
-        if (!intersection.isEmpty()) {
-            potentialConflicts.put(event.getWhen(), intersection.size());
-            System.out.println("hiii");
+        Integer numberOfAttendees = intersection.size();
+        TimeRange timeRange = event.getWhen();
+
+        System.out.println(timeRange);
+
+        boolean includedByMandatoryTimeRanges = false;
+        for (TimeRange timeRangeMand : mandatoryTimeRanges) {
+            if (timeRangeMand.contains(timeRange)) 
+                includedByMandatoryTimeRanges = true;
         }
-    } 
-    return potentialConflicts;
-  }
+        if (includedByMandatoryTimeRanges || mandatoryTimeRanges.isEmpty()) {
+
+        if (timeRange.duration() >= duration) {
+            System.out.println("The number of attendees is " + numberOfAttendees);
+            if (numberOfAttendees < min) {
+                potentialConflicts.clear();
+                potentialConflicts.add(timeRange);
+                System.out.println("The min is"+min+timeRange);
+                min = numberOfAttendees;
+
+            } else if (numberOfAttendees == min) {
+                potentialConflicts.add(timeRange);
+                System.out.println("EQUAL min is"+min+timeRange);
+            }
+        }
+        System.out.println(potentialConflicts);
+        }
+   }
+   System.out.println("Potential conflicts");
+   System.out.println(potentialConflicts);
+       return potentialConflicts;
+        }
 }
