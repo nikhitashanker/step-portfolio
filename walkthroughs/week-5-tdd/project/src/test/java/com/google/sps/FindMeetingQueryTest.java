@@ -450,12 +450,13 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalAttendeesTieBetweenTimeRangesOptionalAttendees() {
+  public void optionalAttendeesTieBetweenTimeRanges() {
     // Have three optional attendees, none of which have
     // events that overlap with mandatory attendees.
-    // The option should be the time where all mandatory
+    // The option should be the times where all mandatory
     // attendees can attend and two of the optional attendees
-    // can attend
+    // can attend.
+    // 
     // Optional:  |--B,C-----|        |---D,E---|
     // Mandatory:            |--A-----|
     // Day     :  |-----------------------------|
@@ -484,23 +485,24 @@ public final class FindMeetingQueryTest {
   }
 
    @Test
-  public void optionalAttendeesVaryingNumberOptionalAttendeesBetweenEvents() {
+  public void varyingNumberOptionalAttendeesWithoutConflictBetweenTimeRanges() {
     // Have three optional attendees, none of which have
     // events that overlap with mandatory attendees.
     // The option should be the time where all mandatory
     // attendees can attend and two of the optional attendees
-    // can attend
+    // can attend.
+    //
     // Optional:  |--B,C-----|        |---D---|
     // Mandatory:            |--A-----|
-    // Day     :  |-----------------------------|
-    // Options :  |----------|        |---------|
+    // Day     :  |---------------------------|
+    // Options :  |----------|        |-------|
 
     Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            Arrays.asList(PERSON_B, PERSON_C)),
-        new Event("Event 3", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+        new Event("Event 1", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
             Arrays.asList(PERSON_A)),
-        new Event("Event 5", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
+        new Event("Event 2", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_B, PERSON_C)),
+        new Event("Event 3", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
             Arrays.asList(PERSON_D)));
 
     MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_60_MINUTES);

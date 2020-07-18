@@ -119,7 +119,6 @@ public final class FindMeetingQuery {
         result.clear();
         result.add(timeRange);
         min = numberOfOptionalAttendees;
-        System.out.println("The min is" + min);
       } else if (numberOfOptionalAttendees == min) {
         result.add(timeRange);
       }
