@@ -277,7 +277,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeIsIgnoredInResult() {
-    // Have each person have different events. The optional 
+    // Have each person have different events. The optional
     // attendee should be ignored because there is no time
     // that accommodates the optional attendee.
     //
@@ -290,7 +290,8 @@ public final class FindMeetingQueryTest {
             Arrays.asList(PERSON_A)),
         new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_B)),
-        new Event("Event 3", TimeRange.fromStartDuration(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY),
+        new Event("Event 3",
+            TimeRange.fromStartDuration(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY),
             Arrays.asList(PERSON_C)));
 
     MeetingRequest request =
@@ -308,7 +309,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeIsConsidered() {
-    // Have each person have different events. We should see two options because 
+    // Have each person have different events. We should see two options because
     // there are results that accommodate for the optional attendee.
     //
     // Events  : |     |--A--|^^C^^|--B--|     |
@@ -337,11 +338,11 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeJustEnoughRoom() {
-    // Have one person optional attendee, but make it so that there is 
+    // Have one person optional attendee, but make it so that there is
     // just enough room at one point in the day to have the meeting.
     // Optional attendee should be ignored because if we include it
-    // then we cannot find a time that works. 
-    // 
+    // then we cannot find a time that works.
+    //
     // Events  : |--A--|-B-| |----A----|
     // Day     : |---------------------|
     // Options :       |-----|
@@ -379,8 +380,7 @@ public final class FindMeetingQueryTest {
         new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_B)));
 
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
+    MeetingRequest request = new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
     request.addOptionalAttendee(PERSON_A);
     request.addOptionalAttendee(PERSON_B);
 
@@ -395,7 +395,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithoutGaps() {
-    // Have two optional attendees, but make it so that there is not enough room at any point in the 
+    // Have two optional attendees, but make it so that there is not enough room at any point in the
     // day to have the meeting.
     //
     // Events  : |--A-----||------B----|
@@ -419,10 +419,10 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalAttendeesWithOneSimilarToMandatoryAttendee() {
-    // Have two optional attendees, but make it so that one has an 
+  public void optionalAttendeesOneSimilarToMandatoryAttendee() {
+    // Have two optional attendees, but make it so that one has an
     // event with a mandatory attendee. We should see one option
-    // where one optional attendee and all mandatory attendees 
+    // where one optional attendee and all mandatory attendees
     // can attend.
     //
     // Optional:  |--C-----||------B----|
@@ -449,8 +449,8 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
- @Test
-  public void optionalAttendeesTieBetweenTimeRangesForMaximumNumberOfOptionalAttendees() {
+  @Test
+  public void optionalAttendeesTieBetweenTimeRangesOptionalAttendees() {
     // Have three optional attendees, none of which have
     // events that overlap with mandatory attendees.
     // The option should be the time where all mandatory
@@ -473,14 +473,45 @@ public final class FindMeetingQueryTest {
     request.addOptionalAttendee(PERSON_B);
     request.addOptionalAttendee(PERSON_C);
     request.addOptionalAttendee(PERSON_D);
-     request.addOptionalAttendee(PERSON_E);
-
+    request.addOptionalAttendee(PERSON_E);
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false), TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+   @Test
+  public void optionalAttendeesVaryingNumberOptionalAttendeesBetweenEvents() {
+    // Have three optional attendees, none of which have
+    // events that overlap with mandatory attendees.
+    // The option should be the time where all mandatory
+    // attendees can attend and two of the optional attendees
+    // can attend
+    // Optional:  |--B,C-----|        |---D---|
+    // Mandatory:            |--A-----|
+    // Day     :  |-----------------------------|
+    // Options :  |----------|        |---------|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_B, PERSON_C)),
+        new Event("Event 3", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 5", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_D)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_60_MINUTES);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_C);
+    request.addOptionalAttendee(PERSON_D);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
   }
 }
-
