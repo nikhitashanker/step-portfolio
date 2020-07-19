@@ -43,13 +43,11 @@ public final class FindMeetingQuery {
     Collection<TimeRange> timeRangesMandatory =
         queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
 
-    // Select the time ranges out of the time ranges where all mandatory attendees can attend
-    // with the maximum number of optional attendees that can attend.
     return getTimeRangesWithMaximumOptionalAttendees(
         events, timeRangesMandatory, optionalAttendees);
   }
 
-  // Returns time ranges for the request using potential conflicts provided.
+  /* Returns time ranges for the request using potential conflicts provided. */
   private static Collection<TimeRange> queryUsingPotentialConflicts(
       Collection<Event> events, MeetingRequest request, List<TimeRange> potentialConflicts) {
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
@@ -102,7 +100,7 @@ public final class FindMeetingQuery {
       Collection<Event> events, Collection<TimeRange> mandatoryTimeRanges,
       Collection<String> optionalAttendees) {
     List<TimeRange> result = new ArrayList<TimeRange>();
-    int min = Integer.MAX_VALUE;
+    int minOptionalAttendeesWithConflict = Integer.MAX_VALUE;
     for (TimeRange timeRange : mandatoryTimeRanges) {
       Set<String> optionalAttendeesWithConflict = new HashSet<String>();
       for (Event e : events) {
@@ -115,12 +113,12 @@ public final class FindMeetingQuery {
         }
       }
 
-      int numberOfOptionalAttendees = optionalAttendeesWithConflict.size();
-      if (numberOfOptionalAttendees < min) {
+      int numberOfOptionalAttendeesWithConflict = optionalAttendeesWithConflict.size();
+      if (numberOfOptionalAttendeesWithConflict < minOptionalAttendeesWithConflict) {
         result.clear();
         result.add(timeRange);
-        min = numberOfOptionalAttendees;
-      } else if (numberOfOptionalAttendees == min) {
+        minOptionalAttendeesWithConflict = numberOfOptionalAttendeesWithConflict;
+      } else if (numberOfOptionalAttendeesWithConflict == minOptionalAttendeesWithConflict) {
         result.add(timeRange);
       }
     }
