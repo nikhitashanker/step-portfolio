@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,35 +26,32 @@ import java.util.Set;
 public final class FindMeetingQuery {
   /* Finds all time ranges that satisfy the request given the already existing set of events. */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // Find potential conflicts between scheduled events and request using only
-    // mandatory attendees.
-    ImmutableSet<String> mandatoryAttendees = ImmutableSet.copyOf(request.getAttendees());
+    ImmutableList<String> mandatoryAttendees = ImmutableList.copyOf(request.getAttendees());
     List<TimeRange> mandatoryAttendeeConflicts = getPotentialConflicts(events, mandatoryAttendees);
 
-    // Find potential conflicts between scheduled events and request using all attendees.
     List<TimeRange> allConflicts = new ArrayList(mandatoryAttendeeConflicts);
-    allConflicts.addAll(getPotentialConflicts(events, request.getOptionalAttendees()));
+    ImmutableList<String> optionalAttendees = ImmutableList.copyOf(request.getOptionalAttendees());
+    allConflicts.addAll(getPotentialConflicts(events, optionalAttendees));
 
-    // Find time ranges based on all conflicts.
-    Collection<TimeRange> timeRanges = queryUsingPotentialConflicts(events, request, allConflicts);
+    Collection<TimeRange> timeRangesAllConflicts =
+        queryUsingPotentialConflicts(events, request, allConflicts);
 
-    // If time ranges based on all conflicts is not empty or no mandatory attendees
-    // return the time ranges based on all conflicts.
-    if (!timeRanges.isEmpty() || mandatoryAttendees.isEmpty()) {
-      return timeRanges;
+    if (!timeRangesAllConflicts.isEmpty() || mandatoryAttendees.isEmpty()) {
+      return timeRangesAllConflicts;
     }
 
     Collection<TimeRange> timeRangesMandatory =
         queryUsingPotentialConflicts(events, request, mandatoryAttendeeConflicts);
 
-    // Return the time ranges based on mandatory attendee conflicts.
-    return getTimeRangesWithMaximumOptionalAttendees(events, timeRangesMandatory, request);
+    // Select the time ranges out of the time ranges where all mandatory attendees can attend
+    // with the maximum number of optional attendees that can attend.
+    return getTimeRangesWithMaximumOptionalAttendees(
+        events, timeRangesMandatory, optionalAttendees);
   }
 
   // Returns time ranges for the request using potential conflicts provided.
   private static Collection<TimeRange> queryUsingPotentialConflicts(
       Collection<Event> events, MeetingRequest request, List<TimeRange> potentialConflicts) {
-    // Sort the potential conflicts in order of ascending start time.
     Collections.sort(potentialConflicts, TimeRange.ORDER_BY_START);
 
     Collection<TimeRange> timeRanges = new ArrayList<TimeRange>();
@@ -96,24 +94,27 @@ public final class FindMeetingQuery {
     }
     return potentialConflicts;
   }
-
+  /*
+   * Return the time ranges where all mandatory attendees can attend and the maximum
+   * number of optional attendees can attend.
+   */
   private static Collection<TimeRange> getTimeRangesWithMaximumOptionalAttendees(
-      Collection<Event> events, Collection<TimeRange> mandatoryTimeRanges, MeetingRequest request) {
-    Collection<String> optionalAttendees = request.getOptionalAttendees();
+      Collection<Event> events, Collection<TimeRange> mandatoryTimeRanges,
+      Collection<String> optionalAttendees) {
     List<TimeRange> result = new ArrayList<TimeRange>();
     int min = Integer.MAX_VALUE;
     for (TimeRange timeRange : mandatoryTimeRanges) {
       Set<String> optionalAttendeesWithConflict = new HashSet<String>();
       for (Event e : events) {
         if (timeRange.contains(e.getWhen())) {
-            for (String attendee : e.getAttendees()) {
-                if (optionalAttendees.contains(attendee)) {
-                    optionalAttendeesWithConflict.add(attendee);
-                }
+          for (String attendee : e.getAttendees()) {
+            if (optionalAttendees.contains(attendee)) {
+              optionalAttendeesWithConflict.add(attendee);
             }
+          }
         }
       }
-      System.out.println(optionalAttendeesWithConflict);
+
       int numberOfOptionalAttendees = optionalAttendeesWithConflict.size();
       if (numberOfOptionalAttendees < min) {
         result.clear();
@@ -123,7 +124,6 @@ public final class FindMeetingQuery {
         result.add(timeRange);
       }
     }
-
     return result;
   }
 }
