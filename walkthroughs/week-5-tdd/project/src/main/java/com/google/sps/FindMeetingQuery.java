@@ -36,7 +36,7 @@ public final class FindMeetingQuery {
     Collection<TimeRange> timeRangesAllConflicts =
         queryUsingPotentialConflicts(events, request, allConflicts);
 
-    if (!timeRangesAllConflicts.isEmpty() || mandatoryAttendees.isEmpty()) {
+    if (!timeRangesAllConflicts.isEmpty()) {
       return timeRangesAllConflicts;
     }
 

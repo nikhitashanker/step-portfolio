@@ -396,11 +396,12 @@ public final class FindMeetingQueryTest {
   @Test
   public void optionalAttendeesWithoutGaps() {
     // Have two optional attendees, but make it so that there is not enough room at any point in the
-    // day to have the meeting.
+    // day to have the meeting with all optional attendees. Whole day is returned since all zero
+    // optional attendees are free.
     //
     // Events  : |--A-----||------B----|
     // Day     : |---------------------|
-    // Options :
+    // Options : |---------------------|
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
@@ -413,7 +414,7 @@ public final class FindMeetingQueryTest {
     request.addOptionalAttendee(PERSON_B);
 
     Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList();
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
 
     Assert.assertEquals(expected, actual);
   }
