@@ -105,11 +105,10 @@ public final class FindMeetingQuery {
       Set<String> optionalAttendeesWithConflict = new HashSet<String>();
       for (Event e : events) {
         if (timeRange.contains(e.getWhen())) {
-          for (String attendee : e.getAttendees()) {
-            if (optionalAttendees.contains(attendee)) {
-              optionalAttendeesWithConflict.add(attendee);
-            }
-          }
+          getAttendees()
+              .stream()
+              .filter(attendee -> optionalAttendees.contains(attendee))
+              .collect(optionalAttendeesWithConflict);
         }
       }
 
