@@ -35,6 +35,8 @@ public final class FindMeetingQueryTest {
   private static final String PERSON_A = "Person A";
   private static final String PERSON_B = "Person B";
   private static final String PERSON_C = "Person C";
+  private static final String PERSON_D = "Person D";
+  private static final String PERSON_E = "Person E";
 
   // All dates are the first day of the year 2020.
   private static final int TIME_0800AM = TimeRange.getTimeInMinutes(8, 0);
@@ -275,7 +277,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeIsIgnoredInResult() {
-    // Have each person have different events. The optional 
+    // Have each person have different events. The optional
     // attendee should be ignored because there is no time
     // that accommodates the optional attendee.
     //
@@ -288,7 +290,8 @@ public final class FindMeetingQueryTest {
             Arrays.asList(PERSON_A)),
         new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_B)),
-        new Event("Event 3", TimeRange.fromStartDuration(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY),
+        new Event("Event 3",
+            TimeRange.fromStartDuration(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY),
             Arrays.asList(PERSON_C)));
 
     MeetingRequest request =
@@ -306,7 +309,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeIsConsidered() {
-    // Have each person have different events. We should see two options because 
+    // Have each person have different events. We should see two options because
     // there are results that accommodate for the optional attendee.
     //
     // Events  : |     |--A--|^^C^^|--B--|     |
@@ -335,11 +338,11 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeeJustEnoughRoom() {
-    // Have one person optional attendee, but make it so that there is 
+    // Have one person optional attendee, but make it so that there is
     // just enough room at one point in the day to have the meeting.
     // Optional attendee should be ignored because if we include it
-    // then we cannot find a time that works. 
-    // 
+    // then we cannot find a time that works.
+    //
     // Events  : |--A--|-B-| |----A----|
     // Day     : |---------------------|
     // Options :       |-----|
@@ -377,8 +380,7 @@ public final class FindMeetingQueryTest {
         new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
             Arrays.asList(PERSON_B)));
 
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
+    MeetingRequest request = new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
     request.addOptionalAttendee(PERSON_A);
     request.addOptionalAttendee(PERSON_B);
 
@@ -393,12 +395,13 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void optionalAttendeesWithoutGaps() {
-    // Have two optional attendees, but make it so that there is not enough room at any point in the 
-    // day to have the meeting.
+    // Have two optional attendees, but make it so that there is not enough room at any point in the
+    // day to have the meeting with all optional attendees. Whole day is returned since all zero
+    // optional attendees are free.
     //
     // Events  : |--A-----||------B----|
     // Day     : |---------------------|
-    // Options :
+    // Options : |---------------------|
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
@@ -411,9 +414,103 @@ public final class FindMeetingQueryTest {
     request.addOptionalAttendee(PERSON_B);
 
     Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList();
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionalAttendeesWithOneOption() {
+    // There is only one option where all
+    // mandatory attendees can attend so it is returned.
+    //
+    // Optional:  |--C-----||------B----|
+    // Mandatory: |--A-----|
+    // Day     :  |---------------------|
+    // Options :            |-----------|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_0830AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_B)),
+        new Event("Event 3", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_C)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_60_MINUTES);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_C);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TIME_0830AM, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionsWithSameOptionalAttendeeConflictCount() {
+    // Have three optional attendees, none of which have
+    // events that overlap with mandatory attendees.
+    // The option should be the times where all mandatory
+    // attendees can attend and two of the optional attendees
+    // can attend.
+    //
+    // Optional:  |--A-----|           |---C---|
+    // Mandatory:            |--B-----|
+    // Day     :  |-----------------------------|
+    // Options :  |----------|        |---------|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+            Arrays.asList(PERSON_B)),
+        new Event("Event 3", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_C)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_B), DURATION_60_MINUTES);
+    request.addOptionalAttendee(PERSON_A);
+    request.addOptionalAttendee(PERSON_C);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void optionsWithDifferentOptionalAttendeeConflictCount() {
+    // Have three optional attendees, none of which have
+    // events that overlap with mandatory attendees.
+    // The option should be the time where all mandatory
+    // attendees can attend and two of the optional attendees
+    // can attend.
+    //
+    // Optional:  |--B,C-----|        |---D---|
+    // Mandatory:            |--A-----|
+    // Day     :  |---------------------------|
+    // Options :                      |-------|
+
+    Collection<Event> events =
+        Arrays.asList(new Event("Event 1", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+                          Arrays.asList(PERSON_A)),
+            new Event("Event 2", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+                Arrays.asList(PERSON_B, PERSON_C)),
+            new Event("Event 3", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
+                Arrays.asList(PERSON_D)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_60_MINUTES);
+    request.addOptionalAttendee(PERSON_B);
+    request.addOptionalAttendee(PERSON_C);
+    request.addOptionalAttendee(PERSON_D);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected =
+        Arrays.asList(TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
   }
 }
-
